@@ -1,0 +1,1133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-10-27 18:34+0700\n"
+"PO-Revision-Date: 2016-08-17 19:26+0700\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.4\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;esc_html__;esc_html_e;esc_html_x;_n:1,2;"
+"_n_noop:1,2;_nx:1,2;_nx_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Your changes saved successfully"
+msgstr ""
+
+msgid "Course Information"
+msgstr ""
+
+msgid "Curriculum"
+msgstr ""
+
+msgid "All Instructor"
+msgstr ""
+
+msgid "Language - Location"
+msgstr ""
+
+msgid "Guest"
+msgstr ""
+
+msgid "Primary Currency"
+msgstr ""
+
+msgid "Default language"
+msgstr ""
+
+msgid "Default level"
+msgstr ""
+
+msgid "Your change saved successfully"
+msgstr ""
+
+msgid "Core caches"
+msgstr ""
+
+msgid "Data caches"
+msgstr ""
+
+msgid "Static asset caches"
+msgstr ""
+
+msgid "Default course per page"
+msgstr ""
+
+msgid "Default list order by"
+msgstr ""
+
+msgid "Course title"
+msgstr ""
+
+msgid "Course price"
+msgstr ""
+
+msgid "Created date"
+msgstr ""
+
+msgid "Default course columns"
+msgstr ""
+
+msgid "Your changes have been saved successfully"
+msgstr ""
+
+msgid "Your template was reset to default"
+msgstr ""
+
+msgid "Choses template to edit"
+msgstr ""
+
+msgid "Edit email template: "
+msgstr ""
+
+msgid "Courses"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Instructor"
+msgstr ""
+
+msgid "You are currently in progress to remove Cred GLV plugin"
+msgstr ""
+
+msgid "Do you want to keep plugin data?"
+msgstr ""
+
+msgid "Note  : you <strong>can not</strong> undo if you choose delete"
+msgstr ""
+
+msgid "No billing address found."
+msgstr ""
+
+msgid "Add new"
+msgstr ""
+
+msgid "First name"
+msgstr ""
+
+msgid "Last name"
+msgstr ""
+
+msgid "Company"
+msgstr ""
+
+msgid "Address line 1"
+msgstr ""
+
+msgid "Address line 2"
+msgstr ""
+
+msgid "City"
+msgstr ""
+
+msgid "Postcode/ZIP"
+msgstr ""
+
+msgid "Country"
+msgstr ""
+
+msgid "State/County"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Payment method"
+msgstr ""
+
+msgid "Transaction ID"
+msgstr ""
+
+msgid "Update billing"
+msgstr ""
+
+msgid "No item found."
+msgstr ""
+
+msgid "Amount"
+msgstr ""
+
+msgid "No student selected"
+msgstr ""
+
+msgid "No question selected"
+msgstr ""
+
+msgid "Save settings"
+msgstr ""
+
+msgid "Clear caches"
+msgstr ""
+
+msgid "Course list settings"
+msgstr ""
+
+msgid "Save your changes"
+msgstr ""
+
+msgid "Page Urls"
+msgstr ""
+
+msgid "Email settings"
+msgstr ""
+
+msgid "Supported params"
+msgstr ""
+
+msgid "Reset to default"
+msgstr ""
+
+msgid "General settings"
+msgstr ""
+
+msgid "Payment settings"
+msgstr ""
+
+msgid "Configuration for payment gateways :"
+msgstr ""
+
+msgid "Enabled payment gateways :"
+msgstr ""
+
+msgid "Return payment gateways"
+msgstr ""
+
+msgid "'"
+msgstr ""
+
+msgid "Read more..."
+msgstr ""
+
+msgid "Page break"
+msgstr ""
+
+msgid "Ctrl + Alt + letter:"
+msgstr ""
+
+msgid "Shift + Alt + letter:"
+msgstr ""
+
+msgid "Cmd + letter:"
+msgstr ""
+
+msgid "Ctrl + letter:"
+msgstr ""
+
+msgid "Letter"
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Default shortcuts,"
+msgstr ""
+
+msgid "Additional shortcuts,"
+msgstr ""
+
+msgid ""
+"When starting a new paragraph with one of these formatting shortcuts "
+"followed by a space, the formatting will be applied automatically. Press "
+"Backspace or Escape to undo."
+msgstr ""
+
+msgid ""
+"The following formatting shortcuts are replaced when pressing Enter. Press "
+"Escape or the Undo button to undo."
+msgstr ""
+
+msgid "Focus shortcuts:"
+msgstr ""
+
+msgid ""
+"To move focus to other buttons use Tab or the arrow keys. To return focus to "
+"the editor press Escape or use one of the buttons."
+msgstr ""
+
+msgid "Rich Text Area. Press Control-Option-H for help."
+msgstr ""
+
+msgid "CredGLV Instructor"
+msgstr ""
+
+msgid "CredGLV Student"
+msgstr ""
+
+msgid "Search page"
+msgstr ""
+
+msgid "Cart page"
+msgstr ""
+
+msgid "Checkout page"
+msgstr ""
+
+msgid "Course dashboard page"
+msgstr ""
+
+msgid "Can not find view of extension : "
+msgstr ""
+
+msgid "No config name for class : "
+msgstr ""
+
+msgid ""
+"You are using a copy of %s plugin. Please enable your license to access full "
+"features of upgrade and support"
+msgstr ""
+
+msgid "New version of %s is available."
+msgstr ""
+
+msgid "No billing address found"
+msgstr ""
+
+msgid "When student enrolled to a free course"
+msgstr ""
+
+msgid "Student name"
+msgstr ""
+
+msgid "Student first name"
+msgstr ""
+
+msgid "Student profile URL"
+msgstr ""
+
+msgid "Name of course"
+msgstr ""
+
+msgid "URL of course"
+msgstr ""
+
+msgid "When student paid and enrolled to course"
+msgstr ""
+
+msgid "List of course items"
+msgstr ""
+
+msgid "Total amount of order"
+msgstr ""
+
+msgid "Subtotal of order"
+msgstr ""
+
+msgid "Tax of order"
+msgstr ""
+
+msgid "Tax class of order"
+msgstr ""
+
+msgid "When member's course was published"
+msgstr ""
+
+msgid "Instructor name"
+msgstr ""
+
+msgid "Course link"
+msgstr ""
+
+msgid "Cred GLV plugin currently upgraded successfully to new version : "
+msgstr ""
+
+msgid ""
+"Can not resolve shortcode dependencies. Please make sure that you required "
+"registered shortcode. Rependencies : "
+msgstr ""
+
+msgid "Can not create shortcode from config"
+msgstr ""
+
+msgid "Can not create your order"
+msgstr ""
+
+msgid "User must logged in first"
+msgstr ""
+
+msgid "Extension"
+msgstr ""
+
+msgid "Cred GLV extensions"
+msgstr ""
+
+msgid "No extension found!"
+msgstr ""
+
+msgid "You changed have been saved"
+msgstr ""
+
+msgid ""
+"Paypal is an electronic commerce (e-commerce) company that facilitates "
+"payments between parties through online funds transfers."
+msgstr ""
+
+msgid "Setting Paypal Account"
+msgstr ""
+
+msgid "Account email"
+msgstr ""
+
+msgid "Account password"
+msgstr ""
+
+msgid "Account signature"
+msgstr ""
+
+msgid "Sandbox enabled?"
+msgstr ""
+
+msgid "Please wait...Payment request is being processing."
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "Your email"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Attach error logs"
+msgstr ""
+
+msgid "Send ticket"
+msgstr ""
+
+msgid ""
+"Set your home page completed successfully. Please reload your page to see "
+"the change."
+msgstr ""
+
+msgid "Cred Instructor Page"
+msgstr ""
+
+msgid "Not found order"
+msgstr ""
+
+msgid "Cred Learning Page"
+msgstr ""
+
+msgid "You must logout"
+msgstr ""
+
+msgid "Cred GLV - Login"
+msgstr ""
+
+msgid "Cred GLV - Register"
+msgstr ""
+
+msgid "Invalid order. Please try again"
+msgstr ""
+
+msgid "Successfully enrolled courses"
+msgstr ""
+
+msgid "Invalid order"
+msgstr ""
+
+msgid "Please login first"
+msgstr ""
+
+msgid "Invalid request"
+msgstr ""
+
+msgid "Success to register the course"
+msgstr ""
+
+msgid "Can not enroll to this course at this time. Please try again later"
+msgstr ""
+
+msgid "Cancel order"
+msgstr ""
+
+msgid "Thank you!"
+msgstr ""
+
+msgid "Enroll the course!"
+msgstr ""
+
+msgid "Cred GLV - Checkout page"
+msgstr ""
+
+msgid "Newest - Oldest"
+msgstr ""
+
+msgid "Oldest - Newest"
+msgstr ""
+
+msgid "Most Reviewed"
+msgstr ""
+
+msgid "Rate: Hight - Low"
+msgstr ""
+
+msgid "Rate: Low - Hight"
+msgstr ""
+
+msgid "Price: Hight - Low"
+msgstr ""
+
+msgid "Price: Low - Hight"
+msgstr ""
+
+msgid "Title: A - Z"
+msgstr ""
+
+msgid "Title: Z - A"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Topic"
+msgstr ""
+
+msgid "Level"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Search result"
+msgstr ""
+
+msgid "Allowed student only!"
+msgstr ""
+
+msgid "Cred GLV - User Profile"
+msgstr ""
+
+msgid "Cred GLV - Edit Profile"
+msgstr ""
+
+msgid "ENROLL THIS COURSE"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "FAQs"
+msgstr ""
+
+msgid "Rating"
+msgstr ""
+
+msgid "Review"
+msgstr ""
+
+msgid "What will I learn?"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Section "
+msgstr ""
+
+msgid "Lecture "
+msgstr ""
+
+msgid "Course content"
+msgstr ""
+
+msgid "Q&amp;A"
+msgstr ""
+
+msgid "Bookmarks"
+msgstr ""
+
+msgid "Announcement"
+msgstr ""
+
+msgid "About This Course"
+msgstr ""
+
+msgid "Number"
+msgstr ""
+
+msgid "Skills:"
+msgstr ""
+
+msgid "Languages:"
+msgstr ""
+
+msgid "Reviews:"
+msgstr ""
+
+msgid "Videos:"
+msgstr ""
+
+msgid "Students:"
+msgstr ""
+
+msgid "Would you like to set this page as your homepage? Click : "
+msgstr ""
+
+msgid "No content for homepage found"
+msgstr ""
+
+msgid "Search course"
+msgstr ""
+
+msgid "You're viewing review for : "
+msgstr ""
+
+msgid "Other Courses : "
+msgstr ""
+
+msgid "No review yet"
+msgstr ""
+
+msgid "No audio file found"
+msgstr ""
+
+msgid "Congratulation!!!"
+msgstr ""
+
+msgid "You have just completed the course. Good job!"
+msgstr ""
+
+msgid "Avatar of"
+msgstr ""
+
+msgid "Log out"
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Register"
+msgstr ""
+
+msgid "Canceled Order"
+msgstr ""
+
+msgid ""
+"Your order has been processed successfully. Redirecting you to your "
+"dashboard..."
+msgstr ""
+
+msgid "Can not process your payment. Please try again or contact to us."
+msgstr ""
+
+msgid "No cart item found"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Profile Info"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Basic Information"
+msgstr ""
+
+msgid "Introduce about yourself"
+msgstr ""
+
+msgid "Change your password"
+msgstr ""
+
+msgid "Old password"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "Confirm new password"
+msgstr ""
+
+msgid "This page allowed student access only!"
+msgstr ""
+
+msgid "Invalid render callback for form custom field"
+msgstr ""
+
+msgid "Chapter title"
+msgstr ""
+
+msgid "What will students be able to do at the end of this Chapter?*"
+msgstr ""
+
+msgid "Add New Chapter"
+msgstr ""
+
+msgid "New Chapter"
+msgstr ""
+
+msgid "Edit Chapter"
+msgstr ""
+
+msgid "View Chapter"
+msgstr ""
+
+msgid "Chapters"
+msgstr ""
+
+msgid "Search Chapter"
+msgstr ""
+
+msgid "Parent Chapter:"
+msgstr ""
+
+msgid "No Chapter found."
+msgstr ""
+
+msgid "No Chapter found in Trash."
+msgstr ""
+
+msgid "Description."
+msgstr ""
+
+msgid "Is Feature?"
+msgstr ""
+
+msgid "Feature?"
+msgstr ""
+
+msgid "Choose if this category is feature category."
+msgstr ""
+
+msgid "Icon"
+msgstr ""
+
+msgid "Icon Class"
+msgstr ""
+
+msgid "Enter icon class for this category. Ex: 'fa fa-user'"
+msgstr ""
+
+msgid "Attach Image"
+msgstr ""
+
+msgid "Search Course Category"
+msgstr ""
+
+msgid "All Categories"
+msgstr ""
+
+msgid "Parent Category"
+msgstr ""
+
+msgid "Parent Category :"
+msgstr ""
+
+msgid "Edit Category"
+msgstr ""
+
+msgid "Update Category"
+msgstr ""
+
+msgid "Add New Category"
+msgstr ""
+
+msgid "New Category Name"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Search Course Language"
+msgstr ""
+
+msgid "All Languages"
+msgstr ""
+
+msgid "Parent Language"
+msgstr ""
+
+msgid "Parent Language :"
+msgstr ""
+
+msgid "Edit Language"
+msgstr ""
+
+msgid "Update Language"
+msgstr ""
+
+msgid "Add New Language"
+msgstr ""
+
+msgid "New Language Name"
+msgstr ""
+
+msgid "Languages"
+msgstr ""
+
+msgid "Search Course Level"
+msgstr ""
+
+msgid "All Levels"
+msgstr ""
+
+msgid "Parent Level"
+msgstr ""
+
+msgid "Parent Level :"
+msgstr ""
+
+msgid "Edit Level"
+msgstr ""
+
+msgid "Update Level"
+msgstr ""
+
+msgid "Add New Level"
+msgstr ""
+
+msgid "New Level Name"
+msgstr ""
+
+msgid "Levels"
+msgstr ""
+
+msgid "The course is accepted for publication"
+msgstr ""
+
+msgid "Subtitle"
+msgstr ""
+
+msgid "Course description"
+msgstr ""
+
+msgid "Example: 4-6 weeks"
+msgstr ""
+
+msgid "Example: 6-10 hours per week"
+msgstr ""
+
+msgid "Prerequisites"
+msgstr ""
+
+msgid "Example: You should be able to use a PC at a beginner level"
+msgstr ""
+
+msgid "Target Audience"
+msgstr ""
+
+msgid " Example: Anyone who wants to learn to code"
+msgstr ""
+
+msgid "Achievement"
+msgstr ""
+
+msgid "Example: Build websites and webapps"
+msgstr ""
+
+msgid "Promotional Video"
+msgstr ""
+
+msgid "Add New Course"
+msgstr ""
+
+msgid "New Course"
+msgstr ""
+
+msgid "Edit Course"
+msgstr ""
+
+msgid "View Course"
+msgstr ""
+
+msgid "Search Course"
+msgstr ""
+
+msgid "Parent Course:"
+msgstr ""
+
+msgid "No Course found."
+msgstr ""
+
+msgid "No Course found in Trash."
+msgstr ""
+
+msgid "Search Tag"
+msgstr ""
+
+msgid "All Tags"
+msgstr ""
+
+msgid "Parent Tag"
+msgstr ""
+
+msgid "Parent Tag :"
+msgstr ""
+
+msgid "Edit Tag"
+msgstr ""
+
+msgid "Update Tag"
+msgstr ""
+
+msgid "Add New Tag"
+msgstr ""
+
+msgid "New Tag Name"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Invalid user"
+msgstr ""
+
+msgid "Invalid course"
+msgstr ""
+
+msgid "Lesson type"
+msgstr ""
+
+msgid "Lesson content"
+msgstr ""
+
+msgid "Lesson video"
+msgstr ""
+
+msgid "Lesson audio"
+msgstr ""
+
+msgid "Downloadable resource"
+msgstr ""
+
+msgid "External resource"
+msgstr ""
+
+msgid "Source code"
+msgstr ""
+
+msgid "Add New Lesson"
+msgstr ""
+
+msgid "New Lesson"
+msgstr ""
+
+msgid "Edit Lesson"
+msgstr ""
+
+msgid "View Lesson"
+msgstr ""
+
+msgid "Lessons"
+msgstr ""
+
+msgid "Search Lesson"
+msgstr ""
+
+msgid "Parent Lesson:"
+msgstr ""
+
+msgid "No Lesson found."
+msgstr ""
+
+msgid "No Lesson found in Trash."
+msgstr ""
+
+msgid "New order"
+msgstr ""
+
+msgid "Pending order"
+msgstr ""
+
+msgid "Processing order"
+msgstr ""
+
+msgid "Holding order"
+msgstr ""
+
+msgid "Completed order"
+msgstr ""
+
+msgid "Cancelled order"
+msgstr ""
+
+msgid "Failed order"
+msgstr ""
+
+msgid "Add New Order"
+msgstr ""
+
+msgid "New Order"
+msgstr ""
+
+msgid "Edit Order"
+msgstr ""
+
+msgid "View Order"
+msgstr ""
+
+msgid "Orders"
+msgstr ""
+
+msgid "Search Order"
+msgstr ""
+
+msgid "Parent Order:"
+msgstr ""
+
+msgid "No Order found."
+msgstr ""
+
+msgid "No Order found in Trash."
+msgstr ""
+
+msgid "Answers"
+msgstr ""
+
+msgid "Answers :"
+msgstr ""
+
+msgid "Related lesson"
+msgstr ""
+
+msgid "Add New Question"
+msgstr ""
+
+msgid "New Question"
+msgstr ""
+
+msgid "Edit Question"
+msgstr ""
+
+msgid "View Question"
+msgstr ""
+
+msgid "Questions"
+msgstr ""
+
+msgid "Search Question"
+msgstr ""
+
+msgid "Parent Question:"
+msgstr ""
+
+msgid "No Question found."
+msgstr ""
+
+msgid "No Question found in Trash."
+msgstr ""
+
+msgid "Quiz title"
+msgstr ""
+
+msgid "Deadline time"
+msgstr ""
+
+msgid "Estimate time"
+msgstr ""
+
+msgid "Attempt time"
+msgstr ""
+
+msgid "Quiz description"
+msgstr ""
+
+msgid "Add New Quiz"
+msgstr ""
+
+msgid "New Quiz"
+msgstr ""
+
+msgid "Edit Quiz"
+msgstr ""
+
+msgid "View Quiz"
+msgstr ""
+
+msgid "Quizs"
+msgstr ""
+
+msgid "Search Quiz"
+msgstr ""
+
+msgid "Parent Quiz:"
+msgstr ""
+
+msgid "No Quiz found."
+msgstr ""
+
+msgid "No Quiz found in Trash."
+msgstr ""
+
+msgid "Course enrolled, no effect for your action"
+msgstr ""
+
+msgid "Total:"
+msgstr ""
+
+msgid "Cart empty!"
+msgstr ""
+
+msgid "My cart"
+msgstr ""
+
+msgid "Course(s) in Cart"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "items"
+msgstr ""
+
+msgid "Go to cart"
+msgstr ""
+
+msgid "<span>Billing address</span>"
+msgstr ""
+
+msgid "Publish:"
+msgstr ""
+
+msgid "Skill: "
+msgstr ""
+
+msgid "Popular courses"
+msgstr ""
+
+msgid "items completed"
+msgstr ""
+
+msgid "Reset progress"
+msgstr ""
+
+msgid "of"
+msgstr ""
+
+msgid "Total %d item(s) found."
+msgstr ""
+
+msgid "Rate success"
+msgstr ""
+
+msgid "Please login your account to do this action."
+msgstr ""
+
+msgid "ratings"
+msgstr ""
+
+msgid "Search your course..."
+msgstr ""
