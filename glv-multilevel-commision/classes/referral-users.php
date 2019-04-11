@@ -354,6 +354,10 @@
             function referral_user_account_panel(){
                 if(is_user_logged_in()){
                     $check_user = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
+                    echo '<pre>';
+                    print_r($check_user);
+                    echo '</pre>';
+                    die;
                     if( $check_user ){ 
 						$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 						$current_user_id = get_current_user_id();
@@ -1441,8 +1445,6 @@
                 }
                 add_filter( 'woocommerce_checkout_fields' , array($this,'wmc_override_checkout_fields') );
                 add_action('woocommerce_checkout_process', array($this,'wmc_custom_checkout_field_process'));
-               // add_action('woocommerce_after_checkout_validation', array($this,'wmc_custom_checkout_field_process'),10,2);
-                //add_action('woocommerce_checkout_update_user_meta', array($this,'wmc_custom_checkout_save_data'), 10, 2);                
             }
 
         } // end Referal_Users
