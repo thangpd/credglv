@@ -1,0 +1,402 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: myCRED Partial Payment - WooCommerce\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-12 17:22+0000\n"
+"POT-Revision-Date: Tue May 10 2016 18:29:22 GMT+0200 (CEST)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;"
+"__:1;_e:1;_c:1;_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;"
+"_x:1,2c;_ex:1,2c;_nx:1,2,4c;_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;"
+"esc_attr__:1;esc_html__:1;esc_attr_e:1;esc_html_e:1;esc_attr_x:1,2c;"
+"esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;transChoice:1,2\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: mycred-partial-woo.php:363
+msgid "This myCRED Add-on requires WordPress 4.2 or higher. Version detected:"
+msgstr ""
+
+#: mycred-partial-woo.php:368
+msgid "This myCRED Add-on requires PHP 5.3 or higher. Version detected: "
+msgstr ""
+
+#: mycred-partial-woo.php:373
+msgid "This myCRED Add-on requires SQL 5.0 or higher. Version detected: "
+msgstr ""
+
+#: mycred-partial-woo.php:379
+msgid ""
+"Sorry but your WordPress installation does not reach the minimum "
+"requirements for running this add-on. The following errors were given:"
+msgstr ""
+
+#: mycred-partial-woo.php:441
+msgid "More information about this plugin"
+msgstr ""
+
+#: mycred-partial-woo.php:443
+msgid "View details"
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:61
+msgid "You are not allowed to use this feature."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:67
+msgid "Amount can not be zero."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:70
+msgid "Insufficient Funds."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:87
+msgid "Failed to complete transaction. Error 1. Please contact support."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:126
+msgid "Payment Successfully Applied."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:135
+msgid "Failed to complete transaction. Error 2. Please contact support."
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:188
+msgid "Partial Payment"
+msgstr ""
+
+#: includes/mycred-partial-woo-checkout.php:221
+msgid "Free shipping coupon"
+msgstr ""
+
+#: includes/mycred-partial-woo-functions.php:299
+msgid "Discount"
+msgstr ""
+
+#: includes/mycred-partial-woo-functions.php:308
+#, php-format
+msgid "Increments of %s"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:17
+msgid "Partial Payments"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:18
+msgid ""
+"Partial payments allows your users to pay for parts of the order using "
+"points. The remaining amount is paid using one of your active gateways."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:23
+msgid "Position"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:24
+msgid ""
+"This controls where the partial payment form is shown on the checkout page."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:29
+msgid "Disabled - I will insert the form myself using my theme template files."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:30
+msgid "Before Order Total"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:31
+msgid "After Order Total"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:37
+#: includes/mycred-partial-woo-settings.php:320
+msgid "Point Type"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:38
+msgid "Select the point type a user can pay with."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:48
+msgid "Exchange Rate"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:49
+msgid "How much is 1 point worth in your store currency?"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:52
+#: includes/mycred-partial-woo-settings.php:61
+#: includes/mycred-partial-woo-settings.php:70
+#: includes/mycred-partial-woo-settings.php:181
+#: includes/mycred-partial-woo-settings.php:198
+#: includes/mycred-partial-woo-settings.php:209
+#: includes/mycred-partial-woo-settings.php:217
+#: includes/mycred-partial-woo-settings.php:226
+#: includes/mycred-partial-woo-settings.php:273
+#: includes/mycred-partial-woo-settings.php:292
+msgid "Required"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:57
+msgid "Minimum"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:58
+msgid ""
+"The minimum amount of points a user must pay. Use zero to disable and allow "
+"users to checkout without any point payment."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:66
+msgid "Maximum"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:67
+msgid "The maximum percentage of the cart total a user can pay using points."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:75
+msgid "Multiple Payment"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:76
+msgid "Can users, if they can afford it, make multiple payments?"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:83
+#: includes/mycred-partial-woo-settings.php:97
+#: includes/mycred-partial-woo-settings.php:124
+#: includes/mycred-partial-woo-settings.php:137
+#: includes/mycred-partial-woo-settings.php:150
+#: includes/mycred-partial-woo-settings.php:314
+msgid "No"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:84
+#: includes/mycred-partial-woo-settings.php:98
+#: includes/mycred-partial-woo-settings.php:125
+#: includes/mycred-partial-woo-settings.php:138
+#: includes/mycred-partial-woo-settings.php:151
+#: includes/mycred-partial-woo-settings.php:315
+msgid "Yes"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:89
+msgid "Allow Undo"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:90
+msgid ""
+"Can users undo a partial payment? Undoing a partial payment will refund the "
+"amount the user paid."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:103
+msgid "Store Rewards"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:104
+msgid ""
+"If you are rewarding your users with points for store purchases, how do you "
+"want to handle partial point payments?"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:111
+msgid "I do not use store rewards"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:112
+msgid ""
+"Deduct the partial payment amount from the amount the user gets in reward"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:113
+msgid "Ignore partial payments and let rewards payout the appropriate amount"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:117
+msgid "Pay for: Tax"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:118
+msgid ""
+"Can points to be used to pay for taxes? This should be set to \"No\" if "
+"prices includes taxes."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:129
+msgid "Pay for: Shipping"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:130
+msgid ""
+"Can points be used to pay for shipping costs? Only applicable for orders "
+"that needs to be shipped. If you only sell virtual products, this should be "
+"set to \"No\"."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:142
+msgid "Pay for: Sale Items"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:143
+msgid "Can points be used to pay for items that are \"on sale\"?"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:156
+msgid "Selector Type"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:157
+msgid ""
+"This controls how a user indicates the amount they want to pay for the order."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:162
+msgid "Input Field - The amount needs to be typed in."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:163
+msgid "Slider - The amount changes based on the sliders position."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:169
+msgid "Step"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:170
+msgid ""
+"The point amount that each step increment when using the slider. Ignored "
+"with input fields."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:178
+msgid "Title"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:186
+#: includes/mycred-partial-woo-settings.php:278
+msgid "Description"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:189
+#: includes/mycred-partial-woo-settings.php:281
+#: includes/mycred-partial-woo-settings.php:301
+msgid "Optional"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:195
+msgid "Button Label"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:204
+msgid "Log Template"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:205
+msgid "The log template used for partial payments."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:213
+msgid "Refund Log Template"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:214
+msgid ""
+"The log template used for partial payment refunds. This is used when you "
+"manually remove a coupon in an order or if you allow users to undo their "
+"payment before placing the order."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:222
+msgid "Refund Message"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:223
+msgid "Optional message to show to user when a partial payment was refunded."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:254
+msgid "Points History"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:255
+msgid ""
+"Option to include your users points related history in the account page. "
+"When enabled or if you change the SLUG you will need to reset your "
+"permalinks."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:260
+msgid "Page SLUG"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:261
+msgid "The page slug / endpoint to use. Leave empty to disable."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:264
+msgid "Leave empty to disable"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:269
+msgid "Page Title"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:270
+msgid "The page title."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:288
+msgid "Number"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:289
+msgid "The number of log entries to show per page."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:297
+msgid "References"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:298
+msgid ""
+"Option to filter log entries to only show certain references. This can be "
+"either a single reference or a comma separated list of references. Leave "
+"empty to show everything. If you want to show partial payments / store "
+"payments or refunds, use \"store\"."
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:306
+msgid "Navigation"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:307
+msgid "Show navigation?"
+msgstr ""
+
+#: includes/mycred-partial-woo-settings.php:321
+msgid "Select the point type to show."
+msgstr ""
+
+#. Name of the plugin
+msgid "myCRED Partial Payment - WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+msgid "Allows partial payments of a WooCommerce orders using points."
+msgstr ""

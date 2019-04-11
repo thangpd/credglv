@@ -1,0 +1,25 @@
+Version 1.4
+------------------------------------------------------------
+FIX - slider max limit issue fixed
+
+Version 1.3
+------------------------------------------------------------
+FIX - slider appearing issue.
+FIX - Multiple refund on same coupon.
+FIX - Shipping fees added on front end if paid.
+
+Version 1.2
+------------------------------------------------------------
+Added support for myCRED 1.8 with backward compatibility.
+Tested upto WordPress 5.0.2
+
+Version 1.1
+------------------------------------------------------------
+FIX - Added support for WooCommerce 3.2
+TWEAK - Requires WooCommerce 3.0+
+TWEAK - Requires myCRED 1.7 or higher
+NEW - Added option to show points in My Account
+
+Version 1.0
+------------------------------------------------------------
+Initial release
