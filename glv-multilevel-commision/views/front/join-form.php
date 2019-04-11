@@ -21,8 +21,8 @@
         
         <p class="form-row form-row-wide">
             <input type="submit" class="button" name="add_new_referral_user" value="<?php echo __( 'Join', 'wmc' );?>">
-            <input type="text" id="_wpnonce" name="_wpnonce" value="<?php echo $data['nonce']?>">
-            <input type="text" name="action" value="join_referreal_program">
+            <input type="hidden" id="_wpnonce" name="_wpnonce" value="<?php echo $data['nonce']?>">
+            <input type="hidden" name="action" value="join_referreal_program">
         </p>
     </form>
 </div>
