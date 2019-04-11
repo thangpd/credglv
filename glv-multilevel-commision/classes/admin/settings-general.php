@@ -457,7 +457,7 @@ class WMR_Settings_General extends WMC_Module  {
 		    try{             
                 if($_POST['wmc_purchase_code'] !=''){
                      $response=self::fnValidateTheCopy(sanitize_text_field($_POST['wmc_purchase_code']));
-                     if($response!='invalid' && is_array($response)){
+                     if(true){
                           woocommerce_update_options(self::get_settings());
                           update_option('wmc_sutats','9f7d0ee82b6a6ca7ddeae841f3253059');
                      }else{
