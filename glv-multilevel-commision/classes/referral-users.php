@@ -354,10 +354,7 @@
             function referral_user_account_panel(){
                 if(is_user_logged_in()){
                     $check_user = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
-                    echo '<pre>';
-                    print_r($check_user);
-                    echo '</pre>';
-                    die;
+
                     if( $check_user ){ 
 						$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 						$current_user_id = get_current_user_id();
