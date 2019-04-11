@@ -24,7 +24,6 @@ if ( ! class_exists( 'WMR_Settings_General' ) ) :
 		public function __construct() {
 			$this->panel_id = 'wmr_general';
 			$this->register_hook_callbacks();
-			//delete_option('wmc_sutats');
 		}
 
 		public function register_hook_callbacks() {
@@ -45,21 +44,7 @@ if ( ! class_exists( 'WMR_Settings_General' ) ) :
 			add_action( 'create_product_cat', __CLASS__ . '::wmc_product_cat_fields_save', 10, 2 );
 			//add_action( 'woocommerce_product_write_panel_tabs', __CLASS__. '::wmc_add_custom_admin_product_tab' );
 
-			$c            = get_option( 'wmc_purchase_code', '' );
-			$last_checked = get_option( 'wmc_last_checked', strtotime( date( 'Y-m-d', strtotime( "-1 days" ) ) ) );
-			$current_time = strtotime( date( 'Y-m-d' ) );
-			$datediff     = floor( $current_time / ( 60 * 60 * 24 ) ) - floor( $last_checked / ( 60 * 60 * 24 ) );
-			if ( $c != '' && $datediff > 0 ) {
-				update_option( 'wmc_sutats', 'fedb2d84cafe20862cb4399751a8a7e3' );
-				/*
-				$response=self::fnValidateTheCopy($c);
-				if($response!='invalid' && is_array($response)){
-					update_option('wmc_sutats','9f7d0ee82b6a6ca7ddeae841f3253059');
-					update_option('wmc_last_checked',strtotime(date('Y-m-d')));
-				}else{
 
-				}*/
-			}
 
 		}
 
@@ -380,7 +365,6 @@ if ( ! class_exists( 'WMR_Settings_General' ) ) :
 						$response = self::fnValidateTheCopy( sanitize_text_field( $_POST['wmc_purchase_code'] ) );
 						if ( true ) {
 							woocommerce_update_options( self::get_settings() );
-							update_option( 'wmc_sutats', '9f7d0ee82b6a6ca7ddeae841f3253059' );
 						} else {
 							throw new Exception( __( base64_decode( 'SW52YWxpZCBQdXJjaGFzZSBjb2Rl' ), 'wmc' ) );
 						}

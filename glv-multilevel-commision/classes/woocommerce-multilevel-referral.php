@@ -173,7 +173,6 @@ if ( ! class_exists( 'WooCommerce_Multilevel_Referal' ) ) {
 			} else {
 				$this->single_activate( $network_wide );
 			}
-			update_option('wmc_sutats','9f7d0ee82b6a6ca7ddeae841f3253059');
             $joining_mail_template = get_option('joining_mail_template','');
             $joining_mail_subject = get_option('joining_mail_subject',__('Referral Program Team','wmc'));
             $joining_mail_heading = get_option('joining_mail_heading',__('Referral Program Team','wmc'));
