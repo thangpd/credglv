@@ -122,8 +122,6 @@ return [
 					'url'          => plugins_url( 'credglv/assets/libs/select2/css/select2.min.css' ),
 					'dependencies' => []
 				],
-
-
 			]
 
 		]

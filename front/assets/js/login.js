@@ -2,46 +2,8 @@ jQuery(function ($) {
     "use strict";
     var credglv = window.credglv || {};
 
-    // Dropdown list
-
-
-    credglv.select2login = function () {
-
-        // multiple select with AJAX search
-        $('.referrer-ajax-search').select2({
-            theme: "classic",
-            ajax: {
-                url: credglvConfig.ajaxurl, // AJAX URL is predefined in WordPress admin
-                dataType: 'json',
-                delay: 250, // delay in ms while typing when to perform a AJAX search
-                data: function (params) {
-                    return {
-                        q: params.term, // search query
-                        action: 'referrer_ajax_search' // AJAX action for admin-ajax.php
-                    };
-                },
-                processResults: function (data) {
-                    var options = [];
-                    if (data) {
-
-                        // data is the array of arrays, and each of them contains ID and the Label of the option
-                        $.each(data.results, function (index, text) { // do not forget that "index" is just auto incremented value
-                            options.push({id: text.id, text: text.text});
-                        });
-
-                    }
-                    return {
-                        results: options
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 3 // the minimum of symbols to input before perform a search
-        });
-    };
     credglv.validate_login_form = function () {
         var validation_holder = 0;
-        var password_general;
         $("form.form-login-cred #email").on('blur', function (e) {
 
             var email = $(this).val();
@@ -63,105 +25,113 @@ jQuery(function ($) {
         });
         $("form.form-login-cred #password").on('blur', function (e) {
             var password = $(this).val();
-            password_general = password;
-            var password_regex = /^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
             if (password === "") {
                 $("span.password").html("This field is required.").addClass('validate');
                 validation_holder++;
             } else {
-                /* if (!password_regex.test(password)) {
-                     // $("span.password").html("Password should contain at least (one digit, one lower case, one upper case, 8 from the mentioned characters)").addClass('validate');
-                     console.error("Password should contain at least one digit, one lower case, one upper case, 8 from the mentioned characters");
-
-                     validation_holder++;
-
-                 } */
                 validation_holder--;
-
                 $("span.password").html("");
             }
         });
-        $("form.form-login-cred #repassword").on('blur', function (e) {
-            var repassword = $(this).val();
-            if (repassword === "") {
-                $("span.repassword").html("This field is required.").addClass('validate');
-                validation_holder = 1;
-            } else {
-                if (repassword != password_general) {
-                    $("span.repassword").html("Password does not match!").addClass('validate');
-                    validation_holder = 1;
-                } else {
-                    validation_holder--;
-                    $("span.repassword").html("");
-                }
-            }
-        });
-        $('.form-login-cred button[type=submit]').on('click', function (e) {
+        $('#submit-button').on('click', function (e) {
+            var error = $('.error-msg-front');
             if (validation_holder === 1) {
                 e.preventDefault();
-                $("span.submit").html("Get Thing Right!").addClass('validate');
+                $(this).html("Get Thing Right!").addClass('validate');
             } else {
-
                 // can't form serilize cause captcha of google.
                 e.preventDefault();
-                var data_2;
-                var referrer = $('#referrer').val();
-                if (referrer) {
-                } else {
-                    referrer = '';
-                }
-                var form_data = {
-                        password: $('#password').val(),
-                        email: $('#email').val(),
-                        phone: $('#phone').val(),
-                        referrer: referrer
+                var data = {};
+                data.captcha = $('#login-form').serialize();
+
+                if (credglv.checksubmit_form()) {
+                    var password = $('#login-form #password');
+                    if (password.val()) {
+                        data.password = password.val();
                     }
-                ;
-                var data = {data: form_data,action:''};
-                console.log(data);
+                    var email = $('#login-form #email');
+                    if (email.val()) {
+                        data.email = email.val();
+                    }
 
-                /*$.ajax({
-                    type: 'POST',
-                    url: credglvConfig.ajaxurl,
-                    data: data,
-                    async:
-                        false,
-                    success:
-
-                        function (data) {
-                            if (data.nocaptcha === 'true') {
-                                data_2 = 1;
-                            } else if (data.spam === 'true') {
-                                data_2 = 1;
-                            } else {
-                                data_2 = 0;
-                            }
-
+                    var data_form = {
+                            data: data,
+                            action: 'credglv_login'
                         }
-                })
-                */
-                /*if (data_2 != 0) {
-                    e.preventDefault();
-                    if (data_2 == 1) {
-                        alert('Please check the captcha');
-                    } else {
-                        alert('Please Don’t spam');
-                    }
+                    ;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: credglvConfig.ajaxurl,
+                        data: data_form,
+                        async:
+                            false,
+                        success:
+
+                            function (res) {
+                                if (res.code === 200) {
+                                    error.text(res.message);
+                                    location.reload(true);
+                                } else if (res.code === 403) {
+                                    error.text(res.message);
+                                }
+
+                            }
+                    });
                 } else {
-                    $('#commentform').submit()
-                }*/
+                    error.text('One or more fields cannot be blank');
+                }
             }
         });
 
-    };
-    credglv.submit_form = function () {
+
+        //event phone change
+        var x = 1;
+        $('#register-form #main-phone').on('keyup', function (e) {
+            if (credglv.checksubmit_form()) {
+
+            } else {
+                $(this).val('');
+                return;
+            }
+            if (!x) {
+                return;
+            }
+            setInterval(function () {
+                $('#register-form .verify-block').removeClass('hide');
+            }, 2000);
+            console.log('no');
+            x--;
+        });
 
     };
+    credglv.checksubmit_form = function (data) {
+
+        var error = 0;
+        var password = $('#login-form #password');
+        if (password.val()) {
+        } else {
+            error = 1;
+        }
+        var email = $('#login-form #email');
+        if (email.val()) {
+
+        } else {
+            error = 1;
+        }
+
+        if (error) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     $(document).ready(function () {
 
-        credglv.select2login();
         credglv.validate_login_form();
-        credglv.submit_form();
-
     });
-});
+
+
+})
+;

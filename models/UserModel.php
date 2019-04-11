@@ -23,30 +23,10 @@ class UserModel extends BaseObject {
 	}
 
 
-	/**
-	 * Add user column referrer
-	 */
-	function column_register_referrer( $columns ) {
 
-		$columns['referrer_col'] = 'Referrer';
-
-		return $columns;
-	}
-
-	function column_display_referrer( $value, $column_name, $user_id ) {
-
-		$user_info = get_field( 'referrer', 'user_' . $user_id );
-
-		if ( $column_name == 'referrer_col' ) {
-			return $user_info['user_firstname'];
-		}
-
-		return $value;
-
-	}
 
 	/**
-	 * add_registered_for_referrer
+	 * add_registered_for_referrer  template hook
 	 */
 	public function add_registered_for_referrer( $user_id, $role, $old_roles ) {
 		/*TODO::if user in role*/
@@ -107,31 +87,6 @@ class UserModel extends BaseObject {
 		return $redirect_to;
 	}
 
-	/**
-	 * @param $redirect_to
-	 * @param $request
-	 * @param $user
-	 *
-	 * @return bool
-	 */
-	public static function gotoProfileStatic( $redirect_to, \WP_User $user ) {
-		if ( empty( $redirect_to ) || $redirect_to == '/' || get_admin_url() == $redirect_to || $redirect_to == site_url() ) {
-			/** @var \WP_User $user */
-			if ( isset( $user->roles ) && is_array( $user->roles ) ) {
-				if ( in_array( 'credglv_member', $user->roles ) ) {
-//					$member = new Instructor( $user );
-//
-//					return $member->getProfileUrl();
-				} else if ( in_array( 'credglv_student', $user->roles ) ) {
-//					$student = new Student( $user );
-//
-//					return $student->getProfileUrl();
-				}
-			}
-		}
-
-		return $redirect_to;
-	}
 
 	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
 
@@ -162,4 +117,8 @@ class UserModel extends BaseObject {
 
 		return true;
 	}
+
+
+
+
 }

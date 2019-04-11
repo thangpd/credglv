@@ -66,7 +66,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 	}
 
 	public function registerPage() {
-		return LoginController::getInstance()->checkLogin( 'register' );
+		return $this->render( 'register' );;
 	}
 
 	public function add_custom_js() {
@@ -75,9 +75,49 @@ class RegisterController extends FrontController implements FrontControllerInter
 	}
 
 
+	/**
+	 * Register new user
+	 * @return $res['status'] and $res['message']
+	 *
+	 */
 	public function register_new_user() {
-		echo 'register_new_user';
+
+		$this->responseJson( array(
+			'code'    => 200,
+			'message' => __( 'Register OK redirecting...', 'credglv' ),
+			'data'    => array( 'redirect' => home_url( "/" . credglv()->config->getUrlConfigs( 'credglv_login' ) ) )
+		) );
+		if ( isset( $_POST['data'] ) && ! empty( $_POST['data'] ) ) {
+			$data = $_POST['data'];
+			if ( ThirdpartyController::getInstance()->verify_otp( $data ) ) {
+//			if ( true ) {
+				$userdata = array(
+					'user_login' => $data['email'],
+					'user_email' => $data['email'],
+					'user_pass'  => $data['password'],// When creating a new user, `user_pass` is expected.
+					'role'       => RoleManager::CREDGLV_ROLE_DEFAULT
+				);
+
+				$user_id = wp_insert_user( $userdata );
+				update_user_meta( $user_id, 'phone', $data['phone'] );
+
+				$this->responseJson( array(
+					'code'    => 200,
+					'message' => __( 'Register OK redirecting...', 'credglv' ),
+					'data'    => array( 'redirect' => home_url( "/" . credglv()->config->getUrlConfigs( 'credglv_login' ) ) )
+				) );
+			} else {
+				$this->responseJson( array(
+					'code'    => 403,
+					'message' => 'ThirdpartyController::getInstance()->verify_otp cant handle all exception',
+					'data'    => array( 'redirect' => credglv()->config->getUrlConfigs( 'credglv_login' ) )
+				) );
+			}
+		}
+		$this->responseJson( array( 'code' => 403, 'message' => 'no data' ) );
+
 	}
+
 
 	/**
 	 * Register all actions that controller want to hook
@@ -90,7 +130,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			],
 			'ajax'    => [
 				'referrer_ajax_search' => [ self::getInstance(), 'referrer_ajax_search' ],
-				'register_new_user'    => [ self::getInstance(), 'register_new_user' ]
+				'register_new_user'    => [ self::getInstance(), 'register_new_user' ],
 			],
 			'pages'   => [
 				'front' => [
@@ -108,17 +148,17 @@ class RegisterController extends FrontController implements FrontControllerInter
 			'assets'  => [
 				'css' => [
 					[
-						'id'           => 'credglv-user-login',
+						'id'           => 'credglv-user-register',
 						'isInline'     => false,
-						'url'          => '/front/assets/css/login.css',
+						'url'          => '/front/assets/css/register.css',
 						'dependencies' => [ 'credglv-style', 'select2' ]
 					],
 				],
 				'js'  => [
 					[
-						'id'       => 'credglv-login-page-js',
+						'id'       => 'credglv-register-page-js',
 						'isInline' => false,
-						'url'      => '/front/assets/js/login.js',
+						'url'      => '/front/assets/js/register.js',
 					],
 					[
 						'id'       => 'credglv-main-js',

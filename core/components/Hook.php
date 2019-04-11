@@ -69,15 +69,11 @@ class Hook extends BaseObject implements ComponentInterface {
 		'login_url'                  => [
 			'\credglv\models\UserModel' => [ 'redirectLoginUrl', 10, 3 ],
 		],
-		'manage_users_columns'       => [
-			'\credglv\models\UserModel' => [ 'column_register_referrer', 10, 3 ],
-		],
-		'manage_users_custom_column' => [
-			'\credglv\models\UserModel' => [ 'column_display_referrer', 10, 3 ],
-		],
+
 		'set_user_role'              => [
 			'\credglv\models\UserModel' => [ 'add_registered_for_referrer', 10, 3 ],
 		],
+
 
 	];
 
