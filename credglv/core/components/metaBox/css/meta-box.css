@@ -1,0 +1,206 @@
+/**
+ * All Types Meta Box Class CSS
+ *
+ * CSS used for the custom metaboxes and other form items.
+ *
+ * Copyright 2011 Ohad Raz (admin@bainternet.info)
+ */
+
+/* =Common Rules for all fields.
+----------------------------------------------- */
+.form-table td.at-field{ border: 1px solid #DDD; padding: 10px 10px 20px; margin: 0px; font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; }
+.at-label { margin: 0 0 15px 0; padding: 5px 0 0 0; 
+						font: 20px/31px "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue", Helvetica, Arial, sans-serif; 
+						text-shadow: rgba(255, 255, 255, 1) 0 1px 0; width: auto; }
+.at-radio-label{ padding-right: 10px; }				
+.at-file-upload-label{ clear: both; margin: 5px 0px 5px 1px; }	
+
+
+
+/* =Form Fields
+----------------------------------------------- */
+.postbox .at-field input,
+.postbox .at-field textarea { padding: 5px; line-height: 18px; margin-bottom: 20px} 
+.postbox .at-field input.at-radio{}
+.postbox .at-field input.at-color{ border: 0px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; margin-right: 10px; min-width: 100px; }
+.at-field input:focus, 
+.at-field textarea:focus { background: #fffff8; }
+#wpcontent select.at-select { height: 30px !important; padding: 5px; display: block; min-width: 200px; }
+.at-field .desc-field { color: #AAA; font-style: italic; margin: 5px 0 0 3px !important; font-size: 13px; }
+.at-field .wp_themeSkin table.mceLayout{ border: 1px solid #DFDFDF; }
+#post-body .at-field .wp_themeSkin .mceStatusbar a.mceResize{ top: -25px; } 
+
+/* =Uploaded Images
+----------------------------------------------- */
+.at-images li { margin: 5px 10px 0px 0; float: left; width: 150px; height: 150px; text-align: center; border: 3px solid #ccc; cursor: move; position: relative; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+.at-images img { width: 150px; height: 150px; }
+.at-images a { position: absolute; top: -12px; right: -12px; color: #fff;  font-weight: bold; padding: 5px; }
+.at-images .at-delete-file img{ width: 16px; height: 16px; }
+
+/* =Upload Button
+----------------------------------------------- */
+.at-upload-button { float: left; clear: both; margin-top: 10px; }
+.at-add-file { float: left; clear: both; margin-top: 10px; }
+ 
+/* =Time Picker
+----------------------------------------------- */
+.ui-timepicker-div { font-size: 0.9em; }
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; }
+.ui-timepicker-div dl dd { margin: -25px 0 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+
+/* =Repater Block
+----------------------------------------------- */
+/* inline */
+.at-inline label{font-size: 12px !important;}
+.at-inline textarea{height: 130px;width: 200px;}
+
+/* code Editor */
+.CodeMirror{
+	background-color: #fff;
+}
+
+/* ====== Custom course-bundle-wp ======= */
+
+/* Add this course */
+.postbox .credglv-bundle-item{
+	width: 100%;
+}
+.postbox .credglv-bundle-item tr th{
+	width: 25%;
+}
+.postbox .credglv-bundle-item tr th:first-child{
+	width: 50%;
+}
+.postbox .credglv-bundle-item tr th:nth-child(3){
+	text-align: left;
+}
+.postbox .la-form-group div{
+	margin-top: 25px;
+	padding-left: 70px;
+}
+.postbox .la-form-group div h3:nth-child(2){
+	display: inline-block;
+	padding-right: 5px;
+	margin-top: 10px;
+}
+.postbox .credglv-course-list{
+	padding-left: 70px;
+}
+.postbox .credglv-bundle-item tr td{
+	text-align: center;
+}
+.postbox .credglv-bundle-item tr td:nth-child(3){
+	text-align: left;
+	padding-left: 6px;
+}
+.postbox .inside .add-this-course{
+	height: 28px;
+	vertical-align: middle;
+}
+/**/
+
+/* Enable created by fields */
+
+.at-field .conditinal_container table{
+	width: 100%;
+}
+.conditinal_container tbody .at-field{
+	padding: 10px;
+}
+.conditinal_container tbody .at-field .at-label{
+	margin: 0;
+}
+.postbox .conditinal_container input{
+	width: 100%;
+}
+.conditinal_container tbody .simplePanelImagePreview img{
+	width: 20% !important;
+}
+.conditinal_container .simplePanelImagePreview img{
+	width: 100% !important;
+}
+.conditinal_container .button.simplePanelimageUploadclear{
+	width: 20%;
+}
+/**/
+
+/* FAQ block */
+
+.at-field{
+	position: relative;
+}
+.at-field .repeater-sortable #add-credglv_faq_repeator{
+	position: absolute;
+    bottom: 22px;
+    left: 50%;
+    margin-left: -12px;
+    transform: translateX(-50%);
+}
+.at-field .at-repater-block{
+	padding: 10px;
+	min-height: 30px;
+	margin: 10px auto;
+}
+.at-field .at-repater-block .re-control{
+	margin-top: -22px;
+}
+.at-repater-block .repeater-table{
+	width: 100%;
+}
+.at-repater-block .repeater-table .at-inline .at-field:nth-child(){
+	width: 30%;
+}
+.at-repater-block .repeater-table .at-field .at-text{
+	width: 100%;
+	height: 50px;
+}
+.at-repater-block .repeater-table .at-inline .at-field .at-textarea{
+	width: 100%;
+	height: 100px;
+}
+
+/* Course bundle*/
+.meta-box-sortables .postbox{
+	background: #f3f3f3;
+}
+/* Fix Course-single-wp*/
+#credglv_course_sentence_repeator{
+	position: relative;
+}
+#credglv_course_sentence_repeator #add-credglv_course_sentence_repeator{
+	position: absolute;
+	bottom: -5px;
+	left: 50%;
+	margin-left: -12px;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr{
+	margin: 10px 0;
+	background: #ededed;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(3) td{
+	padding: 0 10px;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(2) td{
+	padding: 0 10px;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table .form-table .at-field{
+	background: #ededed;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(8) #credglv_course_content_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(9) #credglv_course_person_support_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(10) #credglv_course_additional_feature_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(12) #credglv_course_faq_repeator{
+	position: relative;
+}
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(8) #credglv_course_content_list_meta_repeator #add-credglv_course_content_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(9) #credglv_course_person_support_list_meta_repeator #add-credglv_course_person_support_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(10) #credglv_course_additional_feature_list_meta_repeator #add-credglv_course_additional_feature_list_meta_repeator,
+.postbox-container #normal-sortables #credglv_course_meta_box .inside .form-table tr:nth-child(12) #credglv_course_faq_repeator #add-credglv_course_faq_repeator{
+	position: absolute;
+	left: 50%;
+	margin-left: -12px;
+}
+/*=======================*/
