@@ -519,7 +519,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                 <div class="wmc-banners">';
 
 			$wmc_html .= '
-                <div class="wmcShareWrapper" data-url="test">
+                <div class="wmcShareWrapper" data-url="'.home_url().'">
                 <span id="share42">
                 <a rel="nofollow" class="wmc-button-fb"  href="#" data-count="fb"  title="' . __( 'Share on Facebook', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-gplus"  href="#" data-count="gplus"  title="' . __( 'Share on Google+', 'wmc' ) . '" target="_blank"></a>

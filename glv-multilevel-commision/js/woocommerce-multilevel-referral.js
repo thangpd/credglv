@@ -81,8 +81,10 @@ jQuery(document).ready(function(){
         var image=jQuery('#wmc-social-media .wmc-banner-preview img').attr("src");
         var attachId=optionSelected.data('attachid');
         var title=optionSelected.data('title');
-        var desc=optionSelected.data('desc');           
-        var url=optionSelected.data('url');
+        var desc=optionSelected.data('desc');
+        var wmcShareWrapper = jQuery('#wmc-social-media .wmcShareWrapper');
+        var url = wmcShareWrapper.data('url');
+        console.log(url);
         cTitle=cTitle==''?title:cTitle;
         cDesc=cDesc==''?desc:cDesc;
         var shareURL=newWindow='';
