@@ -514,12 +514,17 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			if ( $current_user_id ) {
 				$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
 			}
+			if ( get_option( 'woocommerce_myaccount_page_id' ,false) ) {
+				$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '?ru=' . $code;
+			} else {
+				$link_share = home_url() . '?ru=' . $code;
+			}
 			$wmc_html = '<div id="wmc-social-media">
                 <h2>' . __( 'Share on Social Media', 'wmc' ) . '</h2>
                 <div class="wmc-banners">';
 
 			$wmc_html .= '
-                <div class="wmcShareWrapper" data-url="'.home_url().'">
+                <div class="wmcShareWrapper" data-url="' . $link_share . '">
                 <span id="share42">
                 <a rel="nofollow" class="wmc-button-fb"  href="#" data-count="fb"  title="' . __( 'Share on Facebook', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-gplus"  href="#" data-count="gplus"  title="' . __( 'Share on Google+', 'wmc' ) . '" target="_blank"></a>
