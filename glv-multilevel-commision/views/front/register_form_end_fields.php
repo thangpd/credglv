@@ -16,9 +16,9 @@
             <label for="referral_code"><?php echo __( 'Referral Code', 'wmc' );?> </label>
             <input type="text" <?php echo $readonly;?> placeholder="<?php echo __( 'Add referral code if you have', 'wmc' );?>"  class="input-text" name="referral_code" id="referral_code" value="<?php echo isset($data['referral_code'])?$data['referral_code']:''; ?>" />           
         </p>
-        <p class="referral_terms_conditions form-row form-row-wide">
-        <small><i><?php echo __('By registering here, you agree to the terms, conditions, refunds policy, and privacy statement','wmc');?></i></small>
-        </p>
+        <!--<p class="referral_terms_conditions form-row form-row-wide">
+        <small><i><?php /*echo __('By registering here, you agree to the terms, conditions, refunds policy, and privacy statement','wmc');*/?></i></small>
+        </p>-->
 <?php       
     }else{
 ?>
