@@ -495,8 +495,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			return;
 		}
 
-
-		function wmcShowBanners() {
+		public function get_url_share_link() {
 			$code            = '';
 			$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
 
@@ -508,7 +507,13 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			} else {
 				$link_share = home_url() . '?ru=' . $code;
 			}
-			$wmc_html = '<div id="wmc-social-media">
+
+			return $link_share;
+		}
+
+		function wmcShowBanners() {
+			$link_share = $this->get_url_share_link();
+			$wmc_html   = '<div id="wmc-social-media">
                 <h2>' . __( 'Share on Social Media', 'wmc' ) . '</h2>
                 <div class="wmc-banners">';
 
@@ -524,13 +529,13 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                 </span>
                 </div>';
 
-			return $wmc_html .= '</div>';
+			return $wmc_html .= '</div></div>';
 
 		}
 
 		function wmcShowQRcode() {
-			$wmc_html = '<div id="wmc-social-media">
-                <h2>' . __( 'Share on Social Media', 'wmc' ) . '</h2>
+			$wmc_html = '<div id="wmc-qr-code">
+                <h2>' . __( 'Your share link QR code', 'wmc' ) . '</h2>
                 <div class="wmc-banners">';
 
 			$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
