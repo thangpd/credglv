@@ -28,7 +28,10 @@ define( 'CREDGLV_PATH_PLUGIN', plugins_url() . DIRECTORY_SEPARATOR . NAME_PLUGIN
 defined( 'CREDGLV_PATH' ) or define( 'CREDGLV_PATH', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . NAME_PLUGIN );
 defined( 'PUBLIC_PATH' ) or define( 'PUBLIC_PATH', dirname( CREDGLV_PATH ) . DIRECTORY_SEPARATOR . 'public' );
 defined( 'CREDGLV_DEBUG' ) or define( 'CREDGLV_DEBUG', defined( 'WP_DEBUG' ) ? WP_DEBUG : true );
-defined( 'CREDGLV_WR_DIR' ) or define( 'CREDGLV_WR_DIR', ABSPATH . DIRECTORY_SEPARATOR . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' );
+defined( 'CREDGLV_WR_DIR' ) or define( 'CREDGLV_WR_DIR', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' );
+defined( 'CREDGLV_QR_CODE' ) or define( 'CREDGLV_QR_CODE', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' . DIRECTORY_SEPARATOR . 'qrcode' );
+$glv_upload_path = wp_upload_dir();
+defined( 'CREDGLV_QR_CODE_URI' ) or define( 'CREDGLV_QR_CODE_URI', $glv_upload_path ['baseurl'] . '/credglv/qrcode/' );
 define( 'CREDGLV_PATH_TEMPLATE', ABSPATH . '/wp-content/plugins/' . NAME_PLUGIN . '/admin/templates/' );
 
 return [

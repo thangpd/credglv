@@ -487,34 +487,23 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 				}
 				$wmc_html .= '</div>';
 				$bannars  = $this->wmcShowBanners();
+				$qr_code  = $this->wmcShowQRcode();
 
-				return $wmc_html . $bannars;
+				return $wmc_html . $bannars . $qr_code;
 			}
 
 			return;
 		}
 
-		function wmcGetTinyUrl( $url ) {
-			$ch      = curl_init();
-			$timeout = 5;
-			curl_setopt( $ch, CURLOPT_URL, 'http://tinyurl.com/api-create.php?url=' . $url );
-			curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-			curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, $timeout );
-			$data = curl_exec( $ch );
-			curl_close( $ch );
-
-			return $data;
-		}
 
 		function wmcShowBanners() {
-			$referralCode    = __( 'Referral Code : ', 'wmc' );
 			$code            = '';
 			$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
 
 			if ( $current_user_id ) {
 				$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
 			}
-			if ( get_option( 'woocommerce_myaccount_page_id' ,false) ) {
+			if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
 				$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '?ru=' . $code;
 			} else {
 				$link_share = home_url() . '?ru=' . $code;
@@ -534,6 +523,17 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                 <a rel="nofollow" class="wmc-button-whatsup" href="#" data-account="' . get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '" data-ru="' . $code . '" data-share="' . md5( 'whatsup' ) . '" data-count="whatsup" title="' . __( 'Share on What\'s up', 'wmc' ) . '"></a>
                 </span>
                 </div>';
+
+			return $wmc_html .= '</div>';
+
+		}
+
+		function wmcShowQRcode() {
+			$wmc_html = '<div id="wmc-social-media">
+                <h2>' . __( 'Share on Social Media', 'wmc' ) . '</h2>
+                <div class="wmc-banners">';
+
+			$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
 
 			return $wmc_html .= '</div>';
 
@@ -582,35 +582,6 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			}
 		}
 
-		/*function fnModifyPostThumbnail($html, $post_id, $post_thumbnail_id, $size, $attr){
-            if ( has_post_thumbnail() && is_user_logged_in()) {
-            $src = wp_get_attachment_image_src($post_thumbnail_id, $size);
-            $bannerPath=get_attached_file($post_thumbnail_id);
-            $postType=get_post_type();
-            $arrBanners=get_option('wmc-pre-banners');
-            if($postType=='wmc-banner'){
-            if(in_array($post_id,$arrBanners)){
-            $current_user_id=get_current_user_id();
-            $referralCode=__('Referral Code : ', 'wmc');
-            if( $current_user_id ){
-            $referralCode .= $this->referral_user( 'referral_code', 'user_id', $current_user_id );
-            }
-            $this->writeTextonImage($referralCode,$bannerPath,$current_user_id);
-            $imageURL= WMC_URL.'images/userbanners/banner-'.$current_user_id.'.jpg';
-            $doc = new DOMDocument();
-            $doc->loadHTML($html);
-            $tags = $doc->getElementsByTagName('img');
-            foreach ($tags as $tag) {
-            $old_src = $tag->getAttribute('src');
-            $tag->setAttribute('src', $imageURL);
-            $tag->setAttribute('srcset', $imageURL);
-            }
-            $html=$doc->saveHTML();
-            }
-            }
-            }
-            return $html;
-            }*/
 		function fnModifyPostThumbnail( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
 			if ( has_post_thumbnail() && is_user_logged_in() ) {
 				$postType        = get_post_type();

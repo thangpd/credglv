@@ -13,4 +13,5 @@ return array(
     'PayPal\\EBLBaseComponents' => array($vendorDir . '/paypal/merchant-sdk-php/lib'),
     'PayPal\\CoreComponentTypes' => array($vendorDir . '/paypal/merchant-sdk-php/lib'),
     'PayPal' => array($vendorDir . '/paypal/sdk-core-php/lib'),
+    'BaconQrCode' => array($vendorDir . '/bacon/bacon-qr-code/src'),
 );

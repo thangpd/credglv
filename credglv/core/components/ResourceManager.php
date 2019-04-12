@@ -11,6 +11,7 @@ namespace credglv\core\components;
 
 use credglv\core\BaseObject;
 use credglv\core\interfaces\ComponentInterface;
+use credglv\core\interfaces\MigrableInterface;
 use credglv\core\interfaces\ResourceInterface;
 use credglv\core\interfaces\ResourceManagerInterface;
 use credglv\core\interfaces\ScriptInterface;
@@ -21,7 +22,8 @@ use MatthiasMullie\Minify\CSS;
 use MatthiasMullie\Minify\JS;
 
 
-class ResourceManager extends BaseObject implements ComponentInterface, ResourceManagerInterface {
+class ResourceManager extends BaseObject implements ComponentInterface, ResourceManagerInterface, MigrableInterface {
+
 	/**
 	 * @var ResourceInterface[]
 	 */
@@ -84,6 +86,7 @@ class ResourceManager extends BaseObject implements ComponentInterface, Resource
 
 		}
 	}
+
 
 	/**
 	 * Print footer script
@@ -405,5 +408,43 @@ EOF;
 		}
 
 
+	}
+
+
+	/**
+	 * Run this function when plugin was activated
+	 * We need create something like data table, data roles, caps etc..
+	 * @return mixed
+	 */
+	public function onActivate() {
+
+		try {
+			if ( ! is_dir( CREDGLV_QR_CODE ) ) {
+				@mkdir( CREDGLV_QR_CODE, 0777, true );
+			}
+
+		} catch ( \Exception $e ) {
+			credglv()->logger->error( $e->getMessage() );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Run this function when plugin was deactivated
+	 * We need clear all things when we leave.
+	 * Please be a polite man!
+	 * @return mixed
+	 */
+	public function onDeactivate() {
+
+	}
+
+	public function onUpgrade( $currentVersion ) {
+		// TODO: Implement onUpgrade() method.
+	}
+
+	public function onUninstall() {
+		// TODO: Implement onUninstall() method.
 	}
 }

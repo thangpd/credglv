@@ -84,7 +84,6 @@ jQuery(document).ready(function(){
         var desc=optionSelected.data('desc');
         var wmcShareWrapper = jQuery('#wmc-social-media .wmcShareWrapper');
         var url = wmcShareWrapper.data('url');
-        console.log(url);
         cTitle=cTitle==''?title:cTitle;
         cDesc=cDesc==''?desc:cDesc;
         var shareURL=newWindow='';
