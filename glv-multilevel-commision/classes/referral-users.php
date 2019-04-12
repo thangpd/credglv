@@ -469,7 +469,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                         </p>
                         <div id="dialog-invitation-form">
                         <h2>' . __( 'Invite your friends', 'wmc' ) . '</h2>       
-                        <span><small>' . __( 'You can earn more credits by inviting more people to join this referral program. You can add comma separated list of emails below ...', 'wmc' ) . '</small></span>
+                        <span>
                         <form method="post">
                         <table class="shop_table shop_table_responsive">
                         <tr>
@@ -507,71 +507,19 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 		}
 
 		function wmcShowBanners() {
-			$allBanners      = get_posts( array( 'post_type' => 'wmc-banner', 'numberposts' => - 1 ) );
-			$i               = 0;
-			$arrBanners      = get_option( 'wmc-pre-banners' );
-			$firstBanner     = array();
 			$referralCode    = __( 'Referral Code : ', 'wmc' );
 			$code            = '';
 			$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
 
 			if ( $current_user_id ) {
-				$code         = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
-				$referralCode .= $code;
+				$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
 			}
 			$wmc_html = '<div id="wmc-social-media">
                 <h2>' . __( 'Share on Social Media', 'wmc' ) . '</h2>
-                <h4>' . __( 'Select promotional banner from the following to share on social media', 'wmc' ) . '</h4>
-                <div class="wmc-banners">
-                <div class="wmc-banner-list">
-                 <label>' . __( 'Select Banner', 'wsm' ) . ' </label>
-                <select data-loader="' . WMC_URL . 'images/loadingAnimation.gif">';
+                <div class="wmc-banners">';
 
-			foreach ( $allBanners as $banner ) {
-				$checked              = '';
-				$presetBanner         = 'no';
-				$banner_thumbnail_id  = get_post_thumbnail_id( $banner->ID );
-				$banner_thumbnail_url = wp_get_attachment_url( $banner_thumbnail_id );
-				$bannerPath           = get_attached_file( $banner_thumbnail_id );
-
-				{
-					$sharemeURL = site_url() . '/wmcbanner/' . $code . '-' . $current_user_id . '-' . $banner->ID . '-' . $banner_thumbnail_id . '?facebook_refresh';
-				}
-				if ( $i < 1 ) {
-					$firstBanner['attachId'] = $banner_thumbnail_id;
-					$firstBanner['thumbUrl'] = $banner_thumbnail_url;
-					$firstBanner['path']     = $bannerPath;
-					$checked                 = 'checked="checked"';
-					$firstBanner['title']    = $banner->post_title;
-					$firstBanner['desc']     = $banner->post_excerpt;
-					$firstBanner['url']      = $sharemeURL;
-					//$firstBanner['url']=add_query_arg( array('ru' => $code),$firstBanner['url'] );
-					$firstBanner['id'] = $banner->ID;
-				}
-				if ( in_array( $banner->ID, $arrBanners ) ) {
-					$presetBanner = 'yes';
-				}
-				$wmc_html .= '<option data-code="' . $code . '" data-url="' . $sharemeURL . '" data-preset="' . $presetBanner . '" data-attachid="' . $banner_thumbnail_id . '" value="' . $banner->ID . '" data-title="' . $banner->post_title . '" data-desc="' . $banner->post_excerpt . '" data-image="' . $banner_thumbnail_url . '">' . $banner->post_title . '</option>';
-				$i ++;
-			}
-
-			$wmc_html .= '</select></div>
-                <div class="wmc-banner-preview">';
-			$imageURL = $firstBanner['thumbUrl'];
-			if ( count( $firstBanner ) > 0 ) {
-				if ( in_array( $firstBanner['id'], $arrBanners ) ) {
-					$this->writeTextonImage( $referralCode, $firstBanner['path'], $current_user_id );
-					$imageURL = WMC_URL . 'images/userbanners/banner-' . $current_user_id . '.jpg';
-					//$arrPlaceholders=array('REFERRAL_CODE'=>$code,'ATTACH_ID'=>$firstBanner['attachId'],'BANNER_TITLE'=>$firstBanner['title'],'BANNER_DESC'=>$firstBanner['desc'],'BANNER_IMAGE'=>$imageURL);
-					// $this->fnChangeShareContent($arrPlaceholders);
-				}
-				$wmc_html .= '<img  src="' . $imageURL . '" alt="Promotional Banner">';
-			}
-
-			$wmc_html .= '</div>';
-			$wmc_html .= '<div><p class="form-row form-row-wide"><label for="wmcBannerTitle" class="">' . __( 'Custom Banner Title', 'wmc' ) . '</label><input type="text" class="input-text " name="wmcBannerTitle" id="wmcBannerTitle" placeholder="' . __( 'Banner Title', 'wmc' ) . '" value=""></p><p class="form-row form-row-wide"><label for="wmcBannerDescription" class="">' . __( 'Custom Banner Description', 'wmc' ) . '</label><textarea class="input-text" name="wmcBannerDescription" id="wmcBannerDescription" placeholder="' . __( 'Banner Description', 'wmc' ) . '"></textarea></p></div>
-                </div>
-                <div class="wmcShareWrapper" data-url="' . $firstBanner['url'] . '" data-title="' . $firstBanner['title'] . '" data-image="' . $imageURL . '" data-description="' . $firstBanner['desc'] . '">
+			$wmc_html .= '
+                <div class="wmcShareWrapper" data-url="test">
                 <span id="share42">
                 <a rel="nofollow" class="wmc-button-fb"  href="#" data-count="fb"  title="' . __( 'Share on Facebook', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-gplus"  href="#" data-count="gplus"  title="' . __( 'Share on Google+', 'wmc' ) . '" target="_blank"></a>
@@ -883,6 +831,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			} else {
 				$response['type'] = 'failed';
 			}
+			$response['type'] = 'success';
 			echo json_encode( $response );
 			exit;
 		}
