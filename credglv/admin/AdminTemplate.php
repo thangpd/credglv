@@ -106,8 +106,8 @@ class AdminTemplate extends Template
             'setting' => array(
                 'page-title' => '',
                 'menu-title' => 'Cred GLV',
-                'capability' => RoleManager::CREDGLV_ROLE_ADMIN,
-                'slug' => 'credglv-setting-page',
+                'capability' => 'activate_plugins',
+                'slug' => 'admin.php?page=credglv-setting-page',
                 'icon' => '',
                 'position' => 5,
                 'callback' => '',

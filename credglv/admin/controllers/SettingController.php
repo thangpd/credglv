@@ -430,8 +430,8 @@ class SettingController extends AdminController implements ControllerInterface
     {
         // TODO: Implement registerAction() method.
 
-        credglv()->hook->listenFilter(Hook::CREDGLV_HOOK_ADMIN_MENU, [self::getInstance(), 'registerAdminMenu']);
-        return [
+	    credglv()->hook->listenFilter(Hook::CREDGLV_HOOK_ADMIN_MENU, [self::getInstance(), 'registerAdminMenu']);
+	    return [
             'pages' => [
                 'admin' => [
                     'credglv-setting' => [

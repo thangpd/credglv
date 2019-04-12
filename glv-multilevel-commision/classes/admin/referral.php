@@ -32,7 +32,7 @@ if ( ! class_exists( 'WMR_Referal_Settings' ) ) :
 		}
 
 		public static function _add_referal_menu_callback() {
-			add_submenu_page( 'woocommerce', __( 'Referral', 'wmc' ), __( 'Referral', 'wmc' ), 'manage_woocommerce', 'wc_referral', __CLASS__ . '::referal_program' );
+			add_menu_page( 'woocommerce', __( 'Referral', 'wmc' ), 'activate_plugins', 'wc_referral', __CLASS__ . '::referal_program','',5 );
 		}
 
 		public static function referal_program() {
