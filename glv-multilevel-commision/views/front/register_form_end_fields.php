@@ -1,5 +1,5 @@
 <?php
-    $autoJoin=get_option('wmc_auto_register','no');
+    $autoJoin=get_option('wmc_auto_register','yes');
     $readonly='';
     if(isset($data['referral_code'])&& $data['referral_code']!=''){
         if(isset($_POST['wrong_referral_code']) && $_POST['wrong_referral_code']=='yes'){

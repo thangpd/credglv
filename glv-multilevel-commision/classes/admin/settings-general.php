@@ -209,7 +209,7 @@ if ( ! class_exists( 'WMR_Settings_General' ) ) :
 					'desc_tip' => true,
 					'options'  => $arrPages
 				),
-				array(
+				/*array(
 					'title'    => __( 'Auto Join', 'wmc' ),
 					'desc'     => __( 'Select "Yes" if you want to register users automatically to referral program', 'wmc' ),
 					'id'       => 'wmc_auto_register',
@@ -221,7 +221,7 @@ if ( ! class_exists( 'WMR_Settings_General' ) ) :
 						'no'  => __( 'No', 'wmc' ),
 						'yes' => __( 'Yes', 'wmc' )
 					)
-				),
+				),*/
 				array(
 					'title'    => __( 'Category Credit Preference', 'wmc' ),
 					'desc'     => '<br>' . __( 'In case of multiple category selected for product, this setting will decide which credit percentage should be used. If "Highest" selected then highest percentage between all the categories will be considered, if "Lowest" selected lowest percentage will be considered', 'wmc' ),
