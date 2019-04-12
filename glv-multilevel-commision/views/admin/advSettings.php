@@ -90,7 +90,7 @@ if($isLevelBaseCredit){
                             }
                             $productPrice=3900;
                             ?>
-                                <input type="radio" id="wmc-product-base" name="wmc-earning-method" value="product" <?php echo $Pchecked;?>><?php echo __('Product Price.','wmc')?> 
+                                <input type="radio" id="wmc-product-base" name="wmc-earning-method" value="product" <?php echo $Pchecked;?>><?php echo __('Product Price.','wmc')?>
                                 <p class="description"><?php echo __('With this method, The Referral Plugin will make use of the direct product price to calculate commission for each level.','wmc').'<br>'. __('e.g. Suppose Product "A" is priced at ','wmc').wc_price($productPrice).__(' then, referrals of each level will receive commission/credits as summarised below:','wmc') .'</p><ul>';  
                                 echo '<li>'.__('Customer','wmc').' -  : '.$productPrice.' * '.$customerCredits.'% = '.wc_price(($productPrice*$customerCredits)/100).'</li>';
                                 for($i=0;$i<$maxLevels;$i++){
