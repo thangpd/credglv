@@ -298,22 +298,7 @@ public function prepare_items() {
 			} else {
 				$edit = "<strong>$user_object->user_login</strong><br />";
 			}
-			/*
-			if ( !is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'delete_user', $user_object->ID ) )
-				$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url( "users.php?action=delete&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Delete' ) . "</a>";
-			if ( is_multisite() && get_current_user_id() != $user_object->ID && current_user_can( 'remove_user', $user_object->ID ) )
-				$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . "</a>";
 
-			/**
-			 * Filter the action links displayed under each user in the Users list table.
-			 *
-			 * @since 2.8.0
-			 *
-			 * @param array   $actions     An array of action links to be displayed.
-			 *                             Default 'Edit', 'Delete' for single site, and
-			 *                             'Edit', 'Remove' for Multisite.
-			 * @param WP_User $user_object WP_User object for the currently-listed user.
-			 */
 			$actions = apply_filters( 'user_row_actions', $actions, $user_object );
 
 			// Set up the checkbox ( because the user is editable, otherwise it's empty )

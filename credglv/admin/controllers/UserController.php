@@ -120,12 +120,12 @@ class UserController extends AdminController implements AdminControllerInterface
 
 		return [
 			'actions' => [
-				'manage_users_columns'       => [ self::getInstance(), 'userColumns' ],
-				'manage_users_custom_column' => [ self::getInstance(), 'userColumnValue', 15, 3 ],
-				'personal_options_update'    => [ self::getInstance(), 'save_extra_user_profile_fields', 10, 1 ],
-				'edit_user_profile_update'   => [ self::getInstance(), 'save_extra_user_profile_fields', 10, 1 ],
-				'show_user_profile'          => [ self::getInstance(), 'custom_user_profile_fields', 10, 1 ],
-				'edit_user_profile'          => [ self::getInstance(), 'custom_user_profile_fields', 10, 1 ],
+//				'manage_users_columns'       => [ self::getInstance(), 'userColumns' ],
+//				'manage_users_custom_column' => [ self::getInstance(), 'userColumnValue', 15, 3 ],
+//				'personal_options_update'    => [ self::getInstance(), 'save_extra_user_profile_fields', 10, 1 ],
+//				'edit_user_profile_update'   => [ self::getInstance(), 'save_extra_user_profile_fields', 10, 1 ],
+//				'show_user_profile'          => [ self::getInstance(), 'custom_user_profile_fields', 10, 1 ],
+//				'edit_user_profile'          => [ self::getInstance(), 'custom_user_profile_fields', 10, 1 ],
 			]
 		];
 	}
