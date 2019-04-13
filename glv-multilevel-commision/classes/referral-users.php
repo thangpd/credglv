@@ -1248,7 +1248,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 
 				$last_name = sanitize_text_field( $_POST['billing_last_name'] );
 			}
-			$autoJoin = get_option( 'wmc_auto_register', 'nyes' );
+			$autoJoin = get_option( 'wmc_auto_register', 'yes' );
 			if ( isset( $_POST['referral_code'] ) && $_POST['referral_code'] != '' ) {
 				$parent_id = $this->referral_user( 'user_id', 'referral_code', sanitize_text_field( $_POST['referral_code'] ) );
 			} else if ( $autoJoin == 'yes' ) {
