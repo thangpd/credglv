@@ -525,7 +525,6 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                 <div class="wmcShareWrapper" data-url="' . $link_share . '">
                 <span id="share42">
                 <a rel="nofollow" class="wmc-button-fb"  href="#" data-count="fb"  title="' . __( 'Share on Facebook', 'wmc' ) . '" target="_blank"></a>
-                <a rel="nofollow" class="wmc-button-gplus"  href="#" data-count="gplus"  title="' . __( 'Share on Google+', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-lnkd"  href="#" data-count="lnkd"  title="' . __( 'Share on Linkedin', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-pin"  href="#" data-count="pin" title="' . __( 'Pin It', 'wmc' ) . '" target="_blank"></a>                
                 <a rel="nofollow" class="wmc-button-twi"  href="#" data-count="twi" title="' . __( 'Share on Twitter', 'wmc' ) . '" target="_blank"></a>                
