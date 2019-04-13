@@ -837,7 +837,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 			$url_filter     = site_url();
 			$myaccount_page = get_option( 'woocommerce_myaccount_page_id' );
 			if ( is_user_logged_in() && in_the_loop() && is_page( $myaccount_page ) ) {
-				$url_filter = get_permalink( $myaccount_page ) . "my-affliates/";
+				$url_filter = get_permalink( $myaccount_page ) . "my-referral/";
 			}
 			$active_sel = '';
 			if ( isset( $_GET['filter'] ) ) {
@@ -974,7 +974,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 					} else {
 						$rHTML .= '<td align="center" data-title="' . __( 'Show/Hide', 'wmc' ) . '">-</td>';
 					}
-					$rHTML .= '<td  align="center" data-title="' . __( 'Referral Code', 'wmc' ) . '">' . $this->referral_user( 'referral_code', 'user_id', $affiliate->user_id ) . '</td><td data-title="' . __( 'Name', 'wmc' ) . '">' . $affiliate->first_name . '&nbsp' . $affiliate->last_name . '</td><td align="right" data-title="' . __( 'Affiliates', 'wmc' ) . '">' . $affiliate->followers . '</td><!--td align="right" data-title="' . __( 'Affiliates Credit', 'wmc' ) . '">' . number_format( $credits, 2 ) . '</td--><td align="right" data-title="' . __( 'Join Date', 'wmc' ) . '">' . $user_info->data->user_registered . '</td>';
+					$rHTML .= '<td  align="center" data-title="' . __( 'Referral Code', 'wmc' ) . '">' . $this->referral_user( 'referral_code', 'user_id', $affiliate->user_id ) . '</td><td data-title="' . __( 'Name', 'wmc' ) . '">' . $affiliate->first_name . '&nbsp' . $affiliate->last_name . '</td><td align="right" data-title="' . __( 'Referrers', 'wmc' ) . '">' . $affiliate->followers . '</td><!--td align="right" data-title="' . __( 'Affiliates Credit', 'wmc' ) . '">' . number_format( $credits, 2 ) . '</td--><td align="right" data-title="' . __( 'Join Date', 'wmc' ) . '">' . $user_info->data->user_registered . '</td>';
 
 					$rHTML .= '</tr>';
 					if ( intval( $affiliate->followers ) > 0 ) {

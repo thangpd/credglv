@@ -12,7 +12,7 @@ if ( ! class_exists( 'mrp_custom_function' ) ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'mrp_enqueue_scrips_custom' ) );
 
 			// MENU ENDPOINT POINT CREATE
-			add_action( 'woocommerce_account_my-affliates_endpoint', array(
+			add_action( 'woocommerce_account_my-referral_endpoint', array(
 				$this,
 				'mrp_my_affliates_endpoint_content'
 			) );
@@ -792,7 +792,7 @@ if ( ! class_exists( 'mrp_custom_function' ) ) {
 				}
 			}
 
-			add_rewrite_endpoint( 'my-affliates', EP_PAGES );
+			add_rewrite_endpoint( 'my-referral', EP_PAGES );
 			add_rewrite_endpoint( 'account-statements', EP_PAGES );
 			add_rewrite_endpoint( 'redeem-points', EP_PAGES );
 
@@ -1055,7 +1055,7 @@ if ( ! class_exists( 'mrp_custom_function' ) ) {
 			foreach ( $menu_links as $key => $value ) {
 				$new_array[ $key ] = $value;
 				if ( $key == 'referral' ) {
-					$new_array['my-affliates'] = __( 'My Affliates', 'woocommerce-extension' );
+					$new_array['my-referral'] = __( 'List Referrer', 'woocommerce-extension' );
 
 					//if($withdrawal_feature != 'no' || )
 					if ( ! $withdrawal_feature || $withdrawal_feature != 'no' ) {
