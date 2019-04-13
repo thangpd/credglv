@@ -312,14 +312,18 @@ if ( ! class_exists( 'Referal_Users' ) ) {
             *	Add referral program form to register form
             */
 		public function referral_register_fields() {
-			//print_r($_POST);
 
 			$data = array(
 				'join_referral_program' => isset( $_POST['join_referral_program'] ) ? sanitize_text_field( $_POST['join_referral_program'] ) : ( isset( $_GET['ru'] ) && ! isset( $_POST['join_referral_program'] ) ? 2 : 0 ),
 				'referral_email'        => isset( $_POST['referral_email'] ) ? sanitize_text_field( $_POST['referral_email'] ) : '',
-				'referral_code'         => isset( $_POST['referral_code'] ) ? sanitize_text_field( $_POST['referral_code'] ) : ( isset( $_GET['ru'] ) && ! isset( $_POST['referral_code'] ) ? sanitize_text_field( $_GET['ru'] ) : isset( $_COOKIE['WMC_REFERRAL_CODE'] ) ? $_COOKIE['WMC_REFERRAL_CODE'] : '' ),
 			);
-
+			if ( isset( $_POST['referral_code'] ) ) {
+				$data['referral_code'] = sanitize_text_field( $_POST['referral_code'] );
+			} elseif ( isset( $_GET['ru'] ) ) {
+				$data['referral_code'] = sanitize_text_field( $_GET['ru'] );
+			} elseif ( isset( $_COOKIE['WMC_REFERRAL_CODE'] ) ) {
+				$data['referral_code'] = sanitize_text_field( $_COOKIE['WMC_REFERRAL_CODE'] );
+			}
 			echo self::render_template( 'front/register_form_end_fields.php', array( 'data' => $data ) );
 		}
 
