@@ -1055,7 +1055,7 @@ if ( ! class_exists( 'mrp_custom_function' ) ) {
 			foreach ( $menu_links as $key => $value ) {
 				$new_array[ $key ] = $value;
 				if ( $key == 'referral' ) {
-					$new_array['my-referral'] = __( 'List Referrer', 'woocommerce-extension' );
+//					$new_array['my-referral'] = __( 'List Referrer', 'woocommerce-extension' );
 
 					//if($withdrawal_feature != 'no' || )
 					if ( ! $withdrawal_feature || $withdrawal_feature != 'no' ) {
