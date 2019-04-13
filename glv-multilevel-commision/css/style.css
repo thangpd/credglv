@@ -117,11 +117,11 @@ div.referral_program_details{
     background-position: -160px 0;
 }
 .wmc-show-affiliates .view_hierarchie a.view_hierarchie {
-    background-image: url("../images/plus-minus.png");
+    /*background-image: url("../images/plus-minus.png");*/
     background-position: center 2px;
     background-repeat: no-repeat;
     display: block;
-    text-indent: -9999px;
+    /*text-indent: -9999px;*/
 }
 .wmc-show-affiliates .view_hierarchie a.view_hierarchie.wmcOpen{
    background-position: center -20px; 

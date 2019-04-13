@@ -970,7 +970,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 					//$rHTML.='<tr class="'.$className.'" style="background-color:rgba('.$backColor.','.$opacity.');">';
 					$rHTML .= '<tr class="' . $className . '">';
 					if ( intval( $affiliate->followers ) > 0 ) {
-						$rHTML .= '<td align="center" data-title="' . __( 'Show/Hide', 'wmc' ) . '" class="view_hierarchie"><a href="javascript:void(0)" data-finder="' . $wmcFinder . '-' . $affiliate->user_id . '" class="view_hierarchie">' . __( 'View Hirarchy', 'wmc' ) . '  </a></td>';
+						$rHTML .= '<td align="center" data-title="' . __( 'Show/Hide', 'wmc' ) . '" class="view_hierarchie"><a href="javascript:void(0)" data-finder="' . $wmcFinder . '-' . $affiliate->user_id . '" class="view_hierarchie"><i class="fas fa-plus"></i></a></td>';
 					} else {
 						$rHTML .= '<td align="center" data-title="' . __( 'Show/Hide', 'wmc' ) . '">-</td>';
 					}
