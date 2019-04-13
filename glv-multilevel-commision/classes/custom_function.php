@@ -692,7 +692,7 @@ if ( ! class_exists( 'mrp_custom_function' ) ) {
 				if ( $var == 'my_affiliate' ) {
 					$data['active']  = "referral_tab";
 					$data['content'] = do_shortcode( '[wmc_show_affiliate_info]', true );
-					$data['content'] .= do_shortcode( '[wmc_show_credit_info]', true );
+//					$data['content'] .= do_shortcode( '[wmc_show_credit_info]', true );
 				}
 				echo self::render_template( 'front/myaccount-referral.php', array( 'data' => $data ) );
 			}

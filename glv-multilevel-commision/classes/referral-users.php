@@ -525,7 +525,6 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                 <a rel="nofollow" class="wmc-button-lnkd"  href="#" data-count="lnkd"  title="' . __( 'Share on Linkedin', 'wmc' ) . '" target="_blank"></a>
                 <a rel="nofollow" class="wmc-button-pin"  href="#" data-count="pin" title="' . __( 'Pin It', 'wmc' ) . '" target="_blank"></a>                
                 <a rel="nofollow" class="wmc-button-twi"  href="#" data-count="twi" title="' . __( 'Share on Twitter', 'wmc' ) . '" target="_blank"></a>                
-                <a rel="nofollow" class="wmc-button-whatsup" href="#" data-account="' . get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '" data-ru="' . $code . '" data-share="' . md5( 'whatsup' ) . '" data-count="whatsup" title="' . __( 'Share on What\'s up', 'wmc' ) . '"></a>
                 </span>
                 </div>';
 
@@ -884,27 +883,14 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 
 
 				$wmcHtml .= '<div class="wmc-show-affiliates">';
-				$wmcHtml .= '<h2>' . __( 'My Affiliates', 'wmc' ) . '</h2>';
-				$wmcHtml .= '<div class="affliate-filter"><div class="filter_date"><label>' . __( 'Filter by', 'wmc' ) . '</label>';
-				$wmcHtml .= '<select id="my-affilicate_filters" data_url="' . $url_filter . '"><option value="">' . __( 'All', 'wmc' ) . '</option>';
 				//<option value="last_month" '.($active_sel == 'month'?'selected':'').'>'.__('Last Month','wmc').'</option><option value="last_quarter" '.($active_sel == '3month'?'selected':'').'>'.__('Last Quarter','wmc').'</option><option value="last_year" '.($active_sel == 'year'?'selected':'').'>'.__('Last Year','wmc').'</option></select>';
-				foreach ( $new_array as $key => $value ) {
-					$val_date_formate = date_format( date_create( $value ), "y-m-d" );
-					$wmcHtml          .= '<option value="' . $val_date_formate . '" ' . ( isset( $_GET['filter'] ) && $_GET['filter'] == $val_date_formate ? 'selected' : '' ) . ' >' . date_format( date_create( $value ), "M-Y" ) . '</option>';
-
-				}
-				$wmcHtml    .= '</select></div>';
-				$wmcHtml    .= '<div class="filter_order"><label> Order by </label><select name="orderby" id="order_by_filter">';
-				$wmcHtml    .= '<option value="asc" ' . ( $active_order == 'asc' ? 'selected' : '' ) . ' >' . __( 'Asc', 'wmc' ) . '</option><option value="desc" ' . ( $active_order == 'desc' ? 'selected' : '' ) . '>' . __( 'Desc', 'wmc' ) . '</option>';
-				$wmcHtml    .= '</select></div></div>';
 				$wmcHtml    .= '<table class="shop_table shop_table_responsive">';
-				$wmcHtml    .= '<thead><tr><th align="center">' . __( 'Show/Hide', 'wmc' ) . '</th><th align="center">' . __( 'Referral Code', 'wmc' ) . '</th><th align="center">' . __( 'Name', 'wmc' ) . '</th><th align="right">' . __( 'Affiliates', 'wmc' ) . '</th><!--th>' . __( 'Affiliates Credit', 'wmc' ) . '</th--><th align="center">' . __( 'Join Date', 'wmc' ) . '</th></tr></thead>';
+				$wmcHtml    .= '<thead><tr><th align="center">' . __( 'Show/Hide', 'wmc' ) . '</th><th align="center">' . __( 'Refer. Code', 'wmc' ) . '</th><th align="center">' . __( 'Name', 'wmc' ) . '</th><th align="right">' . __( 'Affiliates', 'wmc' ) . '</th><!--th>' . __( 'Affiliates Credit', 'wmc' ) . '</th--><th align="center">' . __( 'Join Date', 'wmc' ) . '</th></tr></thead>';
 				$returnHtml = $this->wmcGetAffliateUsersList( $check_user );
 				$wmcHtml    .= $returnHtml;
 				if ( $returnHtml == '' ) {
-					$wmcHtml .= '<tr class="affliate-note"><td colspan="6"><p class="help">' . __( 'Could not find any affiliate users. Please invite more friends and colleagues to start earning credit points.', 'wmc' ) . '</p></td></tr>';
+					$wmcHtml .= '<tr class="affliate-note"><td colspan="6"><p class="help">' . __( 'No affiliate users.', 'wmc' ) . '</p></td></tr>';
 				} else {
-					$wmcHtml .= '<tr class="affliate-note"><td colspan="6"><p class="help"><Strong>' . __( 'Affiliates : ', 'wmc' ) . '</strong>' . __( 'This particular column shows the number of Affiliates for the corresponding affiliate member.', 'wmc' ) . '</p></td></tr>';
 				}
 				$wmcHtml .= '</table>';
 				$wmcHtml .= '</div>';
