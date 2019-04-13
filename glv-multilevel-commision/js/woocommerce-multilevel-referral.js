@@ -157,13 +157,14 @@ jQuery(document).ready(function () {
     jQuery('.wmc-show-affiliates a.view_hierarchie').on('click', function () {
         var parentID = jQuery(this).data('finder');
         if (jQuery(this).hasClass('wmcOpen')) {
-            jQuery(this).find('i').removeClass('fas fa-plus').addClass('fas fa-minus');
+            jQuery(this).find('i').removeClass('fa-minus').addClass('fa-plus');
 
             jQuery(this).removeClass('wmcOpen').addClass('wmcClose');
             jQuery('.wmc-show-affiliates').find('[class*=wmc-child-' + parentID + ']').hide();
             jQuery('.wmc-show-affiliates').find('[class*=wmc-child-' + parentID + '] a.view_hierarchie').removeClass('wmcOpen').addClass('wmcClose');
         } else {
-            jQuery(this).find('i').removeClass('fas fa-minus').addClass('fas fa-plus');
+            jQuery(this).find('i').removeClass('fa-plus').addClass('fa-minus');
+
 
             jQuery(this).removeClass('wmcClose').addClass('wmcOpen');
             jQuery('.wmc-show-affiliates .wmc-child-' + parentID).show();

@@ -478,7 +478,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
                         <table class="shop_table shop_table_responsive">
                         <tr>
                         <td>
-                        <input type="text" name="emails"  class="input-text" value="' . $email . '" placeholder="Ex. test@demo.com, test2@demo.com" />
+                        <input type="text" name="emails"  class="input-text" value="' . $email . '" placeholder="Ex. abc@demo.com,bac@demo.com" />
                         </td>
                         <td width="105px">    
                         <input type="submit" class="button btn-send-invitation" value="' . __( 'Invite', 'wmc' ) . '" />
@@ -888,7 +888,7 @@ if ( ! class_exists( 'Referal_Users' ) ) {
 				$wmcHtml .= '<div class="wmc-show-affiliates">';
 				//<option value="last_month" '.($active_sel == 'month'?'selected':'').'>'.__('Last Month','wmc').'</option><option value="last_quarter" '.($active_sel == '3month'?'selected':'').'>'.__('Last Quarter','wmc').'</option><option value="last_year" '.($active_sel == 'year'?'selected':'').'>'.__('Last Year','wmc').'</option></select>';
 				$wmcHtml    .= '<table class="shop_table shop_table_responsive">';
-				$wmcHtml    .= '<thead><tr><th align="center">' . __( 'Show/Hide', 'wmc' ) . '</th><th align="center">' . __( 'Refer. Code', 'wmc' ) . '</th><th align="center">' . __( 'Name', 'wmc' ) . '</th><th align="right">' . __( 'Affiliates', 'wmc' ) . '</th><!--th>' . __( 'Affiliates Credit', 'wmc' ) . '</th--><th align="center">' . __( 'Join Date', 'wmc' ) . '</th></tr></thead>';
+				$wmcHtml    .= '<thead><tr><th align="center">' . __( 'Show/Hide', 'wmc' ) . '</th><th align="center">' . __( 'Refer. Code', 'wmc' ) . '</th><th align="center">' . __( 'Name', 'wmc' ) . '</th><th align="right">' . __( 'Num', 'wmc' ) . '</th><th align="center">' . __( 'Join Date', 'wmc' ) . '</th></tr></thead>';
 				$returnHtml = $this->wmcGetAffliateUsersList( $check_user );
 				$wmcHtml    .= $returnHtml;
 				if ( $returnHtml == '' ) {
