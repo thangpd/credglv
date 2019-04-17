@@ -57,9 +57,10 @@ class Hook extends BaseObject implements ComponentInterface {
 		'save_post'             => [
 
 		],
-		'author_link'           => [
+		/*'author_link'           => [
 			'\credglv\models\UserModel' => [ 'authorLink', 10, 2 ]
 		],
+		*/
 		'the_post'              => [
 			'\credglv\core\components\ResourceManager' => 'registerShortcodeAssets',
 		],
