@@ -23,8 +23,6 @@ class UserModel extends BaseObject {
 	}
 
 
-
-
 	/**
 	 * add_registered_for_referrer  template hook
 	 */
@@ -35,31 +33,6 @@ class UserModel extends BaseObject {
 		}
 	}
 
-
-	/**
-	 * Get author link
-	 * if this is member return to member profile
-	 * either return student profile
-	 *
-	 * @param $link
-	 * @param $authorId
-	 *
-	 * @return mixed
-	 */
-	public function authorLink( $link, $authorId ) {
-		/** @var \WP_User $user */
-		$user  = get_user_by( 'ID', $authorId );
-		$roles = ! empty( $user->roles ) ? $user->roles : [];
-		if ( in_array( 'credglv_member', $roles ) ) {
-//			$member = new Instructor( $user );
-//			$link       = $member->getProfileUrl();
-		} else if ( in_array( 'credglv_student', $roles ) ) {
-//			$student = new Student( $user );
-//			$link    = $student->getProfileUrl();
-		}
-
-		return 'link author';
-	}
 
 	/**
 	 * @param $redirect_to
@@ -89,18 +62,16 @@ class UserModel extends BaseObject {
 
 
 	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
-
-		$login_url = site_url( credglv()->config->getUrlConfigs( 'credglv_login' ), 'login' );
-
-		if ( ! empty( $redirect ) ) {
-			$login_url = add_query_arg( 'redirect_to', urlencode( $redirect ), $login_url );
+		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
+			if ( preg_match( '#wp-login.php#', $login_url ) ) {
+				if ( ! is_admin() ) {
+					wp_redirect( $myaccount_page );
+				}
+				if ( ! current_user_can( 'administrator' ) ) {
+					wp_redirect( $myaccount_page );
+				}
+			}
 		}
-
-		if ( $force_reauth ) {
-			$login_url = add_query_arg( 'reauth', '1', $login_url );
-		}
-
-		return $login_url;
 	}
 
 	public function redirectLogout() {
@@ -117,8 +88,6 @@ class UserModel extends BaseObject {
 
 		return true;
 	}
-
-
 
 
 }

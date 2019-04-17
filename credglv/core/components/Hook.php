@@ -45,32 +45,33 @@ class Hook extends BaseObject implements ComponentInterface {
 			/*'\credglv\helpers\Helper' => 'checkUserEnroll'*/
 		],
 
-		'admin_enqueue_scripts'      => [
+		'admin_enqueue_scripts' => [
 			'\credglv\core\components\ResourceManager' => 'registerCoreResource',
 		],
-		'admin_menu'                 => [
+		'admin_menu'            => [
 			'\credglv\admin\AdminTemplate' => 'addAdminMenu'
 		],
-		'wp_logout'                  => [
+		'wp_logout'             => [
 			'\credglv\models\UserModel' => 'redirectLogout'
 		],
-		'save_post'                  => [
+		'save_post'             => [
 
 		],
-		'author_link'                => [
+		'author_link'           => [
 			'\credglv\models\UserModel' => [ 'authorLink', 10, 2 ]
 		],
-		'the_post'                   => [
+		'the_post'              => [
 			'\credglv\core\components\ResourceManager' => 'registerShortcodeAssets',
 		],
-		'login_redirect'             => [
+		/*'login_redirect'             => [
 			'\credglv\models\UserModel' => [ 'gotoProfile', 10, 3 ],
 		],
-		'login_url'                  => [
+		*/
+		'login_url'             => [
 			'\credglv\models\UserModel' => [ 'redirectLoginUrl', 10, 3 ],
 		],
 
-		'set_user_role'              => [
+		'set_user_role' => [
 			'\credglv\models\UserModel' => [ 'add_registered_for_referrer', 10, 3 ],
 		],
 
