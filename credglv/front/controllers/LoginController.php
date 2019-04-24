@@ -62,7 +62,42 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		$redirect_to = '';
 		if ( ! empty( $_POST['data'] ) ) {
 			$data = $_POST['data'];
+//			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
 			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
+				$creds       = array(
+					'user_login'    => $data['email'],
+					'user_password' => $data['password'],
+					'remember'      => false,
+				);
+				$redirect_to = ! empty( $data['redirect_to'] ) ? $data['redirect_to'] : '';
+				$user        = wp_signon( $creds );
+				if ( $user && is_user_member_of_blog( $user->ID, get_current_blog_id() ) && ! is_wp_error( $user ) ) {
+					$code    = '200';
+					$message = 'Login successful!';
+				} else {
+					$message = esc_html__( 'Your account is not correct !', 'educef' );
+					wp_destroy_current_session();
+					wp_clear_auth_cookie();
+				}
+			} else {
+				$this->responseJson( array( 'code' => 403, 'message' => 'captcha verified fail' ) );
+			}
+		} else {
+			$this->responseJson( array( 'code' => 403, 'message' => 'Login form no data' ) );
+		}
+		header( 'Content-Type: application/json' );
+		echo json_encode( compact( 'code', 'message', 'redirect_to' ) );
+		die;
+	}
+
+	public function credglv_login_otp() {
+		$code        = 403;
+		$message     = esc_html__( 'Sorry we could not log you in. The credentials supplied were not recognised.', 'educef' );
+		$redirect_to = '';
+		if ( ! empty( $_POST['data'] ) ) {
+			$data = $_POST['data'];
+//			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
+			if ( ThirdpartyController::getInstance()->verify_otp( $data ) ) {
 				$creds       = array(
 					'user_login'    => $data['email'],
 					'user_password' => $data['password'],

@@ -1,0 +1,44 @@
+
+.list_countrycode {
+    width: 20%;
+    float: left;
+}
+
+.list_countrycode input {
+    display: block;
+}
+
+.list_countrycode + input {
+}
+
+.width100 {
+    width: 100% !important;
+}
+
+.width80 {
+    width: 80% !important;
+}
+.hide{
+    display:none;
+}
+.digit_cs-list {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.digit_cs-list li {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.digit_cs-list li:hover {
+    background-color: #ddd;
+}
