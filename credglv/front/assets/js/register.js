@@ -266,7 +266,7 @@ jQuery(function ($) {
                 data: data,
                 async: false,
                 success: function (res) {
-                    var otp_mes = $('#register-form .otp');
+                    var otp_mes = $('#cred_otp_code-error');
 
                     if (res.code === 403) {
                         otp_mes.text(res.message);

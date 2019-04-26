@@ -51,83 +51,110 @@ class LoginController extends FrontController implements FrontControllerInterfac
 	}
 
 
-	/**
-	 * Login - Register
-	 */
-// wp-admin/admin-ajax.php?action=credglv_login
-// admin_url('admin-ajax.php');
-	public function credglv_login() {
-		$code        = 403;
-		$message     = esc_html__( 'Sorry we could not log you in. The credentials supplied were not recognised.', 'educef' );
-		$redirect_to = '';
-		if ( ! empty( $_POST['data'] ) ) {
-			$data = $_POST['data'];
-//			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
-			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
-				$creds       = array(
-					'user_login'    => $data['email'],
-					'user_password' => $data['password'],
-					'remember'      => false,
-				);
-				$redirect_to = ! empty( $data['redirect_to'] ) ? $data['redirect_to'] : '';
-				$user        = wp_signon( $creds );
-				if ( $user && is_user_member_of_blog( $user->ID, get_current_blog_id() ) && ! is_wp_error( $user ) ) {
-					$code    = '200';
-					$message = 'Login successful!';
-				} else {
-					$message = esc_html__( 'Your account is not correct !', 'educef' );
-					wp_destroy_current_session();
-					wp_clear_auth_cookie();
-				}
-			} else {
-				$this->responseJson( array( 'code' => 403, 'message' => 'captcha verified fail' ) );
+	function credglv_extra_login_fields() {
+		$num_val = '';
+		if ( is_user_logged_in() ) {
+			$user_id        = get_current_user_ID();
+			$num_val        = get_user_meta( $user_id, 'cred_billing_phone', true );
+			$num_contrycode = get_user_meta( $user_id, 'number_countrycode', true );
+			if ( isset( $_POST['cred_billing_phone'] ) ) {
+				$num_val = $_POST['cred_billing_phone'];
+			}
+			if ( isset( $_POST['number_countrycode'] ) ) {
+				$num_contrycode = $_POST['number_countrycode'];
 			}
 		} else {
-			$this->responseJson( array( 'code' => 403, 'message' => 'Login form no data' ) );
+			if ( isset( $_POST['cred_billing_phone'] ) ) {
+				$num_val = $_POST['cred_billing_phone'];
+			}
+			if ( isset( $_POST['number_countrycode'] ) ) {
+				$num_contrycode = $_POST['number_countrycode'];
+			}
 		}
-		header( 'Content-Type: application/json' );
-		echo json_encode( compact( 'code', 'message', 'redirect_to' ) );
-		die;
-	}
 
-	public function credglv_login_otp() {
-		$code        = 403;
-		$message     = esc_html__( 'Sorry we could not log you in. The credentials supplied were not recognised.', 'educef' );
-		$redirect_to = '';
-		if ( ! empty( $_POST['data'] ) ) {
-			$data = $_POST['data'];
-//			if ( ThirdpartyController::getInstance()->verify_captcha( $data ) ) {
-			if ( ThirdpartyController::getInstance()->verify_otp( $data ) ) {
-				$creds       = array(
-					'user_login'    => $data['email'],
-					'user_password' => $data['password'],
-					'remember'      => false,
-				);
-				$redirect_to = ! empty( $data['redirect_to'] ) ? $data['redirect_to'] : '';
-				$user        = wp_signon( $creds );
-				if ( $user && is_user_member_of_blog( $user->ID, get_current_blog_id() ) && ! is_wp_error( $user ) ) {
-					$code    = '200';
-					$message = 'Login successful!';
-				} else {
-					$message = esc_html__( 'Your account is not correct !', 'educef' );
-					wp_destroy_current_session();
-					wp_clear_auth_cookie();
-				}
-			} else {
-				$this->responseJson( array( 'code' => 403, 'message' => 'captcha verified fail' ) );
-			}
-		} else {
-			$this->responseJson( array( 'code' => 403, 'message' => 'Login form no data' ) );
-		}
-		header( 'Content-Type: application/json' );
-		echo json_encode( compact( 'code', 'message', 'redirect_to' ) );
-		die;
+		?>
+        <p class="form-row form-row-wide">
+            <a class="login-with-what" href="#">Login with username/email</a>
+        </p>
+        <div class="phone_login">
+            <p class="form-row form-row-wide">
+                <label for="reg_phone">
+					<?php _e( 'Mobile Number', 'credglv' ); ?> <span class="required">*</span>
+                </label>
+
+            <div class="login_countrycode">
+                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
+
+
+				?>">
+                    <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
+                           value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
+                           name="number_countrycode" size="4">
+                    <ul class="digit_cs-list">
+                        <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
+                        <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+                    </ul>
+                </div>
+                <input type="text" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                       name="cred_billing_phone"
+                       id="reg_phone"
+                       value="<?php echo $num_val; ?>" maxlength="10"/>
+
+            </div>
+
+            </p>
+        </div>
+
+
+		<?php
 	}
 
 
+	function credglv_extra_otp_login_fields() {
+		?>
+
+        <p class="form-row form-row-wide otp-code" data-phone="yes" style="display:none">
+            <label for="cred_otp_code_login">
+				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
+            </label>
+            <input type="text" class="input-otp-code"
+                   name="cred_otp_code"
+                   id="cred_otp_code_login"
+                   value="" maxlength="4"/>
+            <span class="error_log"></span>
+        </p>
+
+		<?php
+	}
+
+//add_filter( 'woocommerce_locate_template', 'csp_locate_template', 10, 3 );
 	public function add_custom_js() {
 //		echo '<script src="https://www.google.com/recaptcha/api.js?render=6Lc38psUAAAAAJuh9FtinaKCMZPGnTIYk2VFSrlA" async defer >';
 		echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+	}
+
+
+	public function credglv_login() {
+		$data = $_POST;
+
+		$userid = UserController::getUserIDByPhone( $data['phone'] );
+		if ( $userid['code'] == 200 ) {
+
+			$third_party = ThirdpartyController::getInstance();
+			$res_mes     = $third_party->verify_otp( $data );
+			if ( $res_mes['code'] == 200 ) {
+				wp_set_auth_cookie( $userid['userID'], true );
+				$res_mes['message'] = 'Logged in';
+				$res_mes['user_id'] = $userid['userID'];
+				$this->responseJson( $res_mes );
+			} else {
+				$this->responseJson( $res_mes );
+			}
+
+
+		} else {
+			$this->responseJson( $userid );
+		}
 	}
 
 	/**
@@ -135,27 +162,20 @@ class LoginController extends FrontController implements FrontControllerInterfac
 	 * @return mixed
 	 */
 	public static function registerAction() {
+
 		return [
 			'actions' => [
-				'template_redirect' => [ self::getInstance(), 'redirectUserLoggedIn' ],
-				'wp_head'           => [ self::getInstance(), 'add_custom_js' ],
+				'template_redirect'            => [ self::getInstance(), 'redirectUserLoggedIn' ],
+				'wp_head'                      => [ self::getInstance(), 'add_custom_js' ],
+				'woocommerce_login_form_start' => [ self::getInstance(), 'credglv_extra_login_fields' ],
+				'woocommerce_login_form'       => [ self::getInstance(), 'credglv_extra_otp_login_fields' ],
 			],
 			'ajax'    => [
 				'credglv_login' => [ self::getInstance(), 'credglv_login' ],
+
 			],
-			'pages'   => [
-				'front' => [
-					credglv()->config->getUrlConfigs( 'credglv_login' ) =>
-						[
-							'loginPage',
-							[
-								'title' => __( 'Cred GLV - Login', 'credglv' ),
-//                                'single' => true
-							]
-						],
-				]
-			],
-			'assets'  => [
+
+			'assets' => [
 				'css' => [
 					[
 						'id'           => 'credglv-user-login',

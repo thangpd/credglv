@@ -107,6 +107,13 @@ return [
 						'jquery'
 					],
 				],
+				[
+					'id'           => 'jquery-validate',
+					'url'          => plugins_url( 'credglv/assets/libs/jquery-validation-1.19.0/dist/jquery.validate.js' ),
+					'dependencies' => [
+						'jquery'
+					],
+				],
 
 			],
 			'styles'  => [
