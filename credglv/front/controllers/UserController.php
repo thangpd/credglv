@@ -20,6 +20,10 @@ use mysql_xdevapi\Exception;
 
 
 class UserController extends FrontController implements FrontControllerInterface {
+
+
+	const METAKEY_PHONE = 'cred_billing_phone';
+
 	public function profilePage() {
 		return $this->checkLogin( 'user-profile' );
 	}
@@ -110,7 +114,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
 
-		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='cred_billing_phone' and meta_value='" . $phone . "' " );
+		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
 
 
 		if ( ! empty( $mobile_num_result ) ) {
@@ -129,10 +133,46 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}
 
+
+	function credglv_wooc_edit_profile_save_fields( $args ) {
+		global $wpdb;
+		$user_id = get_current_user_ID();
+
+
+		if ( isset( $_POST['billing_phone'] ) && $_POST['billing_phone'] == '' ) {
+			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
+		}
+		if ( isset( $_POST['billing_phone'] ) && ! empty( $_POST['billing_phone'] ) ) {
+			$mobile_num_result = $wpdb->get_var( "select B.ID from " . $wpdb->prefix . "usermeta as A join " . $wpdb->prefix . "users as B where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $_POST['billing_phone'] . "' and A.user_id =  b.ID " );
+			if ( isset( $mobile_num_result ) ) {
+				if ( $user_id != $mobile_num_result ) {
+					wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
+
+					return;
+				} else {
+					update_user_meta( $user_id, 'billing_phone', $_POST['billing_phone'] );
+
+					return $_POST['billing_phone'];
+				}
+			} else {
+				update_user_meta( $user_id, 'billing_phone', $_POST['billing_phone'] );
+
+				return $_POST['billing_phone'];
+			}
+		}
+
+	}
+
+
 	public static function registerAction() {
+
+
 		return [
 			'actions' => [
-
+				'woocommerce_save_account_details_errors' => [
+					self::getInstance(),
+					'credglv_wooc_edit_profile_save_fields'
+				]
 			],
 			'assets'  => [
 				'css' => [
