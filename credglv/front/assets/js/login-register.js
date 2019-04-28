@@ -36,15 +36,12 @@ jQuery(function ($) {
 
         });
         form.find('.woocommerce-phone-countrycode').on('click', function (e) {
-            $(this).find('.digit_cs-list').show();
+            $(form).find('.digit_cs-list').show();
             event.stopPropagation();
         });
         $(document).on('click', function (e) {
             var list = $('.digit_cs-list');
-            if (list.css('display') === 'block') {
-                list.hide();
-            }
-
+            list.hide();
         });
         form.find('.dig-cc-visible').on('click', function (e) {
             $(this).parent().prev().val($(this).data('value'));

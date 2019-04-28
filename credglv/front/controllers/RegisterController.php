@@ -10,13 +10,11 @@
 
 namespace credglv\front\controllers;
 
-use credglv\admin\controllers\PermissionController;
 use credglv\core\components\RoleManager;
-use credglv\core\RuntimeException;
 use credglv\models\UserModel;
-use credglv\core\components\Style;
-use credglv\core\components\Script;
 use credglv\core\interfaces\FrontControllerInterface;
+use http\Client\Curl\User;
+use PHPUnit\Runner\Exception;
 
 
 class RegisterController extends FrontController implements FrontControllerInterface {
@@ -68,6 +66,15 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 //add_action( 'woocommerce_save_account_details_errors', array( $this, 'credglv_edit_save_fields' ), 10, 1 );
 	function credglv_validate_extra_register_fields_update( $customer_id ) {
+		try {
+			$user                  = new UserModel();
+			$user->user_id         = $customer_id;
+			$user->referral_parent = $_POST['input_referral'];
+			$user->referral_code   = $user->get_referralcode;
+			$user->save();
+		} catch ( Exception $e ) {
+			throw ( new Exception( 'cant add user referral ' ) );
+		}
 		if ( isset( $_POST['cred_billing_phone'] ) && isset( $_POST['number_countrycode'] ) ) {
 			update_user_meta( $customer_id, 'cred_billing_phone', sanitize_text_field( $_POST['number_countrycode'] ) . sanitize_text_field( $_POST['cred_billing_phone'] ) );
 		} else {
@@ -214,23 +221,23 @@ class RegisterController extends FrontController implements FrontControllerInter
 			'actions' => [
 				'wp_head' => [ self::getInstance(), 'add_custom_js' ],
 
-				'woocommerce_register_form_start'         => [ self::getInstance(), 'credglv_extra_register_fields' ],
-				'woocommerce_register_form'               => [
+				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
+				'woocommerce_register_form'       => [
 					self::getInstance(),
 					'credglv_extra_otp_register_fields'
 				],
 //				'woocommerce_save_account_details_errors' => [ self::getInstance(), 'credglv_edit_save_fields' ],
-				'woocommerce_register_post'               => [
+				'woocommerce_register_post'       => [
 					self::getInstance(),
 					'credglv_validate_extra_register_fields',
 					10,
 					3,
 				],
-				'woocommerce_created_customer'            => [
+				'woocommerce_created_customer'    => [
 					self::getInstance(),
 					'credglv_validate_extra_register_fields_update'
 				],
-				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
+				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
 				'referrer_ajax_search' => [ self::getInstance(), 'referrer_ajax_search' ],

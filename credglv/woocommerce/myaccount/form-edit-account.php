@@ -41,24 +41,79 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
                     class="required">*</span></label>
         <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="account_display_name"
                id="account_display_name" value="<?php echo esc_attr( $user->display_name ); ?>"/>
-        <span><em><?php esc_html_e( 'This will be how your name will be displayed in the account section and in reviews', 'woocommerce' ); ?></em></span>
     </p>
 
     <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
-        <label for="reg_billing_phone">
+        <label for="cred_billing_phone">
 			<?php _e( 'Mobile Number', 'woocommerce' ); ?> <span class="required">*</span>
         </label>
 
-        <input type="text" class="input-text" name="billing_phone" id="reg_billing_phone"
+        <input type="text" class="input-text" name="cred_billing_phone" id="cred_billing_phone"
                value="<?php
 
-               
 
-               echo esc_attr( $user->billing_phone ); ?>" maxlength="10"/>
+		       echo esc_attr( get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ); ?>"
+               maxlength="10"/>
     </p>
 
+    <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+
+        <label for="cred_date_of_birth">
+			<?php _e( 'Date of birth', 'woocommerce' ); ?> <span class="required">*</span>
+        </label>
+
+        <input type="date" class="input-text" name="cred_date_of_birth" id="cred_date_of_birth"
+               value="<?php echo isset( $_POST['cred_date_of_birth'] ) ? $_POST['cred_date_of_birth'] : get_user_meta( $user->data->ID, 'cred_date_of_birth', true ) ?>"
+               maxlength="10"/>
+    </p>
+    <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+        <label for="cred_gender">
+			<?php _e( 'Gender', 'woocommerce' ); ?> <span class="required">*</span>
+        </label>
+		<?php
+		$arr_gender     = array( 'mr' => 'Mr.', 'mrs' => 'Mrs.', 'ms' => 'Ms.' );
+		$current_gender = get_user_meta( $user->data->ID, 'cred_gender', true );
+		?>
+        <select name="cred_gender" id="cred_gender">
+			<?php foreach ( $arr_gender as $k => $v ) {
+				if ( isset( $_POST['cred_gender'] ) ) {
+					$selected = $_POST["cred_gender"] == $k ? 'selected' : '';
+				} else {
+					$selected = $current_gender == $k ? 'selected' : '';
+				}
+
+				?>
+                <option value="<?php echo $k ?>" <?php echo $selected ?>><?php echo $v ?></option>
+
+				<?php
+			} ?>
+        </select>
+    </p>
     <div class="clear"></div>
 
+    <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+
+        <label for="cred_passport">
+			<?php _e( 'Passport', 'woocommerce' ); ?> <span class="required">*</span>
+        </label>
+
+        <input name="cred_passport" id="cred_passport" type="file"
+               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+        <input id="passport_reset_upload_form" type="reset" value="Reset form"/>
+    </p>
+
+
+    <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
+
+        <label for="cred_identification_card">
+			<?php _e( 'Identification Card', 'woocommerce' ); ?> <span class="required">*</span>
+        </label>
+
+        <input name="cred_identification_card" id="cred_identification_card" type="file"
+               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
+        <input id="identify_cart_reset_upload_form" type="reset" value="Reset form"/>
+
+    </p>
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
         <label for="account_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span
                     class="required">*</span></label>

@@ -11,6 +11,7 @@
 namespace credglv\front\controllers;
 
 use credglv\core\RuntimeException;
+use credglv\helpers\GeneralHelper;
 use credglv\models\Instructor;
 use credglv\models\UserModel;
 use credglv\core\components\Style;
@@ -133,33 +134,82 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}
 
+	/**
+	 * Get phone by userid
+	 * @return mixed
+	 */
+	public static function getPhoneByUserID( $userID ) {
+
+		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
+
+		return $phone;
+	}
+
 
 	function credglv_wooc_edit_profile_save_fields( $args ) {
-		global $wpdb;
 		$user_id = get_current_user_ID();
-
-
-		if ( isset( $_POST['billing_phone'] ) && $_POST['billing_phone'] == '' ) {
+		if ( isset( $_POST['cred_billing_phone'] ) && $_POST['cred_billing_phone'] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
-		}
-		if ( isset( $_POST['billing_phone'] ) && ! empty( $_POST['billing_phone'] ) ) {
-			$mobile_num_result = $wpdb->get_var( "select B.ID from " . $wpdb->prefix . "usermeta as A join " . $wpdb->prefix . "users as B where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $_POST['billing_phone'] . "' and A.user_id =  b.ID " );
-			if ( isset( $mobile_num_result ) ) {
-				if ( $user_id != $mobile_num_result ) {
-					wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
 
-					return;
+			return $_POST;
+		}
+		if ( isset( $_POST['cred_billing_phone'] ) && ! empty( $_POST['cred_billing_phone'] ) ) {
+			$current_phone = UserController::getPhoneByUserID( $user_id );
+			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
+				$mobile_num_result = self::getUserIDByPhone( $_POST['cred_billing_phone'] );
+				if ( isset( $mobile_num_result ) ) {
+					if ( $user_id != $mobile_num_result ) {
+						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
+
+						return $_POST;
+					} else {
+						update_user_meta( $user_id, 'billing_phone', $_POST['cred_billing_phone'] );
+					}
 				} else {
-					update_user_meta( $user_id, 'billing_phone', $_POST['billing_phone'] );
-
-					return $_POST['billing_phone'];
+					update_user_meta( $user_id, 'billing_phone', $_POST['cred_billing_phone'] );
 				}
-			} else {
-				update_user_meta( $user_id, 'billing_phone', $_POST['billing_phone'] );
-
-				return $_POST['billing_phone'];
 			}
+
 		}
+
+		//date of birth
+		if ( isset( $_POST['cred_date_of_birth'] ) && $_POST['cred_date_of_birth'] == '' ) {
+			$args->add( 'cred_date_of_birth_error', __( 'Date of birth is required.', 'woocommerce' ) );
+
+			return $_POST;
+		}
+		if ( isset( $_POST['cred_date_of_birth'] ) && ! empty( $_POST['cred_date_of_birth'] ) ) {
+			update_user_meta( $user_id, 'cred_date_of_birth', $_POST['cred_date_of_birth'] );
+		}
+
+		//gender
+		if ( isset( $_POST['cred_gender'] ) && $_POST['cred_gender'] == '' ) {
+			$args->add( 'cred_gender_error', __( 'Gender is required.', 'woocommerce' ) );
+
+			return $_POST;
+		}
+		if ( isset( $_POST['cred_gender'] ) && ! empty( $_POST['cred_gender'] ) ) {
+			update_user_meta( $user_id, 'cred_gender', $_POST['cred_gender'] );
+		}
+		//passport
+		if ( isset( $_POST['cred_passport'] ) && $_POST['cred_passport'] == '' ) {
+			$args->add( 'cred_passport_error', __( 'Passport is required.', 'woocommerce' ) );
+
+			return $_POST;
+		}
+		if ( isset( $_POST['cred_passport'] ) && ! empty( $_POST['cred_passport'] ) ) {
+			update_user_meta( $user_id, 'cred_passport', $_POST['cred_passport'] );
+		}
+		//cred_identification_card
+		if ( isset( $_POST['cred_identification_card'] ) && $_POST['cred_identification_card'] == '' ) {
+			$args->add( 'cred_identification_card_error', __( 'Identification_card is required.', 'woocommerce' ) );
+
+			return $_POST;
+		}
+		if ( isset( $_POST['cred_identification_card'] ) && ! empty( $_POST['cred_identification_card'] ) ) {
+			update_user_meta( $user_id, 'cred_identification_card', $_POST['cred_identification_card'] );
+		}
+
 
 	}
 
