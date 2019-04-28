@@ -123,12 +123,10 @@ jQuery(function ($) {
         $(form).on('submit', function (e) {
 
             var otp_div = $(this).find('.otp-code');
-            console.log(otp_div.data('phone'));
 
             if ($(this).valid() && otp_div.data('phone') === 'yes' && otp_div.is(':hidden')) {
                 console.log('login 1');
                 credglv.sendmessage_otp(form);
-                otp_div.toggle('hide');
                 e.preventDefault();
             } else {
                 if ($(this).valid() && form === 'form.login' && otp_div.data('phone') === 'yes') {
@@ -156,16 +154,20 @@ jQuery(function ($) {
 
                 $(form).find('.error_log').text(res.message);
                 if (res.code === 200) {
+                    var otp_div = $(this).find('.otp-code');
+                    otp_div.toggle('hide');
+
                     location.reload();
                 }
             }
         });
-    }
+    };
 
 
     credglv.sendmessage_otp = function (form) {
-        console.log('sendmessage otp');
+
         var data = {phone: credglv.get_phone_data(form), action: 'sendphone_message'};
+        console.log(data);
         $.ajax({
             type: 'POST',
             url: credglvConfig.ajaxurl,
