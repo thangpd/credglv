@@ -201,13 +201,13 @@ class RegisterController extends FrontController implements FrontControllerInter
 	}
 
 	function credglv_assets_enqueue() {
-
-
 		global $post;
-		if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
-			wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
-			wp_enqueue_script( 'cred-my-account-login-page' );
-			wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+		if ( isset( $post->ID ) ) {
+			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+				wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
+				wp_enqueue_script( 'cred-my-account-login-page' );
+				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+			}
 		}
 	}
 
