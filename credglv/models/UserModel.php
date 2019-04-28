@@ -38,7 +38,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 
 	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
-		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
+		if ( $myaccount_page = credglv_get_woo_myaccount() && !is_ajax() ) {
 			if ( preg_match( '#wp-login.php#', $login_url ) ) {
 				if ( ! is_admin() ) {
 					wp_redirect( $myaccount_page );
