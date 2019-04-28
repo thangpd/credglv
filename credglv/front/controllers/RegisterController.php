@@ -194,13 +194,13 @@ class RegisterController extends FrontController implements FrontControllerInter
 	}
 
 	function credglv_assets_enqueue() {
-
-
 		global $post;
-		if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
-			wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
-			wp_enqueue_script( 'cred-my-account-login-page' );
-			wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+		if ( isset( $post->ID ) ) {
+			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+				wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
+				wp_enqueue_script( 'cred-my-account-login-page' );
+				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+			}
 		}
 	}
 
@@ -214,23 +214,23 @@ class RegisterController extends FrontController implements FrontControllerInter
 			'actions' => [
 				'wp_head' => [ self::getInstance(), 'add_custom_js' ],
 
-				'woocommerce_register_form_start'         => [ self::getInstance(), 'credglv_extra_register_fields' ],
-				'woocommerce_register_form'               => [
+				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
+				'woocommerce_register_form'       => [
 					self::getInstance(),
 					'credglv_extra_otp_register_fields'
 				],
 //				'woocommerce_save_account_details_errors' => [ self::getInstance(), 'credglv_edit_save_fields' ],
-				'woocommerce_register_post'               => [
+				'woocommerce_register_post'       => [
 					self::getInstance(),
 					'credglv_validate_extra_register_fields',
 					10,
 					3,
 				],
-				'woocommerce_created_customer'            => [
+				'woocommerce_created_customer'    => [
 					self::getInstance(),
 					'credglv_validate_extra_register_fields_update'
 				],
-				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
+				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
 				'referrer_ajax_search' => [ self::getInstance(), 'referrer_ajax_search' ],
