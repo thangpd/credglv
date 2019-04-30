@@ -24,15 +24,14 @@ class RegisterController extends FrontController implements FrontControllerInter
 	 */
 	public function referrer_ajax_search() {
 		if ( isset( $_GET['q'] ) ) {
-
 			$results = array();
 
 			// you can use WP_Query, query_posts() or get_posts() here - it doesn't matter
-			$args = array(
+			$args  = array(
 //			'blog_id'      => $GLOBALS['blog_id'],
 				'search'         => $_GET['q'] . '*',
-				'search_columns' => array( 'user_nicename', 'display_name' ),
-				'role__in'       => RoleManager::getlist_member(),
+				'search_columns' => array( 'user_nicename', 'display_name', 'login' ),
+//				'role__in'       => RoleManager::getlist_member(),
 				'role__not_in'   => array(),
 				'meta_key'       => '',
 				'meta_value'     => '',
@@ -49,7 +48,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 				'fields'         => 'all',
 				'who'            => '',
 			);
-
 			$users = get_users( $args );
 			foreach ( $users as $key => $value ) {
 				$results[] = array( 'id' => $value->data->ID, 'text' => $value->data->user_nicename );
@@ -66,11 +64,16 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 //add_action( 'woocommerce_save_account_details_errors', array( $this, 'credglv_edit_save_fields' ), 10, 1 );
 	function credglv_validate_extra_register_fields_update( $customer_id ) {
+		if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
+			$parent_ref = $_POST['input_referral'];
+		} else {
+			$parent_ref = '';
+		}
 		try {
 			$user                  = new UserModel();
 			$user->user_id         = $customer_id;
-			$user->referral_parent = $_POST['input_referral'];
-			$user->referral_code   = $user->get_referralcode;
+			$user->referral_parent = $parent_ref ;
+			$user->referral_code   = $user->get_referralcode();
 			$user->save();
 		} catch ( Exception $e ) {
 			throw ( new Exception( 'cant add user referral ' ) );
@@ -122,11 +125,11 @@ class RegisterController extends FrontController implements FrontControllerInter
 				<?php _e( 'Referral', 'credglv' ); ?>
             </label>
 
-
+            <select id="input_referral" name="input_referral" class="input-referral" style="width:100%"></select><!--
             <input type="text" class="input-referral"
                    name="input_referral"
                    id="reg_referral"
-                   value="" maxlength="10"/>
+                   value="" maxlength="10"/>-->
         </p>
         <p class="form-row form-row-wide otp-code hide" data-phone="yes">
             <label for="cred_otp_code">
@@ -137,6 +140,8 @@ class RegisterController extends FrontController implements FrontControllerInter
                    id="cred_otp_code"
                    value="" maxlength="4"/>
         </p>
+        <span class="error_log"></span>
+
 		<?php
 	}
 

@@ -154,8 +154,7 @@ jQuery(function ($) {
 
                 $(form).find('.error_log').text(res.message);
                 if (res.code === 200) {
-                    var otp_div = $(this).find('.otp-code');
-                    otp_div.toggle('hide');
+
 
                     location.reload();
                 }
@@ -174,7 +173,12 @@ jQuery(function ($) {
             data: data,
             async: false,
             success: function (res) {
-                $(form).find('.error_log').text(res.message);
+                if (res.code === 200) {
+                    var otp_div = $(form).find('.otp-code');
+                    otp_div.toggle('hide');
+                } else {
+                    $(form).find('.error_log').text(res.message);
+                }
             }
         });
     };
@@ -218,12 +222,48 @@ jQuery(function ($) {
 
         });
     };
+
+    credglv.select2login = function () {
+        // multiple select with AJAX search
+        $('form.register .input-referral').select2({
+            theme: "classic",
+            ajax: {
+                url: credglvConfig.ajaxurl, // AJAX URL is predefined in WordPress admin
+                dataType: 'json',
+                delay: 250, // delay in ms while typing when to perform a AJAX search
+                data: function (params) {
+                    return {
+                        q: params.term, // search query
+                        action: 'referrer_ajax_search' // AJAX action for admin-ajax.php
+                    };
+                },
+                processResults: function (data) {
+                    var options = [];
+                    if (data) {
+
+                        // data is the array of arrays, and each of them contains ID and the Label of the option
+                        $.each(data.results, function (index, text) { // do not forget that "index" is just auto incremented value
+                            options.push({id: text.id, text: text.text});
+                        });
+
+                    }
+                    return {
+                        results: options
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 3 // the minimum of symbols to input before perform a search
+        });
+    };
+
+
     $(document).ready(function () {
         credglv.preventinputtext_mobilefield('form.register');
         credglv.preventinputtext_mobilefield('form.login');
         credglv.validate_submitform('form.register');
         credglv.checkrequirement('form.register');
-
+        credglv.select2login();
 
         credglv.login_toggle_login('form.login');
         credglv.validate_submitform('form.login');

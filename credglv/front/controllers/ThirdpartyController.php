@@ -6,6 +6,7 @@
 
 namespace credglv\front\controllers;
 
+use credglv\models\UserModel;
 use PHPUnit\Runner\Exception;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
@@ -65,6 +66,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 	public function sendphone_otp( $data ) {
 
+
 // Your Account SID and Auth Token from twilio.com/console
 		$account_sid = 'ACbe3df4e270fa38fa4b4db4a3a53c26fc';
 		$auth_token  = '5b00046a9b8b90b8278d3152f4e7521e';
@@ -75,35 +77,40 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 		$twilio_number = "+15672264603";
 
 		$phone_number = $data['phone'];
-		if ( ! empty( $phone_number ) ) {
-			$send_otp_number = mt_rand( 1000, 9999 );
-			set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
-			try {
-				$client = new Client( $account_sid, $auth_token );
 
-				$client->messages->create(
-				// Where to send a text message (your cell phone?)
-					$phone_number,
-					array(
-						'from' => $twilio_number,
-						'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
-					)
-				);
-			} catch ( TwilioException $e ) {
-				return array(
-					'code'    => 403,
-					'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
-				);
+		if ( WP_DEBUG == false ) {
+			if ( ! empty( $phone_number ) ) {
+				$send_otp_number = mt_rand( 1000, 9999 );
+				set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
+				try {
+					$client = new Client( $account_sid, $auth_token );
+
+					$client->messages->create(
+					// Where to send a text message (your cell phone?)
+						$phone_number,
+						array(
+							'from' => $twilio_number,
+							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
+						)
+					);
+				} catch ( TwilioException $e ) {
+					return array(
+						'code'    => 403,
+						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
+					);
+				}
+			} else {
+				return array( 'code' => 404, 'message' => 'Missing phone number' );
 			}
+
+			return array(
+				'code'    => 200,
+				'message' => __( "We sent code verify to your phone. " . $phone_number . ". Expire in 60s", 'credglv' )
+			);
 		} else {
-			return array( 'code' => 404, 'message' => 'Missing phone number' );
+
+			return array( 'code' => 200, 'message' => 'debug sendphone' );
 		}
-
-		return array(
-			'code'    => 200,
-			'message' => __( "We sent code verify to your phone. " . $phone_number . ". Expire in 60s", 'credglv' )
-		);
-
 	}
 
 	public function sendphone_message() {
@@ -126,37 +133,44 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 	 *
 	 */
 	public function verify_otp( $data ) {
-		if ( ! empty( $data['phone'] && ! empty( $data['otp'] ) ) ) {
-			$phone_number = $data['phone'];
-			$otp          = $data['otp'];
-			if ( $trainsient = get_transient( $phone_number ) || true ) {
-				if ( $otp == $trainsient ) {
-					return array(
-						'code'    => 200,
-						'message' => __( 'OTP is matched ', 'credglv' )
-					);
+		if ( WP_DEBUG == false ) {
+			if ( ! empty( $data['phone'] && ! empty( $data['otp'] ) ) ) {
+				$phone_number = $data['phone'];
+				$otp          = $data['otp'];
+				if ( $trainsient = get_transient( $phone_number ) ) {
+					if ( $otp == $trainsient ) {
+						return array(
+							'code'    => 200,
+							'message' => __( 'OTP is matched ', 'credglv' )
+						);
+					} else {
+						return array(
+							'code'    => 400,
+							'message' => __( 'OTP is not matched ', 'credglv' )
+						);
+					}
 				} else {
+					//no trasient
+					$res = $this->sendphone_otp( array( 'phone' => $phone_number ) );
+					if ( $res != 200 ) {
+						return $res;
+					}
+
 					return array(
-						'code'    => 400,
-						'message' => __( 'OTP is not matched ', 'credglv' )
+						'code'    => 403,
+						'message' => __( 'OTP expired. We sent another otp to your phone.' . $phone_number, 'credglv' )
 					);
 				}
 			} else {
-				//no trasient
-				$res = $this->sendphone_otp( array( 'phone' => $phone_number ) );
-				if ( $res != 200 ) {
-					return $res;
-				}
-
 				return array(
-					'code'    => 403,
-					'message' => __( 'OTP expired. We sent another otp to your phone.' . $phone_number, 'credglv' )
+					'code'    => 404,
+					'message' => __( 'Missing parameter phone or otp', 'credglv' )
 				);
 			}
 		} else {
 			return array(
-				'code'    => 404,
-				'message' => __( 'Missing parameter phone or otp', 'credglv' )
+				'code'    => 200,
+				'message' => __( 'Debug', 'credglv' )
 			);
 		}
 

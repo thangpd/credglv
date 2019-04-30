@@ -121,9 +121,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
                    name="cred_otp_code"
                    id="cred_otp_code_login"
                    value="" maxlength="4"/>
-            <span class="error_log"></span>
-        </p>
 
+        </p>
+        <span class="error_log"></span>
 		<?php
 	}
 
