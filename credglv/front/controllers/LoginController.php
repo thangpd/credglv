@@ -23,7 +23,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 
 	public function redirectUserLoggedIn() {
-		$page_name = get_query_var( 'name' );
+		/*$page_name = get_query_var( 'name' );
 		if ( credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_login' ) ) {
 			if ( current_user_can( 'administrator' ) ) {
 				wp_redirect( admin_url() );
@@ -32,7 +32,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 				wp_redirect( home_url() );
 				exit;
 			}
-		}
+		}*/
 	}
 
 	public function loginPage() {

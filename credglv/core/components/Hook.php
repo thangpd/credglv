@@ -31,20 +31,15 @@ class Hook extends BaseObject implements ComponentInterface {
 	 * @var array
 	 */
 	protected $actions = [
-		'show_admin_bar'     => [
+		'show_admin_bar'        => [
 			'\credglv\models\UserModel' => 'showAdminBar'
 		],
-		'admin_init'         => [
+		'admin_init'            => [
 			'\credglv\core\components\ResourceManager' => 'registerCoreResource',
 		],
-		'wp_enqueue_scripts' => [
+		'wp_enqueue_scripts'    => [
 			'\credglv\core\components\ResourceManager' => 'registerCoreResource',
 		],
-		'template_redirect'  => [
-			//'\credglv\core\components\ResourceManager' => 'release',
-			/*'\credglv\helpers\Helper' => 'checkUserEnroll'*/
-		],
-
 		'admin_enqueue_scripts' => [
 			'\credglv\core\components\ResourceManager' => 'registerCoreResource',
 		],
@@ -68,9 +63,7 @@ class Hook extends BaseObject implements ComponentInterface {
 			'\credglv\models\UserModel' => [ 'gotoProfile', 10, 3 ],
 		],
 		*/
-		'login_url'             => [
-			'\credglv\models\UserModel' => [ 'redirectLoginUrl', 10, 3 ],
-		],
+
 
 		'set_user_role' => [
 			'\credglv\models\UserModel' => [ 'add_registered_for_referrer', 10, 3 ],
