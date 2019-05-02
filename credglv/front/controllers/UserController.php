@@ -64,6 +64,10 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $phone;
 	}
 
+	/**
+	 * Register new endpoints to use inside My Account page.
+	 */
+
 
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
@@ -133,15 +137,107 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 
+	/**
+	 * Print the customer avatar in My Account page, after the welcome message
+	 */
+	public function credglv_myaccount_customer_avatar() {
+		$current_user = wp_get_current_user();
+
+		echo '<div class="my-account-div"><div class="myaccount_avatar">' . get_avatar( $current_user->user_email, 72, '', $current_user->display_name ) . '</div>';
+		?><p><?php
+		/* translators: 1: user display name 2: logout url */
+		printf(
+			__( 'Hello %1$s (not %1$s? <a href="%2$s">Log out</a>)', 'woocommerce' ),
+			'<strong>' . esc_html( $current_user->display_name ) . '</strong>',
+			esc_url( wc_logout_url( wc_get_page_permalink( 'myaccount' ) ) )
+		);
+		?></p>
+        </div><?php
+	}
+
+	public function add_my_account_menu( $items ) {
+
+		$key = array_search( 'dashboard', array_keys( $items ) );
+
+		if ( $key !== false ) {
+			$items = ( array_merge( array_splice( $items, 0, $key + 1 ), array( 'referral' => __( 'Referral', 'credglv' ) ), $items ) );
+		} else {
+			$items['referral'] = __( 'Referral', 'wmc' );
+		}
+
+		return $items;
+	}
+
+	public function add_referral_query_var( $vars ) {
+		$vars[] = 'referral';
+
+		return $vars;
+	}
+
+	public function woocommerce_account_referral_endpoint_hook() {
+		$this->render( 'referral', [], false );
+	}
+
+	public function init_hook() {
+		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
+		add_rewrite_rule( 'loginasdasd/?$', 'wp-login.php', 'top' );
+
+		flush_rewrite_rules();
+		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
+			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
+		}
+		global $woocommerce;
+
+		if ( version_compare( $woocommerce->version, '2.6.0', ">=" ) ) {
+			/* Hooks for myaccount referral endpoint */
+			add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
+			add_filter( 'query_vars', array( $this, 'add_referral_query_var' ) );
+			add_action( 'woocommerce_account_referral_endpoint', array(
+				$this,
+				'woocommerce_account_referral_endpoint_hook'
+			) );
+		} else {
+			add_action( 'woocommerce_before_my_account', array( $this, 'woocommerce_account_referral_endpoint_hook' ) );
+		}
+//		add_filter( 'login_url', array( $this, 'redirectLoginUrl' ), 10, 3 );
+
+	}
+
+
+	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
+		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
+			if ( preg_match( '#wp-login.php#', $login_url ) ) {
+				if ( ! is_admin() || ! current_user_can( 'administrator' ) ) {
+					$login_url = $myaccount_page;
+				}
+				die;
+			}
+		}
+
+		return $login_url;
+	}
+
+
 	public static function registerAction() {
 
 
+		/*'login_url'             => [
+			'\credglv\models\UserModel' => [ 'redirectLoginUrl', 10, 3 ],
+		],*/
 		return [
 			'actions' => [
 				'woocommerce_save_account_details_errors' => [
 					self::getInstance(),
 					'credglv_wooc_edit_profile_save_fields'
-				]
+				],
+				'woocommerce_account_content'             => [
+					self::getInstance(),
+					'credglv_myaccount_customer_avatar',
+					5
+				],
+				'init'                                    => [ self::getInstance(), 'init_hook' ],
+
+
 			],
 			'assets'  => [
 				'css' => [
