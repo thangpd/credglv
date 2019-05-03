@@ -21,12 +21,22 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+
+$wmc_html = '<div id="wmc-qr-code">
+                <h2>' . __( 'Your share link QR code', 'wmc' ) . '</h2>
+                <div class="wmc-banners">';
+
+$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
+
+$wmc_html .= '</div>';
+
+echo $wmc_html;
 ?>
 
 
-
     <!-- Customisation -->
-   
+
 
 <?php
 /**

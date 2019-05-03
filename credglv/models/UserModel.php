@@ -37,7 +37,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 
-
 	public function redirectLogout() {
 		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
 			if ( ! is_admin() ) {
@@ -52,7 +51,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 	public function showAdminBar() {
 		$user          = wp_get_current_user();
-		$allowed_roles = array( 'credglv_member', 'credglv_student' );
+		$allowed_roles = array( 'customer', 'credglv_member', 'credglv_student' );
 		if ( empty( $user->ID ) || array_intersect( $allowed_roles, $user->roles ) ) {
 			return false;
 		}
@@ -70,6 +69,65 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public function onActivate() {
 		global $wpdb;
 		$tableName = $this->getName();
+		$wpdb->query( 'DROP FUNCTION IF EXISTS `followers_count`' );
+		$sql = "
+                CREATE FUNCTION `followers_count`(`parent_id` INT, `return_value` VARCHAR(1024)) 
+                RETURNS VARCHAR(1024)
+                BEGIN
+                DECLARE rv,q,queue,queue_children2 VARCHAR(1024);
+                DECLARE queue_length,front_id,pos INT;
+                DECLARE no_of_followers INT;
+
+                SET rv = parent_id;
+                SET queue = parent_id;
+                SET queue_length = 1;
+                SET no_of_followers = 0;
+
+                WHILE queue_length > 0 DO
+
+                SET front_id = FORMAT(queue,0);
+                IF queue_length = 1 THEN
+                SET queue = '';
+                ELSE
+                SET pos = LOCATE(',',queue) + 1;
+                SET q = SUBSTR(queue,pos);
+                SET queue = q;
+                END IF;
+                SET queue_length = queue_length - 1;
+
+                SELECT IFNULL(qc,'') INTO queue_children2
+                FROM (SELECT GROUP_CONCAT(user_id) qc
+                FROM " . $tableName . " WHERE referral_parent IN (front_id)) A;
+
+                IF LENGTH(queue_children2) = 0 THEN
+                IF LENGTH(queue) = 0 THEN
+                SET queue_length = 0;
+                END IF;
+                ELSE
+                IF LENGTH(rv) = 0 THEN
+                SET rv = queue_children2;
+                ELSE
+                SET rv = CONCAT(rv,',',queue_children2);
+                END IF;
+                IF LENGTH(queue) = 0 THEN
+                SET queue = queue_children2;
+                ELSE
+                SET queue = CONCAT(queue,',',queue_children2);
+                END IF;
+                SET queue_length = LENGTH(queue) - LENGTH(REPLACE(queue,',','')) + 1;
+                END IF;
+                END WHILE;
+
+                IF(return_value = 'count') THEN
+                SELECT count(*) into no_of_followers  FROM " . $tableName . " WHERE active = 1 AND FIND_IN_SET(referral_parent, rv );
+
+                RETURN no_of_followers;
+                ELSE
+                RETURN rv;
+                END IF;
+                END";
+
+		$wpdb->query( $sql );
 		if ( ! in_array( $tableName, $wpdb->tables ) ) {
 			$charset_collate = $wpdb->get_charset_collate();
 			$sql             = "CREATE TABLE $tableName (
@@ -177,6 +235,111 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $wpdb->prefix . self::TABLE_NAME;
 	}
 
+
+	/*
+		 * Retrieve total number of followers
+		 */
+	function count_referral_user( $user_id ) {
+		global $wpdb;
+		//return 0;
+		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
+
+		return $followers;
+	}
+
+
+	public function referral_user( $user_field, $where, $user_id ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			'SELECT ' . $user_field . ' FROM ' . $this->table_name . ' WHERE ' . $where . ' = "' . $user_id . '"'
+		);
+	}
+
+
+	public function get_url_share_link() {
+
+		$code = wp_get_current_user();
+		$code = $code->data->user_login;
+		/*$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
+
+		if ( $current_user_id ) {
+			$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
+		}*/
+		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
+			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . '?ru=' . $code;
+		} else {
+			$link_share = home_url() . '?ru=' . $code;
+		}
+
+		return $link_share;
+	}
+
+	public function recursive_tree_referral_user( $id, $level = 4 ) {
+		$user   = get_user_by( 'ID', $id );
+		$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+
+		$subarr = array(
+			'ID'           => $id,
+			'display_name' => $user->data->display_name,
+			'photo'        => $avatar,
+			'level'        => $level,
+		);
+		if ( $this->count_referral_user( $id ) ) {
+			$subarr['children'] = $this->get_children_referral_user( $id, $level );
+		} else {
+			$subarr['children'] = (object) array( 'ID' => '0' );
+		}
+
+		return (object) $subarr;
+	}
+
+	// write [when active = 1] and to function mysql to turn of debug
+	public function get_children_referral_user( $id, $level = 4 ) {
+		global $wpdb;
+		$level --;
+		if ( $this->count_referral_user( $id ) ) {
+			$tablename = self::getTableName();
+			$prepare   = $wpdb->prepare( "select ID,display_name from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
+			$result    = $wpdb->get_results( $prepare, ARRAY_A );
+
+			$subarr = array();
+			foreach ( $result as $k => $v ) {
+				$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+				if ( $this->count_referral_user( $v['ID'] ) ) {
+					if ( $level > 0 ) {
+						$subarr[] = (object) array(
+							'ID'           => $v['ID'],
+							'display_name' => $v['display_name'],
+							'photo'        => $avatar,
+							'level'        => $level,
+							'children'     => $this->get_children_referral_user( $v['ID'], $level )
+						);
+					} else {
+						$subarr[] = (object) array(
+							'ID'           => $v['ID'],
+							'display_name' => $v['display_name'],
+							'photo'        => $avatar,
+							'level'        => $level,
+						);
+					}
+				} else {
+					$subarr[] = (object) array(
+						'ID'           => $v['ID'],
+						'display_name' => $v['display_name'],
+						'photo'        => $avatar,
+						'level'        => $level,
+					);
+				}
+			}
+
+			return $subarr;
+		} else {
+
+
+		}
+
+	}
 
 	/**
 	 * Get all rating status of an object

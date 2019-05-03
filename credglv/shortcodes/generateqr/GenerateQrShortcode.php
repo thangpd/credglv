@@ -11,8 +11,8 @@
 namespace credglv\shortcodes\generateqr;
 
 use credglv\core\Shortcode;
+use credglv\models\UserModel;
 use Endroid\QrCode\QrCode;
-use Mockery\Exception;
 
 class GenerateQrShortcode extends Shortcode {
 
@@ -51,28 +51,22 @@ class GenerateQrShortcode extends Shortcode {
 	 */
 	public function getShortcodeContent( $data = [], $params = [], $key = '' ) {
 
-		$data      = $this->getData( $data );
-		$link_file = '';
-		if ( defined( 'WMC_NAME' ) ) {
-			$referral   = new \Referal_Users();
-			$check_user = $referral->referral_user( 'user_id', 'user_id', get_current_user_id() );
-			if ( $check_user ) {
-				$url_share_link = $referral->get_url_share_link();
+		$data           = $this->getData( $data );
+		$link_file      = '';
+		$referral       = new UserModel();
+		$url_share_link = $referral->get_url_share_link();
 
-				$qrCode       = new QrCode( $url_share_link );
-				$file_qr_code = 'qr_code' . get_current_user_id() . '.png';
-				$link_file    = CREDGLV_QR_CODE . DIRECTORY_SEPARATOR . $file_qr_code;
-				if ( is_dir( CREDGLV_QR_CODE ) ) {
-					if ( ! is_file( $link_file ) ) {
-						$qrCode->writeFile( $link_file );
-					}
-				} else {
-					throwException( new \Exception( 'cant write qrcode' . CREDGLV_QR_CODE ) );
-				}
-				$link_file = CREDGLV_QR_CODE_URI . $file_qr_code;
+		$qrCode       = new QrCode( $url_share_link );
+		$file_qr_code = 'qr_code' . get_current_user_id() . '.png';
+		$link_file    = CREDGLV_QR_CODE . DIRECTORY_SEPARATOR . $file_qr_code;
+		if ( is_dir( CREDGLV_QR_CODE ) ) {
+			if ( ! is_file( $link_file ) ) {
+				$qrCode->writeFile( $link_file );
 			}
+		} else {
+			throwException( new \Exception( 'cant write qrcode' . CREDGLV_QR_CODE ) );
 		}
-
+		$link_file = CREDGLV_QR_CODE_URI . $file_qr_code;
 
 		return $this->render( $this->contentView, array( 'data' => $data['data'], 'link_file' => $link_file ), true );
 	}

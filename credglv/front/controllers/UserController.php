@@ -178,10 +178,11 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'referral', [], false );
 	}
 
+
+
+
 	public function init_hook() {
 		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
-		add_rewrite_rule( 'loginasdasd/?$', 'wp-login.php', 'top' );
-
 		flush_rewrite_rules();
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
 			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
@@ -217,6 +218,40 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $login_url;
 	}
 
+	function credglv_assets_enqueue() {
+		/*wp_register_script( 'Treant-js', plugin_dir_url( __DIR__ ) . '/assets/libs/treant-js-master/Treant.js', [
+			'jquery-easing',
+			'jquery',
+			'jquery-ui'
+		] );
+		wp_register_script( 'Treant-raphael-js', plugin_dir_url( __DIR__ ) . '/assets/libs/treant-js-master/vendor/raphael.js', [
+			'jquery-easing',
+			'jquery',
+			'jquery-ui'
+		] );*/
+		wp_register_script( 'd3', plugin_dir_url( __DIR__ ) . '/assets/libs/d3/d3.js', [
+			'jquery',
+			'jquery-ui'
+		] );
+		wp_register_script( 'credglv-referral', plugin_dir_url( __DIR__ ) . '/assets/js/referral.js', [
+			'jquery',
+			'jquery-ui',
+            'd3'
+		] );
+		global $wp_query;
+		if ( isset( $wp_query->query_vars['referral'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_script( 'Treant-js' );
+					wp_enqueue_script( 'Treant-raphael-js' );
+					wp_enqueue_script( 'credglv-referral' );
+					wp_enqueue_style( 'credglv-main-css', plugin_dir_url( __DIR__ ) . '/assets/css/main.css' );
+				}
+			}
+		}
+
+	}
 
 	public static function registerAction() {
 
@@ -236,11 +271,11 @@ class UserController extends FrontController implements FrontControllerInterface
 					5
 				],
 				'init'                                    => [ self::getInstance(), 'init_hook' ],
-
+				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
 
 			],
 			'assets'  => [
-				'css' => [
+				/*'css' => [
 					[
 						'id'           => 'credglv-user-profile',
 						'isInline'     => false,
@@ -252,8 +287,8 @@ class UserController extends FrontController implements FrontControllerInterface
 						'isInline' => false,
 						'url'      => '/front/assets/css/category.css'
 					],
-				],
-				'js'  => [
+				],*/
+				'js' => [
 					[
 						'id'       => 'credglv-main-js',
 						'isInline' => false,

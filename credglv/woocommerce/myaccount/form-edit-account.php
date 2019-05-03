@@ -90,16 +90,13 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         </select>
     </p>
     <div class="clear"></div>
-
     <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
 
         <label for="cred_passport">
 			<?php _e( 'Passport', 'woocommerce' ); ?> <span class="required">*</span>
         </label>
 
-        <input name="cred_passport" id="cred_passport" type="file"
-               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-        <input id="passport_reset_upload_form" type="reset" value="Reset form"/>
+        <input name="cred_passport" id="cred_passport" type="file"/>
     </p>
 
 
@@ -109,9 +106,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 			<?php _e( 'Identification Card', 'woocommerce' ); ?> <span class="required">*</span>
         </label>
 
-        <input name="cred_identification_card" id="cred_identification_card" type="file"
-               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"/>
-        <input id="identify_cart_reset_upload_form" type="reset" value="Reset form"/>
+        <input name="cred_identification_card" id="cred_identification_card" type="file"/>
 
     </p>
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
