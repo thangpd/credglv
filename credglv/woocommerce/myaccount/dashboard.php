@@ -21,10 +21,11 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+$user = new \credglv\models\UserModel();
 
 
-$wmc_html = '<div id="wmc-qr-code">
-                <h2>' . __( 'Your share link QR code', 'wmc' ) . '</h2>
+$wmc_html = '<div id="credglv-qr-code">
+                <h2>' . __( 'Your share link QR code', 'credglv' ) . '</h2>
                 <div class="wmc-banners">';
 
 $wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
@@ -33,7 +34,10 @@ $wmc_html .= '</div>';
 
 echo $wmc_html;
 ?>
-
+    <div class="link-url">
+        <h2><?php echo __( 'Your share link url:', 'credglv' ); ?></h2>
+		<?php echo $user->get_url_share_link() ?>
+    </div>
 
     <!-- Customisation -->
 
