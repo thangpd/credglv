@@ -133,7 +133,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$sql             = "CREATE TABLE $tableName (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `user_id` int(11) NOT NULL,
-                     `referral_parent` int(11) NOT NULL,
+                     `referral_parent` int(11) NULL,
                      `active` tinyint(1) NULL DEFAULT '0',
                      `referral_code` varchar(50),
                      `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -275,7 +275,39 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $link_share;
 	}
 
-	public function recursive_tree_referral_user( $id, $level = 4 ) {
+
+	/*  update active status user referral
+	 *
+	 * */
+	public function update_active_status( $user_id, $status = 1 ) {
+		global $wpdb;
+		$wpdb->update(
+			self::getTableName(),
+			array(
+				'active'      => $status,
+				'update_date' => date( "Y-m-d H:i:s" ),
+			),
+			array(
+				'user_id' => $user_id
+			)
+		);
+	}
+
+	public function check_actived_referral( $user_id, $status = 1 ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$result    = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$tablename} where user_id=%s and active=%s", $user_id, $status ) );
+
+		return $result;
+	}
+
+
+	/*
+	 * get referral tree
+	 * Not limit level
+	 * */
+	// write [when active = 1] and to function mysql to turn of debug
+	public function recursive_tree_referral_user( $id, $level = 0 ) {
 		$user   = get_user_by( 'ID', $id );
 		$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
 
@@ -294,10 +326,10 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return (object) $subarr;
 	}
 
-	// write [when active = 1] and to function mysql to turn of debug
-	public function get_children_referral_user( $id, $level = 4 ) {
+
+	public function get_children_referral_user( $id, $level = 0 ) {
 		global $wpdb;
-		$level --;
+		$level ++;
 		if ( $this->count_referral_user( $id ) ) {
 			$tablename = self::getTableName();
 			$prepare   = $wpdb->prepare( "select ID,display_name from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
@@ -307,22 +339,13 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			foreach ( $result as $k => $v ) {
 				$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
 				if ( $this->count_referral_user( $v['ID'] ) ) {
-					if ( $level > 0 ) {
-						$subarr[] = (object) array(
-							'ID'           => $v['ID'],
-							'display_name' => $v['display_name'],
-							'photo'        => $avatar,
-							'level'        => $level,
-							'children'     => $this->get_children_referral_user( $v['ID'], $level )
-						);
-					} else {
-						$subarr[] = (object) array(
-							'ID'           => $v['ID'],
-							'display_name' => $v['display_name'],
-							'photo'        => $avatar,
-							'level'        => $level,
-						);
-					}
+					$subarr[] = (object) array(
+						'ID'           => $v['ID'],
+						'display_name' => $v['display_name'],
+						'photo'        => $avatar,
+						'level'        => $level,
+						'children'     => $this->get_children_referral_user( $v['ID'], $level )
+					);
 				} else {
 					$subarr[] = (object) array(
 						'ID'           => $v['ID'],

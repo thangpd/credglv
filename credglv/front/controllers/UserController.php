@@ -160,9 +160,17 @@ class UserController extends FrontController implements FrontControllerInterface
 		$key = array_search( 'dashboard', array_keys( $items ) );
 
 		if ( $key !== false ) {
-			$items = ( array_merge( array_splice( $items, 0, $key + 1 ), array( 'referral' => __( 'Referral', 'credglv' ) ), $items ) );
+			$items = (
+			array_merge(
+				array_splice( $items, 0, $key + 1 ),
+				array(
+					'referral' => __( 'Referral', 'credglv' ),
+					'payment'  => __( 'Payment', 'credglv' )
+				),
+				$items ) );
 		} else {
-			$items['referral'] = __( 'Referral', 'wmc' );
+			$items['referral'] = __( 'Referral', 'credglv' );
+			$items['payment']  = __( 'Payment', 'credglv' );
 		}
 
 		return $items;
@@ -170,6 +178,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	public function add_referral_query_var( $vars ) {
 		$vars[] = 'referral';
+		$vars[] = 'payment';
 
 		return $vars;
 	}
@@ -178,15 +187,18 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'referral', [], false );
 	}
 
-
+	public function woocommerce_account_payment_endpoint_hook() {
+		$this->render( 'payment', [], false );
+	}
 
 
 	public function init_hook() {
-		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
-		flush_rewrite_rules();
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
 			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
 		}
+		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
+		add_rewrite_endpoint( 'payment', EP_ROOT | EP_PAGES );
+		flush_rewrite_rules();
 		global $woocommerce;
 
 		if ( version_compare( $woocommerce->version, '2.6.0', ">=" ) ) {
@@ -196,6 +208,10 @@ class UserController extends FrontController implements FrontControllerInterface
 			add_action( 'woocommerce_account_referral_endpoint', array(
 				$this,
 				'woocommerce_account_referral_endpoint_hook'
+			) );
+			add_action( 'woocommerce_account_payment_endpoint', array(
+				$this,
+				'woocommerce_account_payment_endpoint_hook'
 			) );
 		} else {
 			add_action( 'woocommerce_before_my_account', array( $this, 'woocommerce_account_referral_endpoint_hook' ) );
@@ -236,7 +252,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		wp_register_script( 'credglv-referral', plugin_dir_url( __DIR__ ) . '/assets/js/referral.js', [
 			'jquery',
 			'jquery-ui',
-            'd3'
+			'd3'
 		] );
 		global $wp_query;
 		if ( isset( $wp_query->query_vars['referral'] ) ) {

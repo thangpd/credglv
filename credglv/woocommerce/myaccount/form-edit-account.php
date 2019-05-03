@@ -90,25 +90,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         </select>
     </p>
     <div class="clear"></div>
-    <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
 
-        <label for="cred_passport">
-			<?php _e( 'Passport', 'woocommerce' ); ?> <span class="required">*</span>
-        </label>
-
-        <input name="cred_passport" id="cred_passport" type="file"/>
-    </p>
-
-
-    <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
-
-        <label for="cred_identification_card">
-			<?php _e( 'Identification Card', 'woocommerce' ); ?> <span class="required">*</span>
-        </label>
-
-        <input name="cred_identification_card" id="cred_identification_card" type="file"/>
-
-    </p>
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
         <label for="account_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span
                     class="required">*</span></label>
