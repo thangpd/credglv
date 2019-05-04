@@ -205,7 +205,7 @@ jQuery(function ($) {
     credglv.login_toggle_login = function (form) {
         $(form).find('a.login-with-what').on('click', function (e) {
             $(form).find('.phone_login').toggle('hide');
-            $(form).find('.myaccount-login-page').toggle('hide');
+            $(form).find('.phone_login').nextUntil('.otp-code').toggle('show');
             var otp = $(form).find('.otp-code');
             if (otp.is(':visible')) {
                 otp.toggle('hide');
@@ -268,5 +268,8 @@ jQuery(function ($) {
         credglv.login_toggle_login('form.login');
         credglv.validate_submitform('form.login');
         credglv.checkrequirement_login('form.login');
+        console.log($('form.login').find('.phone_login').nextUntil('.otp-code'));
+        $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
+
     });
 });
