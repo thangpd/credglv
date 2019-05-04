@@ -293,11 +293,11 @@ class UserController extends FrontController implements FrontControllerInterface
 					self::getInstance(),
 					'credglv_wooc_edit_profile_save_fields'
 				],
-				'woocommerce_account_content'             => [
+				/*'woocommerce_account_content'             => [
 					self::getInstance(),
 					'credglv_myaccount_customer_avatar',
 					5
-				],
+				],*/
 				'init'                                    => [ self::getInstance(), 'init_hook' ],
 				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
 

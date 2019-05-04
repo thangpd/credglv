@@ -320,7 +320,11 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		if ( $this->count_referral_user( $id ) ) {
 			$subarr['children'] = $this->get_children_referral_user( $id, $level );
 		} else {
-			$subarr['children'] = (object) array( 'ID' => '0' );
+			$subarr['children'][] = (object) array(
+				'ID'           => '0',
+				'display_name' => __( 'Undefined', 'credglv' ),
+				'photo'        => get_avatar_url( '', [ 'default' => 'mysteryman' ] )
+			);
 		}
 
 		return (object) $subarr;

@@ -1,6 +1,9 @@
 jQuery(function ($) {
     "use strict";
-    $(document).ready(function () {
+    var credglv = window.credglv || {};
+
+    credglv.credglv_d3 = function (data) {
+
         //build tree
         var margin = {top: 20, right: 120, bottom: 20, left: 120},
             width = $('#collapsable-example').width() - margin.right - margin.left,
@@ -26,37 +29,6 @@ jQuery(function ($) {
             .append("g")
             .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-        /*var data = {
-            "display_name": "Rogers",
-            "title": "CEO",
-            "photo": "http://lorempixel.com/60/60/cats/1",
-            "children": [{
-                "display_name": "Smith",
-                "title": "President",
-                "photo": "http://lorempixel.com/60/60/cats/2",
-                "children": [{
-                    "display_name": "Jane",
-                    "title": "Vice President",
-                    "photo": "http://lorempixel.com/60/60/cats/3",
-                    "children": [{
-                        "display_name": "August",
-                        "title": "Dock Worker",
-                        "photo": "http://lorempixel.com/60/60/cats/4"
-                    }, {
-                        "display_name": "Yoyo",
-                        "title": "Line Assembly",
-                        "photo": "http://lorempixel.com/60/60/cats/5"
-                    }]
-                }, {
-                    "display_name": "Ringwald",
-                    "title": "Comptroller",
-                    "photo": "http://lorempixel.com/60/60/cats/6"
-                }]
-            }]
-        };*/
-        var data = $('#collapsable-example').data('data');
-        console.log(data);
 
         root = data;
         root.x0 = height / 2;
@@ -228,5 +200,41 @@ jQuery(function ($) {
             }
             update(d);
         }
+    }
+
+
+    $(document).ready(function () {
+
+        /*var data = {
+            "display_name": "Rogers",
+            "title": "CEO",
+            "photo": "http://lorempixel.com/60/60/cats/1",
+            "children": [{
+                "display_name": "Smith",
+                "title": "President",
+                "photo": "http://lorempixel.com/60/60/cats/2",
+                "children": [{
+                    "display_name": "Jane",
+                    "title": "Vice President",
+                    "photo": "http://lorempixel.com/60/60/cats/3",
+                    "children": [{
+                        "display_name": "August",
+                        "title": "Dock Worker",
+                        "photo": "http://lorempixel.com/60/60/cats/4"
+                    }, {
+                        "display_name": "Yoyo",
+                        "title": "Line Assembly",
+                        "photo": "http://lorempixel.com/60/60/cats/5"
+                    }]
+                }, {
+                    "display_name": "Ringwald",
+                    "title": "Comptroller",
+                    "photo": "http://lorempixel.com/60/60/cats/6"
+                }]
+            }]
+        };*/
+        var data = $('#collapsable-example').data('data');
+        credglv.credglv_d3(data);
+
     });
 });

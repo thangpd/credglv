@@ -260,15 +260,15 @@ jQuery(function ($) {
 
     $(document).ready(function () {
         credglv.preventinputtext_mobilefield('form.register');
-        credglv.preventinputtext_mobilefield('form.login');
         credglv.validate_submitform('form.register');
         credglv.checkrequirement('form.register');
         credglv.select2login();
 
+
+        credglv.preventinputtext_mobilefield('form.login');
         credglv.login_toggle_login('form.login');
         credglv.validate_submitform('form.login');
         credglv.checkrequirement_login('form.login');
-        console.log($('form.login').find('.phone_login').nextUntil('.otp-code'));
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
 
     });
