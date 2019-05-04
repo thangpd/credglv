@@ -11,7 +11,7 @@ if ( ! class_exists( 'mobile_authanticate' ) ) {
 		    add_action('wp_authenticate',array($this ,'mobile_authantication_callback'),1,2 ); // authantication use mobile
 		    add_action('woocommerce_checkout_process',array($this, 'check_phone_number_exist_callback'),10); // checkout page mobile validation
 		    add_filter( 'woocommerce_process_myaccount_field_billing_phone',array($this,'login_user_belling_number_callback'),10); // user my account in validation
-
+a
 			// WOOCOMMERCE REGISTRATION FORM IN ADD PHONE MUMBER FILED
  			add_action( 'woocommerce_register_form_start',array($this, 'mrp_wooc_extra_register_fields'),10);
  			
