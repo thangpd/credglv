@@ -39,6 +39,7 @@ if(isset($_POST['paymentclick'])){
         echo $layout;
     }
 }
+
 $get_bankname= get_user_meta($user_id,'bank_name');
 $get_bankbranch = get_user_meta($user_id,'bank_branch');
 $get_bankcountry = get_user_meta($user_id,'bank_country');
@@ -66,6 +67,6 @@ $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row for
 $html .= '<label for="user_banknumber">Bank Number';
 $html .= '<input type="text" id="user_banknumber" name="user_banknumber" value="'.$get_banknumber[0].'" class="woocommerce-Input woocommerce-Input--password input-text">';
 $html .= '</p>';
-$html .= '<input type="submit" name="paymentclick" value="Update"/>';
+$html .= '<input type="submit" name="paymentclick" value="Update_Payment"/>';
 $html .= '</from>';
 echo $html;

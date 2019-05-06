@@ -7,7 +7,9 @@ if (isset($_POST['uploadclick'])) {
         if ($explode[0] == 'image') {
             $from_pp = $_FILES['user_passports']['tmp_name'];
             $to = wp_upload_dir()['basedir'];
-            $name_pp = $user_id . '_pp_' . $_FILES['user_passports']['name'];
+            $timezone  = +7;
+            $time = gmdate("Y-m-j-H-i-s", time() + 3600*($timezone+date("I")));
+            $name_pp = $user_id . '_pp_' .$time.'_'. $_FILES['user_passports']['name'];
             $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_pp;
             $src = $to . '/credglv/img/' . $name_pp;
             if (!is_file($src)) {
@@ -22,7 +24,9 @@ if (isset($_POST['uploadclick'])) {
         if ($explode[0] == 'image') {
             $from_iden = $_FILES['user_indentification']['tmp_name'];
             $to = wp_upload_dir()['basedir'];
-            $name_iden = $user_id . '_iden_' . $_FILES['user_indentification']['name'];
+            $timezone  = +7;
+            $time = gmdate("Y-m-j-H-i-s", time() + 3600*($timezone+date("I")));
+            $name_iden = $user_id . '_iden_' .$time.'_'. $_FILES['user_indentification']['name'];
             $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_iden;
             $src = $to . '/credglv/img/' . $name_iden;
             if (!is_file($src)) {
@@ -140,7 +144,7 @@ $html .= '<label for="user_passports">Passport';
 $html .= '<p><img style="width:125px;height:125px" src="'.$img_pp[0].'"></p>';
 $html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
 $html .= '</p>';
-$html .= '<input type="submit" name="uploadclick" value="Update"/>';
+$html .= '<input type="submit" name="uploadclick" value="Update_Profile"/>';
 $html .= '</from>';
 echo $html;
 
