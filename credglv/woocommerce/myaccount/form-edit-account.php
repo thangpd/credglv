@@ -56,39 +56,39 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
                maxlength="10"/>
     </p>
 
-    <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
+    <!--<p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
 
         <label for="cred_date_of_birth">
-			<?php _e( 'Date of birth', 'woocommerce' ); ?> <span class="required">*</span>
+			<?php /*_e( 'Date of birth', 'woocommerce' ); */?> <span class="required">*</span>
         </label>
 
         <input type="date" class="input-text" name="cred_date_of_birth" id="cred_date_of_birth"
-               value="<?php echo isset( $_POST['cred_date_of_birth'] ) ? $_POST['cred_date_of_birth'] : get_user_meta( $user->data->ID, 'cred_date_of_birth', true ) ?>"
+               value="<?php /*echo isset( $_POST['cred_date_of_birth'] ) ? $_POST['cred_date_of_birth'] : get_user_meta( $user->data->ID, 'cred_date_of_birth', true ) */?>"
                maxlength="10"/>
     </p>
     <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
         <label for="cred_gender">
-			<?php _e( 'Gender', 'woocommerce' ); ?> <span class="required">*</span>
+			<?php /*_e( 'Gender', 'woocommerce' ); */?> <span class="required">*</span>
         </label>
 		<?php
-		$arr_gender     = array( 'mr' => 'Mr.', 'mrs' => 'Mrs.', 'ms' => 'Ms.' );
+/*		$arr_gender     = array( 'mr' => 'Mr.', 'mrs' => 'Mrs.', 'ms' => 'Ms.' );
 		$current_gender = get_user_meta( $user->data->ID, 'cred_gender', true );
-		?>
+		*/?>
         <select name="cred_gender" id="cred_gender">
-			<?php foreach ( $arr_gender as $k => $v ) {
+			<?php /*foreach ( $arr_gender as $k => $v ) {
 				if ( isset( $_POST['cred_gender'] ) ) {
 					$selected = $_POST["cred_gender"] == $k ? 'selected' : '';
 				} else {
 					$selected = $current_gender == $k ? 'selected' : '';
 				}
 
-				?>
-                <option value="<?php echo $k ?>" <?php echo $selected ?>><?php echo $v ?></option>
+				*/?>
+                <option value="<?php /*echo $k */?>" <?php /*echo $selected */?>><?php /*echo $v */?></option>
 
 				<?php
-			} ?>
+/*			} */?>
         </select>
-    </p>
+    </p>-->
     <div class="clear"></div>
 
     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
