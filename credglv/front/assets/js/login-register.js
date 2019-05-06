@@ -212,10 +212,12 @@ jQuery(function ($) {
             }
             console.log(otp.attr("data-phone"));
 
-
+            var text_toggle = $('.login-with-what');
             if (otp.attr("data-phone") === 'yes') {
+                text_toggle.text('Login with phone number');
                 otp.attr("data-phone", "no");
             } else {
+                text_toggle.text('Login with phone username/email');
                 otp.attr("data-phone", "yes");
             }
             e.preventDefault();

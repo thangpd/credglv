@@ -72,7 +72,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 		try {
 			$user                  = new UserModel();
 			$user->user_id         = $customer_id;
-			$user->referral_parent = $parent_ref ;
+			$user->referral_parent = $parent_ref;
 			$user->referral_code   = $user->get_referralcode();
 			$user->save();
 		} catch ( Exception $e ) {
@@ -169,32 +169,28 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		?>
 
-        <p class="form-row form-row-wide">
+        <div class="form-row form-row-wide">
             <label for="reg_phone_register">
 				<?php _e( 'Mobile Number', 'credglv' ); ?> <span class="required">*</span>
             </label>
+            <div class="login_countrycode">
 
-        <div class="login_countrycode">
-            <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
-
-
-			?>">
-                <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
-                       value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
-                       name="number_countrycode" size="4">
-                <ul class="digit_cs-list">
-                    <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
-                    <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
-                </ul>
+                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?>">
+                    <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
+                           value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
+                           name="number_countrycode" size="4">
+                    <ul class="digit_cs-list">
+                        <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
+                        <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+                    </ul>
+                </div>
+                <input type="text" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                       name="cred_billing_phone"
+                       id="reg_phone_register"
+                       value="<?php echo $num_val; ?>" maxlength="10"/>
             </div>
-            <input type="text" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
-                   name="cred_billing_phone"
-                   id="reg_phone_register"
-                   value="<?php echo $num_val; ?>" maxlength="10"/>
 
         </div>
-
-        </p>
 
 
 		<?php
