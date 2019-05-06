@@ -275,6 +275,18 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $link_share;
 	}
 
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
+	public function check_actived_referral( $user_id, $status = 1 ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$result    = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$tablename} where user_id=%s and active=%s", $user_id, $status ) );
+
+		return $result;
+	}
 
 	/*  update active status user referral
 	 *
@@ -293,13 +305,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		);
 	}
 
-	public function check_actived_referral( $user_id, $status = 1 ) {
-		global $wpdb;
-		$tablename = self::getTableName();
-		$result    = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$tablename} where user_id=%s and active=%s", $user_id, $status ) );
-
-		return $result;
-	}
 
 
 	/*
@@ -366,51 +371,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 		}
 
-	}
-
-	/**
-	 * Get all rating status of an object
-	 *
-	 * @param $type
-	 * @param $object_id
-	 * @param string $mode
-	 *
-	 * @return object [
-	 *      'total' => NUMBER,
-	 *      'avg'   => NUMBER
-	 * ]
-	 */
-	public static function getRateStatus( $type = 'course', $object_id, $mode = 'simple' ) {
-		global $wpdb;
-		$tableName = self::getTableName();
-
-		if ( $type == 'course' ) {
-			if ( $mode == 'simple' ) {
-				if ( ! is_array( $object_id ) ) {
-					$result = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(a.id) as total, (SUM(a.rate)/COUNT(a.id)) as `avg` FROM {$tableName} a inner join {$wpdb->users} u on a.user_id=u.ID WHERE a.type = %s AND a.object_id = %d", $type, $object_id ) );
-				} else {
-					$ids    = implode( ',', $object_id );
-					$result = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(a.id) as total, (SUM(a.rate)/COUNT(a.id)) as `avg` FROM {$tableName} a inner join {$wpdb->users} u on a.user_id=u.ID WHERE a.type = %s AND a.object_id IN ({$ids})", $type ) );
-				}
-			} else {
-				$startQuery = [];
-				for ( $i = 1; $i <= 5; $i ++ ) {
-					$startQuery[] = sprintf( '(SELECT COUNT(rate%4$s.id) FROM %1$s rate%4$s inner join %5$s u on rate%4$s.user_id=u.ID WHERE rate%4$s.type = \'%2$s\' AND rate%4$s.object_id = %3$s AND rate%4$s.rate = %4$s) as rate%4$s', $tableName, $type, $object_id, $i, $wpdb->users );
-				}
-				$startQuery = implode( ',', $startQuery );
-				$result     = $wpdb->get_results( $wpdb->prepare( "SELECT COUNT(a.id) as total, (SUM(a.rate)/COUNT(a.id)) as `avg`, {$startQuery} FROM {$tableName} a inner join {$wpdb->users} u on a.user_id=u.ID WHERE a.type = %s AND a.object_id = %d", $type, $object_id ) );
-			}
-			$result = apply_filters( 'credglv_rating_stats', $result, $type, $object_id );
-			if ( ! empty( $result ) ) {
-				$result = array_shift( $result );
-
-				return $result;
-			}
-		} else {
-			$status = (object) [ 'total' => 0, 'avg' => 0 ];
-		}
-
-		return $status;
 	}
 
 	/**

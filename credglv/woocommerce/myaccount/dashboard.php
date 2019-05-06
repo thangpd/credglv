@@ -21,8 +21,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
-$user = new \credglv\models\UserModel();
-
+$user    = new \credglv\models\UserModel();
+$user_id = get_current_user_id();
 
 $wmc_html = '<div id="credglv-qr-code">
                 <h2>' . __( 'Your share link QR code', 'credglv' ) . '</h2>
@@ -39,8 +39,18 @@ echo $wmc_html;
 		<?php echo $user->get_url_share_link() ?>
     </div>
 
-    <!-- Customisation -->
 
+<?php if ( $user->check_actived_referral( $user_id ) ) {
+
+	echo 'actived';
+} else {
+	echo 'chua active';
+
+};
+
+
+?>
+    <!-- Customisation -->
 
 <?php
 /**
