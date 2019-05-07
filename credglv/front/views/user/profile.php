@@ -148,7 +148,7 @@ function render_profile_html(){
     echo $html;
 }
 function render_profile_error_html(){
-    global $key;
+    global $flag;
     $user_gender = $_POST['user_gender'];
     $user_date = $_POST['user_date'];
     $user_phone = $_POST['user_phone'];
@@ -227,7 +227,7 @@ function render_profile_error_html(){
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_fullname">Full Name';
-    if($key==1) {
+    if($flag==1) {
         $html .= '<input type="text" id="user_fullnames" name="user_fullname" value="' . $get_fullname . '" class="woocommerce-Input woocommerce-Input--password input-text">';
     } else{
         $html .= '<input type="text" id="user_fullnames" name="user_fullname" value="' . $user_fullname . '" class="woocommerce-Input woocommerce-Input--password input-text">';
@@ -239,7 +239,7 @@ function render_profile_error_html(){
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_fullname">Phone Number';
-    if($key == 2) {
+    if($flag == 2) {
         $html .= '<input type="text" id="user_phone" name="user_phone" value="' . $get_phone . '" class="woocommerce-Input woocommerce-Input--password input-text">';
     }else{
         $html .= '<input type="text" id="user_phone" name="user_phone" value="' . $user_phone . '" class="woocommerce-Input woocommerce-Input--password input-text">';
@@ -247,7 +247,7 @@ function render_profile_error_html(){
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_fullname">Address';
-    if($key ==3) {
+    if($flag ==3) {
         $html .= '<input type="text" id="user_address" name="user_address" value="' . $get_address . '" class="woocommerce-Input woocommerce-Input--password input-text">';
     }else{
         $html .= '<input type="text" id="user_address" name="user_address" value="' . $user_address . '" class="woocommerce-Input woocommerce-Input--password input-text">';
