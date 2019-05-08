@@ -283,7 +283,8 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public function check_actived_referral( $user_id, $status = 1 ) {
 		global $wpdb;
 		$tablename = self::getTableName();
-		$result    = $wpdb->get_results( $wpdb->prepare( "SELECT ID FROM {$tablename} where user_id=%s and active=%s", $user_id, $status ) );
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%s and active=%s", $user_id, $status );
+		$result    = $wpdb->get_results( $prepare );
 
 		return $result;
 	}
@@ -305,7 +306,18 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		);
 	}
 
+	/**
+	 * Get referral parent
+	 */
+	public function get_referral_parent( $user_id ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT referral_parent FROM {$tablename} where user_id=%s", $user_id );
+		$result    = $wpdb->get_results( $prepare );
+		$result    = reset( $result );
 
+		return $result;
+	}
 
 	/*
 	 * get referral tree

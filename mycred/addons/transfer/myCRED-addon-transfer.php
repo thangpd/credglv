@@ -244,6 +244,7 @@ if ( ! class_exists( 'myCRED_Transfer_Module' ) ) :
 				wp_send_json_error( 'error_9' );
 
 			$request = mycred_new_transfer( $post['mycred_new_transfer'], $post );
+
 			if ( ! is_array( $request ) )
 				wp_send_json_error( $request );
 
