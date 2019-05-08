@@ -125,7 +125,7 @@ function render_payment_html()
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_paymentcard">Bank Card';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_bankcard.'" alt=""></p>';
+    $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"><img style="width:125px;height:125px" src="'.$get_bankcard.'" alt="" class="update_img"></p>';
     $html .= '<input type="file" id="user_paymentcard" name="user_paymentcard" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
 
@@ -278,7 +278,7 @@ function render_payment_error_html()
 
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankcard">Bank Card';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_bankcard.'" alt=""></p>';
+    $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide"><img style="width:125px;height:125px" src="'.$get_bankcard.'" alt="" class="update_img"></p>';
     $html .= '<input type="file" id="user_bankcard" name="user_bankcard" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
@@ -297,20 +297,22 @@ if (! is_dir($upload_dir)) {
 }
 if(isset($_POST['paymentclick'])){
     $user_id = get_current_user_id();
-    if ($_FILES['user_paymentcard']['error'] <= 0) {
-        $type_bc = $_FILES['user_paymentcard']['type'];
-        $explode = explode('/', $type_bc);
-        if ($explode[0] == 'image') {
-            $from_bc = $_FILES['user_paymentcard']['tmp_name'];
-            $to = wp_upload_dir()['basedir'];
-            $timezone  = +7;
-            $time = gmdate("Y-m-j-H-i-s", time() + 3600*($timezone+date("I")));
-            $name_bc = $user_id . '_bc_' .$time.'_'. $_FILES['user_paymentcard']['name'];
-            $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_bc;
-            $src = $to . '/credglv/img/' . $name_bc;
-            if (!is_file($src)) {
-                move_uploaded_file($from_bc, $src);
-                update_user_meta($user_id, 'user_paymentcard', $url);
+    if(isset($_FILES['user_paymentcard'])) {
+        if ($_FILES['user_paymentcard']['error'] <= 0) {
+            $type_bc = $_FILES['user_paymentcard']['type'];
+            $explode = explode('/', $type_bc);
+            if ($explode[0] == 'image') {
+                $from_bc = $_FILES['user_paymentcard']['tmp_name'];
+                $to = wp_upload_dir()['basedir'];
+                $timezone = +7;
+                $time = gmdate("Y-m-j-H-i-s", time() + 3600 * ($timezone + date("I")));
+                $name_bc = $user_id . '_bc_' . $time . '_' . $_FILES['user_paymentcard']['name'];
+                $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_bc;
+                $src = $to . '/credglv/img/' . $name_bc;
+                if (!is_file($src)) {
+                    move_uploaded_file($from_bc, $src);
+                    update_user_meta($user_id, 'user_paymentcard', $url);
+                }
             }
         }
     }

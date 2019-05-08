@@ -135,12 +135,12 @@ function render_profile_html(){
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_indentification">Identification Card';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_iden.'" alt=""></p>';
+    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_iden.'" alt="" class="update_img_iden"></p>';
     $html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_passports">Passport';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_pp.'" alt=""></p>';
+    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_pp.'" alt="" class="update_img_pp"></p>';
     $html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
@@ -270,12 +270,12 @@ function render_profile_error_html(){
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_indentification">Identification Card';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_iden.'" alt=""></p>';
+    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_iden.'" alt="" class="update_img_iden"></p>';
     $html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_passports">Passport';
-    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_pp.'" alt=""></p>';
+    $html .= '<p><img style="width:125px;height:125px" src="'.$get_img_pp.'" alt="" class="update_img_pp"></p>';
     $html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
@@ -290,37 +290,41 @@ if (! is_dir($upload_dir)) {
 }
 if (isset($_POST['uploadclick'])) {
     $user_id = get_current_user_id();
-    if ($_FILES['user_passports']['error'] <= 0) {
-        $type_pp = $_FILES['user_passports']['type'];
-        $explode = explode('/', $type_pp);
-        if ($explode[0] == 'image') {
-            $from_pp = $_FILES['user_passports']['tmp_name'];
-            $to = wp_upload_dir()['basedir'];
-            $timezone  = +7;
-            $time = gmdate("Y-m-j-H-i-s", time() + 3600*($timezone+date("I")));
-            $name_pp = $user_id . '_pp_' .$time.'_'. $_FILES['user_passports']['name'];
-            $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_pp;
-            $src = $to . '/credglv/img/' . $name_pp;
-            if (!is_file($src)) {
-                move_uploaded_file($from_pp, $src);
-                update_user_meta($user_id, 'passports', $url);
+    if(isset($_FILES['user_passports'])) {
+        if ($_FILES['user_passports']['error'] <= 0) {
+            $type_pp = $_FILES['user_passports']['type'];
+            $explode = explode('/', $type_pp);
+            if ($explode[0] == 'image') {
+                $from_pp = $_FILES['user_passports']['tmp_name'];
+                $to = wp_upload_dir()['basedir'];
+                $timezone = +7;
+                $time = gmdate("Y-m-j-H-i-s", time() + 3600 * ($timezone + date("I")));
+                $name_pp = $user_id . '_pp_' . $time . '_' . $_FILES['user_passports']['name'];
+                $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_pp;
+                $src = $to . '/credglv/img/' . $name_pp;
+                if (!is_file($src)) {
+                    move_uploaded_file($from_pp, $src);
+                    update_user_meta($user_id, 'passports', $url);
+                }
             }
         }
     }
-    if ($_FILES['user_indentification']['error'] <= 0) {
-        $type_iden = $_FILES['user_indentification']['type'];
-        $explode = explode('/', $type_iden);
-        if ($explode[0] == 'image') {
-            $from_iden = $_FILES['user_indentification']['tmp_name'];
-            $to = wp_upload_dir()['basedir'];
-            $timezone  = +7;
-            $time = gmdate("Y-m-j-H-i-s", time() + 3600*($timezone+date("I")));
-            $name_iden = $user_id . '_iden_' .$time.'_'. $_FILES['user_indentification']['name'];
-            $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_iden;
-            $src = $to . '/credglv/img/' . $name_iden;
-            if (!is_file($src)) {
-                move_uploaded_file($from_iden, $src);
-                update_user_meta($user_id, 'iden', $url);
+    if(isset($_FILES['user_indentification'])) {
+        if ($_FILES['user_indentification']['error'] <= 0) {
+            $type_iden = $_FILES['user_indentification']['type'];
+            $explode = explode('/', $type_iden);
+            if ($explode[0] == 'image') {
+                $from_iden = $_FILES['user_indentification']['tmp_name'];
+                $to = wp_upload_dir()['basedir'];
+                $timezone = +7;
+                $time = gmdate("Y-m-j-H-i-s", time() + 3600 * ($timezone + date("I")));
+                $name_iden = $user_id . '_iden_' . $time . '_' . $_FILES['user_indentification']['name'];
+                $url = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_iden;
+                $src = $to . '/credglv/img/' . $name_iden;
+                if (!is_file($src)) {
+                    move_uploaded_file($from_iden, $src);
+                    update_user_meta($user_id, 'iden', $url);
+                }
             }
         }
     }
