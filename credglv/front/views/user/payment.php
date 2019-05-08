@@ -249,6 +249,7 @@ if(isset($_POST['paymentclick'])){
         $layout = '';
         $layout .= '<div style="background-color: green;text-align: center;color: white">Update Success</div>';
         echo $layout;
+        $flag = 0;
     }
 }
 global $flag;
