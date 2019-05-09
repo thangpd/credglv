@@ -73,33 +73,36 @@ class UserController extends FrontController implements FrontControllerInterface
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
 
-		/*if ( isset( $_POST['cred_billing_phone'] ) && $_POST['cred_billing_phone'] == '' ) {
+		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
 
 			return $_POST;
 		}
-		if ( isset( $_POST['cred_billing_phone'] ) && ! empty( $_POST['cred_billing_phone'] ) ) {
+		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && ! empty( $_POST[ self::METAKEY_PHONE ] ) ) {
 			$current_phone = UserController::getPhoneByUserID( $user_id );
 			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
-				$mobile_num_result = self::getUserIDByPhone( $_POST['cred_billing_phone'] );
+				$mobile_num_result = self::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
 				if ( isset( $mobile_num_result['code'] ) && $mobile_num_result['code'] == 200 ) {
 					if ( $user_id != $mobile_num_result ) {
 						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
 
 						return $_POST;
 					} else {
-						update_user_meta( $user_id, self::METAKEY_PHONE, $_POST['cred_billing_phone'] );
+						update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
 					}
 				} else {
-					update_user_meta( $user_id, self::METAKEY_PHONE, $_POST['cred_billing_phone'] );
+					update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
 				}
 			}
 
-		}*/
-		if ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) {
-			$args->add( 'user_pin_name_error', __( 'Pin is required.', 'credglv' ) );
+		}
 
-			return $_POST;
+		if ( ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) ) {
+			if ( empty( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ) ) {
+				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
+
+				return $_POST;
+			}
 		} else {
 			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
 		}
