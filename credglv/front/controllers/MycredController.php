@@ -79,6 +79,28 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 	}
 
+	public function credglv_transfer_form_extra_otp_field( $fields, $args, $settings ) {
+
+
+		$fields .= '
+		<div class="row">
+
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+				<div class="form-group select-recipient-wrapper">
+				<label>' . __( "Pin", "credglv" ) . '</label>
+				<br>
+				<input type="text" name="mycred_new_transfer[pin_transfer]" 
+				value="" aria-required="true" class="form-control" >
+				</div>
+			</div>
+		</div>
+		<br>
+';
+
+		return $fields;
+	}
+
 	public static function registerAction() {
 
 
@@ -87,9 +109,10 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		],*/
 		return [
 			'actions' => [
-				'init'                      => [ self::getInstance(), 'init_hook' ],
-				'wp_enqueue_scripts'        => [ self::getInstance(), 'credglv_assets_enqueue' ],
-				'mycred_transfer_completed' => [ self::getInstance(), 'credglv_transfer_active_verify', 10, 4 ],
+				'init'                       => [ self::getInstance(), 'init_hook' ],
+				'wp_enqueue_scripts'         => [ self::getInstance(), 'credglv_assets_enqueue' ],
+				'mycred_transfer_completed'  => [ self::getInstance(), 'credglv_transfer_active_verify', 10, 4 ],
+				'mycred_transfer_form_extra' => [ self::getInstance(), 'credglv_transfer_form_extra_otp_field', 10, 3 ],
 			],
 			'assets'  => [
 				/*'css' => [
