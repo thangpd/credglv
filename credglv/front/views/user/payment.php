@@ -359,7 +359,7 @@ if(isset($_POST['paymentclick'])){
 
 
 
-    }else if(!empty($bankname) && !empty($bankbranch) && !empty($bankcountry) && !empty($bankowner) && !empty($banknumber) && !empty($bankpin) && $bankpin == '7777') {
+    }else if(!empty($bankname) && !empty($bankbranch) && !empty($bankcountry) && !empty($bankowner) && !empty($banknumber) && !empty($bankpin) && $bankpin == get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true )) {
         update_user_meta($user_id, 'bank_name', $bankname);
         update_user_meta($user_id, 'bank_branch', $bankbranch);
         update_user_meta($user_id, 'bank_country', $bankcountry);
