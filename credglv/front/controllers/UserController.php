@@ -24,6 +24,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	const METAKEY_PHONE = 'cred_billing_phone';
+	const METAKEY_PIN = 'cred_user_pin';
 
 	/**
 	 * Get user id by phone
@@ -71,7 +72,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
-		if ( isset( $_POST['cred_billing_phone'] ) && $_POST['cred_billing_phone'] == '' ) {
+		/*if ( isset( $_POST['cred_billing_phone'] ) && $_POST['cred_billing_phone'] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
 
 			return $_POST;
@@ -80,60 +81,31 @@ class UserController extends FrontController implements FrontControllerInterface
 			$current_phone = UserController::getPhoneByUserID( $user_id );
 			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
 				$mobile_num_result = self::getUserIDByPhone( $_POST['cred_billing_phone'] );
-				if ( isset( $mobile_num_result ) ) {
+				if ( isset( $mobile_num_result['code'] ) && $mobile_num_result['code'] == 200 ) {
 					if ( $user_id != $mobile_num_result ) {
 						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
 
 						return $_POST;
 					} else {
-						update_user_meta( $user_id, 'billing_phone', $_POST['cred_billing_phone'] );
+						update_user_meta( $user_id, self::METAKEY_PHONE, $_POST['cred_billing_phone'] );
 					}
 				} else {
-					update_user_meta( $user_id, 'billing_phone', $_POST['cred_billing_phone'] );
+					update_user_meta( $user_id, self::METAKEY_PHONE, $_POST['cred_billing_phone'] );
 				}
 			}
 
-		}
-
-		//date of birth
-		if ( isset( $_POST['cred_date_of_birth'] ) && $_POST['cred_date_of_birth'] == '' ) {
-			$args->add( 'cred_date_of_birth_error', __( 'Date of birth is required.', 'woocommerce' ) );
-
-			return $_POST;
-		}
-		if ( isset( $_POST['cred_date_of_birth'] ) && ! empty( $_POST['cred_date_of_birth'] ) ) {
-			update_user_meta( $user_id, 'cred_date_of_birth', $_POST['cred_date_of_birth'] );
-		}
-
-		//gender
-		if ( isset( $_POST['cred_gender'] ) && $_POST['cred_gender'] == '' ) {
-			$args->add( 'cred_gender_error', __( 'Gender is required.', 'woocommerce' ) );
-
-			return $_POST;
-		}
-		if ( isset( $_POST['cred_gender'] ) && ! empty( $_POST['cred_gender'] ) ) {
-			update_user_meta( $user_id, 'cred_gender', $_POST['cred_gender'] );
-		}
-		//passport
-		if ( isset( $_POST['cred_passport'] ) && $_POST['cred_passport'] == '' ) {
-			$args->add( 'cred_passport_error', __( 'Passport is required.', 'woocommerce' ) );
-
-			return $_POST;
-		}
-		if ( isset( $_POST['cred_passport'] ) && ! empty( $_POST['cred_passport'] ) ) {
-			update_user_meta( $user_id, 'cred_passport', $_POST['cred_passport'] );
-		}
-		//cred_identification_card
-		if ( isset( $_POST['cred_identification_card'] ) && $_POST['cred_identification_card'] == '' ) {
-			$args->add( 'cred_identification_card_error', __( 'Identification_card is required.', 'woocommerce' ) );
-
-			return $_POST;
-		}
-		if ( isset( $_POST['cred_identification_card'] ) && ! empty( $_POST['cred_identification_card'] ) ) {
-			update_user_meta( $user_id, 'cred_identification_card', $_POST['cred_identification_card'] );
-		}
+		}*/
 
 
+		if ( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ) {
+			if ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) {
+				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
+
+				return $_POST;
+			} else {
+				update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
+			}
+		}
 	}
 
 
@@ -157,22 +129,22 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	public function add_my_account_menu( $items ) {
 
-		$key = array_search( 'dashboard', array_keys( $items ) );
+		$key = array_search( 'edit-account', array_keys( $items ) );
 
 		if ( $key !== false ) {
 			$items = (
 			array_merge(
 				array_splice( $items, 0, $key + 1 ),
 				array(
-					'referral' => __( 'Referral', 'credglv' ),
 					'payment'  => __( 'Payment', 'credglv' ),
-					'profile'  => __( 'Profile', 'credglv' )
+					'profile'  => __( 'Profile', 'credglv' ),
+					'referral' => __( 'Referral', 'credglv' ),
 				),
 				$items ) );
 		} else {
-			$items['referral'] = __( 'Referral', 'credglv' );
 			$items['payment']  = __( 'Payment', 'credglv' );
 			$items['profile']  = __( 'Profile', 'credglv' );
+			$items['referral'] = __( 'Referral', 'credglv' );
 		}
 
 		return $items;
