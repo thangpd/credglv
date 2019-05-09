@@ -49,6 +49,8 @@ class Helper extends BaseObject implements ComponentInterface {
 		$this->file      = new FileHelper();
 		$this->wp        = new WordpressHelper();
 		$this->validator = new ValidatorHelper();
+		$this->form      = new FormHelper();
+
 	}
 
 	/**
