@@ -37,5 +37,7 @@ get_header(); ?>
     </div><!-- #primary -->
 
 <?php
-get_sidebar( 'mmycred' );
+if ( is_user_logged_in() ) {
+	get_sidebar( 'mmycred' );
+}
 get_footer();
