@@ -21,11 +21,17 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+
+$user = new \credglv\models\UserModel();
+
+
+if ( $user->check_actived_referral( get_current_user_id(), 1 ) ) {
+	echo do_shortcode( '[credglv_generateqr]' );
+	echo $user->get_url_share_link();
+} else {
+	echo 'not active';
+}
 ?>
-
-
-
-
 
 
 <?php

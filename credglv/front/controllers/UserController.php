@@ -72,6 +72,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
+
 		/*if ( isset( $_POST['cred_billing_phone'] ) && $_POST['cred_billing_phone'] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
 
@@ -95,17 +96,15 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 
 		}*/
+		if ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) {
+			$args->add( 'user_pin_name_error', __( 'Pin is required.', 'credglv' ) );
 
-
-		if ( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ) {
-			if ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) {
-				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
-
-				return $_POST;
-			} else {
-				update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
-			}
+			return $_POST;
+		} else {
+			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
 		}
+
+
 	}
 
 

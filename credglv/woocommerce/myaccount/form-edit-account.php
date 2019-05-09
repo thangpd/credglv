@@ -48,7 +48,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 			<?php _e( 'Mobile Number', 'woocommerce' ); ?> <span class="required">*</span>
         </label>
 
-        <input type="text" disabled class="input-text" name="cred_billing_phone" id="cred_billing_phone"
+        <input type="text"  class="input-text" name="cred_billing_phone" id="cred_billing_phone"
                value="<?php
 		       echo esc_attr( get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ); ?>"
                maxlength="10"/>
