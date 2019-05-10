@@ -123,6 +123,9 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			return 'low_amount';
 		}
 		$pin = get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
+		echo '<pre>';
+		print_r($pin);
+		echo '</pre>';
 		if ( $context->request['pin_transfer'] != $pin && ! empty( $pin ) ) {
 			return 'invalid_pin';
 		}
