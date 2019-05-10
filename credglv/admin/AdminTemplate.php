@@ -111,13 +111,19 @@ class AdminTemplate extends Template {
 				'menu-title'    => 'Cred GLV',
 				'capability'    => 'activate_plugins',
 				'slug'          => 'credglv-setting-page',
-				'icon'          => 'dashicons-welcome-learn-more',
+				'icon'          => 'dashicons-admin-generic',
 				'position'      => 5,
 				'callback'      => '',
 				'menu-sub-item' => []
 			),
-
-
+			'referrer'  => array(
+				'page-title' => '',
+				'menu-title' => 'Referrer',
+				'capability' => 'manage_options',
+				'slug'       => 'edit.php?post_type=referrer',
+				'icon'       => 'dashicons-networking',
+				'position'   => 6,
+			),
 		];
 
 		return $list_menu;
