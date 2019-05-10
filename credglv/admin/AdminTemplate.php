@@ -116,14 +116,14 @@ class AdminTemplate extends Template {
 				'callback'      => '',
 				'menu-sub-item' => []
 			),
-			'referrer'  => array(
+			/*'referrer'  => array(
 				'page-title' => '',
 				'menu-title' => 'Referrer',
 				'capability' => 'manage_options',
 				'slug'       => 'edit.php?post_type=referrer',
 				'icon'       => 'dashicons-networking',
 				'position'   => 6,
-			),
+			),*/
 		];
 
 		return $list_menu;

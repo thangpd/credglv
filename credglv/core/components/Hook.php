@@ -26,6 +26,7 @@ class Hook extends BaseObject implements ComponentInterface {
 	const CREDGLV_SHORTCODE_EXTENDS = 'credglv_shortcode_extends';
 	const CREDGLV_COMPONENTS = 'credglv_components';
 	const CREDGLV_RUN = 'credglv_run';
+	const CREDGLV_SEND_MAIL                    = 'credglv_send_mail';
 	/**
 	 * Default hooks for Cred GLV plugin
 	 * @var array
