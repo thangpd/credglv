@@ -56,4 +56,39 @@ jQuery(document).ready(function ($) {
 
     TabBlock.init();
 
+    var credglv = window.credglv || {};
+    credglv.ajax_active_user = function () {
+        $('input[name="credglv_active_user"]').on('click', function (e) {
+            var active;
+            if ($(this).is(":checked")) {
+                active = 1;
+            } else {
+                active = 0;
+            }
+            var data = {
+                user_id: $(this).data('user_id'),
+                active: active,
+                action: 'ajax_active_user'
+            };
+            $.ajax({
+                type: 'POST',
+                url: credglvConfig.ajaxurl,
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (res.code === 200) {
+                        console.log(res);
+                    } else if (res.code === 404) {
+                        console.log(res);
+                    }
+                }
+            });
+        });
+    };
+
+    $(document).ready(function () {
+        credglv.ajax_active_user();
+    })
+
+
 });

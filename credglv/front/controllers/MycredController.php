@@ -33,7 +33,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 		$min_transfer        = credglv()->config->credglv_min_transfer;
 		$credglv_joining_fee = credglv()->config->credglv_joining_fee;
-		$transfer_fee        = credglv()->config->transfer_fee;
+		$transfer_fee        = credglv()->config->credglv_mycred_fee;
 
 		$this->arr_share_comission = array(
 			! empty( $lvl4 ) ? $lvl4 : 6,
@@ -167,10 +167,21 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		return $arr_default;
 	}
 
+	public function credglv_mycred_add_fee_to_transfer( $transfer_amount, $context ) {
+		echo '<pre>';
+		print_r($this->transfer_fee);
+		echo '</pre>';
+		return $transfer_amount + $this->transfer_fee;
+
+
+	}
+
+
 	public function init_hook() {
 		add_filter( 'mycred_transfer_messages', [ $this, 'credglv_pro_custom_transfer_messages' ] );
 		add_filter( 'mycred_is_valid_transfer_request', [ $this, 'credglv_mycred_valid_transfer_extra' ], 10, 2 );
 		add_filter( 'mycred_new_transfer_request', [ $this, 'credglv_mycred_add_params_new_transfer_request' ], 10, 2 );
+		add_filter( 'mycred_transfer_charge', [ $this, 'credglv_mycred_add_fee_to_transfer' ], 10, 2 );
 	}
 
 	public static function registerAction() {

@@ -18,9 +18,11 @@
 .width80 {
     width: 80% !important;
 }
-.hide{
-    display:none;
+
+.hide {
+    display: none;
 }
+
 .digit_cs-list {
     display: none;
     position: absolute;
@@ -42,9 +44,43 @@
 .digit_cs-list li:hover {
     background-color: #ddd;
 }
-form.register .select2-selection__arrow{
-    display:none;
+
+form.register .select2-selection__arrow {
+    display: none;
 }
-.referrer-ajax-search.form-control.disable + .select2.select2-container .select2-selection--single{
-    background-color:#f7f7f7;
+
+.referrer-ajax-search.form-control.disable + .select2.select2-container .select2-selection--single {
+    background-color: #f7f7f7;
+}
+
+
+.mycred-history-wrapper {
+
+}
+
+table.mycred-table {
+}
+
+table.mycred-table .column-time {
+}
+
+table.mycred-table .column-username {
+}
+
+table.mycred-table .column-creds {
+}
+
+table.mycred-table .column-entry {
+}
+
+.mycred-history-wrapper nav {
+}
+
+.mycred-history-wrapper nav ul {
+}
+
+.mycred-history-wrapper nav ul li {
+    list-style: none;
+    display: inline-block;
+    padding:10px;
 }

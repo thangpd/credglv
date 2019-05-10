@@ -138,15 +138,17 @@ class UserController extends FrontController implements FrontControllerInterface
 			array_merge(
 				array_splice( $items, 0, $key + 1 ),
 				array(
-					'payment'  => __( 'Payment', 'credglv' ),
-					'profile'  => __( 'Profile', 'credglv' ),
-					'referral' => __( 'Referral', 'credglv' ),
+					'payment'       => __( 'Payment', 'credglv' ),
+					'profile'       => __( 'Profile', 'credglv' ),
+					'referral'      => __( 'Referral', 'credglv' ),
+					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
 		} else {
-			$items['payment']  = __( 'Payment', 'credglv' );
-			$items['profile']  = __( 'Profile', 'credglv' );
-			$items['referral'] = __( 'Referral', 'credglv' );
+			$items['payment']       = __( 'Payment', 'credglv' );
+			$items['profile']       = __( 'Profile', 'credglv' );
+			$items['referral']      = __( 'Referral', 'credglv' );
+			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
 		return $items;
@@ -156,6 +158,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars[] = 'referral';
 		$vars[] = 'payment';
 		$vars[] = 'profile';
+		$vars[] = 'point_history';
 
 		return $vars;
 	}
@@ -172,6 +175,10 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'profile', [], false );
 	}
 
+	public function woocommerce_account_point_history_endpoint_hook() {
+		$this->render( 'point_history', [], false );
+	}
+
 
 	public function init_hook() {
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
@@ -180,6 +187,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
 		add_rewrite_endpoint( 'payment', EP_ROOT | EP_PAGES );
 		add_rewrite_endpoint( 'profile', EP_ROOT | EP_PAGES );
+		add_rewrite_endpoint( 'point_history', EP_ROOT | EP_PAGES );
 		flush_rewrite_rules();
 		global $woocommerce;
 
@@ -198,6 +206,10 @@ class UserController extends FrontController implements FrontControllerInterface
 			add_action( 'woocommerce_account_profile_endpoint', array(
 				$this,
 				'woocommerce_account_profile_endpoint_hook'
+			) );
+			add_action( 'woocommerce_account_point_history_endpoint', array(
+				$this,
+				'woocommerce_account_point_history_endpoint_hook'
 			) );
 		} else {
 			add_action( 'woocommerce_before_my_account', array( $this, 'woocommerce_account_referral_endpoint_hook' ) );

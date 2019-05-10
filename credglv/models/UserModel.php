@@ -319,6 +319,20 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
+	/**
+	 * Get referral parent user_login
+	 * return ID,user_login object
+	 */
+	public function get_referral_parent_name( $user_id ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "select DISTINCT refer.referral_parent as ID, u.user_login from {$tablename} refer INNER JOIN {$wpdb->prefix}users u on u.ID=refer.referral_parent and refer.user_id=%s", $user_id );
+		$result    = $wpdb->get_results( $prepare );
+		$result    = reset( $result );
+
+		return $result;
+	}
+
 	/*
 	 * get referral tree
 	 * Not limit level

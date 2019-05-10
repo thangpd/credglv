@@ -13,6 +13,7 @@ use credglv\core\components\Form;
 use credglv\core\components\Hook;
 use credglv\core\interfaces\ControllerInterface;
 use credglv\core\RuntimeException;
+use credglv\models\UserModel;
 
 
 class SettingController extends AdminController implements ControllerInterface {
@@ -33,14 +34,15 @@ class SettingController extends AdminController implements ControllerInterface {
 	 * @var array
 	 */
 	private $tabs = [
-		'referral' => [
-			'label'    => 'Referral',
-			'renderer' => [ 'credglv\admin\controllers\SettingController', 'tabReferral' ]
-		],
 		'general'  => [
 			'label'    => 'General settings',
 			'renderer' => [ 'credglv\admin\controllers\SettingController', 'tabGeneral' ]
 		],
+		'referral' => [
+			'label'    => 'Referral',
+			'renderer' => [ 'credglv\admin\controllers\SettingController', 'tabReferral' ]
+		],
+
 		/*
 		'cache'    => [
 			'label'    => 'Cache',
@@ -92,25 +94,93 @@ class SettingController extends AdminController implements ControllerInterface {
 	 * @return string
 	 */
 	public function tabReferral() {
+		$format       = '<p class="tr">
+            <span>
+        <span class="title">Referrer: <br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Referal Parent: <br class="no-style-break"></span>
+        %2$s
+      </span><br class="no-style-break"><br class="no-style-break">
 
-		if ( isset( $_POST['Referral'] ) && ! empty( $_POST['Referral'] ) ) {
-			foreach ( $_POST['Referral'] as $name => $value ) {
-				credglv()->config->$name = $value;
-			}
+            <span>
+        <span class="title">Active: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Point: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Gold: <br class="no-style-break"></span>
+       %5$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Cash: <br class="no-style-break"></span>
+       %6$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Local Wallet: <br class="no-style-break"></span>
+       %7$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
+		$data         = [];
+		$data['html'] = '';
+		$args         = array(
+			'blog_id'      => $GLOBALS['blog_id'],
+			'role'         => '',
+			'role__in'     => array(),
+			'role__not_in' => array(),
+			'meta_key'     => '',
+			'meta_value'   => '',
+			'meta_compare' => '',
+			'meta_query'   => array(),
+			'date_query'   => array(),
+			'include'      => array(),
+			'exclude'      => array(),
+			'orderby'      => 'login',
+			'order'        => 'ASC',
+			'offset'       => '',
+			'search'       => '',
+			'number'       => '',
+			'count_total'  => false,
+			'fields'       => array( 'ID', 'user_login' ),
+			'who'          => '',
+		);
+		$users        = get_users( $args );
+		$users_model  = new UserModel();
+		foreach ( $users as $val ) {
+			$referrer        = '<a href="' . get_edit_user_link( $val->ID ) . '">' . $val->user_login . '</a>';
+			$referral_parent = $users_model->get_referral_parent_name( $val->ID );
+			$referral_parent = ! empty( $referral_parent->user_login ) ? $referral_parent->user_login : '';
+
+			$check_active   = ! empty( $users_model->check_actived_referral( $val->ID ) ) ? '<label class="switch ">
+          <input type="checkbox" name="credglv_active_user" data-user_id="' . $val->ID . '" checked class="primary">
+          <span class="slider round"></span>
+        </label>' :
+				'<label class="switch ">
+          <input type="checkbox" name="credglv_active_user" data-user_id="' . $val->ID . '" class="primary">
+          <span class="slider round"></span>
+        </label>';
+			$mycred_balance = mycred_get_users_balance( $val->ID );
+
+			$data['html'] .= sprintf( $format, $referrer, $referral_parent, $check_active, '0', $mycred_balance, '0', '0' );
 		}
-		$data = [];
-
 
 		if ( defined( 'DOING_AJAX' ) ) {
 			$this->render( '_referral', [
-				'fields'  => $data,
+				'data'    => $data,
 				'message' => __( 'Your change saved successfully', 'credglv' )
 			] );
 			exit;
 		}
 
 		return $this->render( '_referral', [
-			'fields' => $data
+			'data' => $data
 		], true );
 	}
 
@@ -245,7 +315,7 @@ class SettingController extends AdminController implements ControllerInterface {
 
 
 		if ( isset( $_POST['Options'] ) ) {
-			$share = 0;
+			$share   = 0;
 			$options = $_POST['Options'];
 			$share   += $options['credglv_comission_level1'];
 			$share   += $options['credglv_comission_level2'];
@@ -254,7 +324,7 @@ class SettingController extends AdminController implements ControllerInterface {
 
 			if ( $share > $options['credglv_joining_fee'] ) {
 				$data['message'] = __( 'Can not save settings, Joining fee is lower than share commission', 'credglv' );
-			}else{
+			} else {
 				foreach ( $_POST['Options'] as $name => $value ) {
 					credglv()->config->$name = $value;
 				}
@@ -401,6 +471,7 @@ class SettingController extends AdminController implements ControllerInterface {
 
 	public function disableAutosave() {
 		wp_enqueue_script( 'credglv-sw-referrer-js', plugins_url( 'assets/js/referrer-sw-js.js', __DIR__ ), array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'credglv-sw-referrer-css', plugins_url( 'assets/css/setting-admin.css', __DIR__ ) );
 	}
 
 	/**

@@ -21,16 +21,32 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
+$user    = new \credglv\models\UserModel();
+$user_id = get_current_user_id();
 
-$user = new \credglv\models\UserModel();
+if ( $user->check_actived_referral( $user_id ) ) {
 
+	$wmc_html = '<div id="credglv-qr-code">
+                <h2>' . __( 'Your share link QR code', 'credglv' ) . '</h2>
+                <div class="wmc-banners">';
 
-if ( $user->check_actived_referral( get_current_user_id(), 1 ) ) {
-	echo do_shortcode( '[credglv_generateqr]' );
-	echo $user->get_url_share_link();
+	$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
+
+	$wmc_html .= '</div>';
+
+	echo $wmc_html;
+	?>
+    <div class="link-url">
+        <h2><?php echo __( 'Your share link url:', 'credglv' ); ?></h2>
+		<?php echo $user->get_url_share_link() ?>
+    </div>
+	<?php
 } else {
-	echo 'not active';
-}
+	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
+
+};
+
+
 ?>
 
 

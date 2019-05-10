@@ -42,7 +42,7 @@ echo $wmc_html;
 
 <?php if ( $user->check_actived_referral( $user_id ) ) {
 
-	echo 'actived';
+	echo 'Your account is not active. Contact admin or transfer at least' . credglv()->config->credglv_joining_fee . ' to active';
 } else {
 	echo 'chua active';
 
