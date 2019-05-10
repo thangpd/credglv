@@ -21,13 +21,15 @@ jQuery(function ($) {
                 success: function (res) {
                     if (res.code === 200) {
                         console.log(res);
+
+                        location.reload();
+
                     } else {
-                        console.log(res);
+                        alert(res.message);
                     }
                 }
             });
         })
-
     };
     $(document).ready(function () {
 

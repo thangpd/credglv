@@ -13,6 +13,7 @@ namespace credglv\front\controllers;
 use credglv\core\RuntimeException;
 use credglv\helpers\GeneralHelper;
 use credglv\models\Instructor;
+use credglv\models\OrderModel;
 use credglv\models\UserModel;
 use credglv\core\components\Style;
 use credglv\core\components\Script;
@@ -183,7 +184,57 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 	public function woocommerce_account_cash_redeem_endpoint_hook() {
-		$this->render( 'redeem', [], false );
+
+		$format = '<p class="tr">
+            <span>
+        <span class="title">#<br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Log: <br class="no-style-break"></span>
+        %2$s
+      </span><br class="no-style-break"><br class="no-style-break">
+
+            <span>
+        <span class="title">Status: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Amount: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Fee: <br class="no-style-break"></span>
+       %5$s
+      </span><br class="no-style-break"><br class="no-style-break">
+      <span>
+        <span class="title">Create Date: <br class="no-style-break"></span>
+       %6$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
+
+		$order              = new OrderModel();
+		$data               = [];
+		$data['html']       = '';
+		$data['total_cash'] = $order->getTotalUserCash( get_current_user_id() );
+		$records            = $order->findAllrecordsUser( get_current_user_id() );
+		if ( ! empty( $records ) ) {
+			foreach ( $records as $val ) {
+				$log = json_decode( $val->data );
+
+				$log         = $log->message;
+				$status      = $val->active == 0 ? 'Pending' : 'Completed';
+				$amount      = $val->amount;
+				$fee         = $val->fee;
+				$create_date = $val->created_date;
+
+				$data['html'] .= sprintf( $format, $val->id, $log, $status, $amount, $fee, $create_date );
+			}
+		}
+		$this->render( 'redeem', [ 'data' => $data ], false );
 	}
 
 

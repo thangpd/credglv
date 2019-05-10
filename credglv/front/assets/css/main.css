@@ -21,3 +21,155 @@
     /*background-color:blue;*/
     border:1px solid #000;
 }
+
+
+
+
+section.the-css-at-table {
+    display: table;
+    border-collapse: collapse;
+    margin: 0 0 20px 0;
+}
+section.the-css-at-table header {
+    display: table-header-group !important;
+}
+section.the-css-at-table .tbody {
+    display: table-row-group;
+}
+section.the-css-at-table .tr {
+    display: table-row;
+}
+section.the-css-at-table .tr > span {
+    display: table-cell;
+    padding: 10px;
+    border: 1px solid #E6E7F1;
+    text-align: left;
+}
+section.the-css-at-table .tr:nth-child(odd) {
+    background-color: #F6F7FA;
+}
+section.the-css-at-table .tr:nth-child(even) {
+    background-color: white;
+}
+section.the-css-at-table .th {
+    background: #798299;
+    border-color: #60697f;
+    color: white;
+}
+section.the-css-at-table .title {
+    display: none;
+}
+section.the-css-at-table .no-style-break {
+    display: none;
+}
+section.the-css-at-table .spacer {
+    display: none;
+}
+@media (max-width: 700px) {
+    section.the-css-at-table {
+        display: block;
+    }
+    section.the-css-at-table header {
+        display: none !important;
+    }
+    section.the-css-at-table .tbody {
+        display: block;
+    }
+    section.the-css-at-table .tr {
+        display: block;
+        margin: 0 0 20px 0;
+    }
+    section.the-css-at-table .tr > span {
+        display: block;
+    }
+    section.the-css-at-table .tr > span::before {
+        display: inline-block;
+        width: 33%;
+        margin-right: 10px;
+        font-weight: bold;
+    }
+    section.the-css-at-table .title {
+        display: inline-block;
+        width: 30%;
+        font-weight: bold;
+    }
+}
+
+
+
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    float:right;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 17px;
+    width: 17px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input.default:checked + .slider {
+    background-color: #444;
+}
+input.primary:checked + .slider {
+    background-color: #2196F3;
+}
+input.success:checked + .slider {
+    background-color: #8bc34a;
+}
+input.info:checked + .slider {
+    background-color: #3de0f5;
+}
+input.warning:checked + .slider {
+    background-color: #FFC107;
+}
+input.danger:checked + .slider {
+    background-color: #f44336;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

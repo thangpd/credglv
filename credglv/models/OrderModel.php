@@ -146,24 +146,33 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	}
 
 
-	/*
-		 * Retrieve total number of followers
-		 */
-	function count_referral_user( $user_id ) {
+	public function findAllrecordsUser( $user_id = '' ) {
 		global $wpdb;
-		//return 0;
-		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
+		$tablename = self::getTableName();
+		if ( ! empty( $user_id ) ) {
 
-		return $followers;
+			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where user_id=%s ", $user_id );
+		} else {
+			$prepare = "SELECT * FROM {$tablename}";
+		}
+		$result = $wpdb->get_results( $prepare );
+
+		return $result;
 	}
 
 
-	public function referral_user( $user_field, $where, $user_id ) {
+	public function getTotalUserCash( $user_id = '', $active = 1 ) {
 		global $wpdb;
+		$tablename = self::getTableName();
+		if ( ! empty( $user_id ) ) {
+			$prepare = $wpdb->prepare( "SELECT sum(amount) as total FROM {$tablename} where user_id=%s and active=%s ", $user_id, $active );
+		} else {
+			$prepare = "SELECT sum(amount) FROM {$tablename}";
+		}
+		$result = $wpdb->get_results( $prepare );
+		$result = reset( $result );
 
-		return $wpdb->get_var(
-			'SELECT ' . $user_field . ' FROM ' . $this->table_name . ' WHERE ' . $where . ' = "' . $user_id . '"'
-		);
+		return $result;
 	}
 
 
@@ -172,10 +181,11 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	 *
 	 *
 	*/
-	public function check_actived_referral( $user_id, $status = 1 ) {
+	public function check_actived_order( $id, $status = 1 ) {
 		global $wpdb;
 		$tablename = self::getTableName();
-		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%s and active=%s", $user_id, $status );
+		$prepare   = $wpdb->prepare( "SELECT ID FROM {
+				$tablename} where ID =%s and active =%s", $id, $status );
 		$result    = $wpdb->get_results( $prepare );
 
 		return $result;
@@ -184,31 +194,19 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	/*  update active status user referral
 	 *
 	 * */
-	public function update_active_status( $user_id, $status = 1 ) {
+	public function update_active_status( $id, $status = 1 ) {
 		global $wpdb;
-		$wpdb->update(
+
+		return $wpdb->update(
 			self::getTableName(),
 			array(
 				'active'      => $status,
-				'update_date' => date( "Y-m-d H:i:s" ),
+				'update_date' => date( "Y - m - d H:i:s" ),
 			),
 			array(
-				'user_id' => $user_id
+				'ID' => $id
 			)
 		);
-	}
-
-	/**
-	 * Get referral parent
-	 */
-	public function get_referral_parent( $user_id ) {
-		global $wpdb;
-		$tablename = self::getTableName();
-		$prepare   = $wpdb->prepare( "SELECT referral_parent FROM {$tablename} where user_id=%s", $user_id );
-		$result    = $wpdb->get_results( $prepare );
-		$result    = reset( $result );
-
-		return $result;
 	}
 
 
@@ -243,14 +241,6 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 		return false;
 	}
 
-
-	public static function get_referralcode() {
-		$help_general = new GeneralHelper();
-
-		return $help_general->getRandomString();
-
-	}
-
 	/**
 	 * Run when learn master was uninstalled
 	 * @return mixed
@@ -259,7 +249,8 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 		global $wpdb;
 		$tableName = $this->getName();
 		try {
-			$wpdb->query( "DROP TABLE {$tableName}" );
+			$wpdb->query( "DROP TABLE {
+				$tableName}" );
 		} catch ( \Exception $e ) {
 
 		}
