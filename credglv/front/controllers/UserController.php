@@ -141,6 +141,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
 					'referral'      => __( 'Referral', 'credglv' ),
+					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
@@ -148,6 +149,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			$items['payment']       = __( 'Payment', 'credglv' );
 			$items['profile']       = __( 'Profile', 'credglv' );
 			$items['referral']      = __( 'Referral', 'credglv' );
+			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
 			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
@@ -159,6 +161,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars[] = 'payment';
 		$vars[] = 'profile';
 		$vars[] = 'point_history';
+		$vars[] = 'cash_redeem';
 
 		return $vars;
 	}
@@ -179,6 +182,10 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'point_history', [], false );
 	}
 
+	public function woocommerce_account_cash_redeem_endpoint_hook() {
+		$this->render( 'redeem', [], false );
+	}
+
 
 	public function init_hook() {
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
@@ -187,6 +194,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
 		add_rewrite_endpoint( 'payment', EP_ROOT | EP_PAGES );
 		add_rewrite_endpoint( 'profile', EP_ROOT | EP_PAGES );
+		add_rewrite_endpoint( 'cash_redeem', EP_ROOT | EP_PAGES );
 		add_rewrite_endpoint( 'point_history', EP_ROOT | EP_PAGES );
 		flush_rewrite_rules();
 		global $woocommerce;
@@ -210,6 +218,10 @@ class UserController extends FrontController implements FrontControllerInterface
 			add_action( 'woocommerce_account_point_history_endpoint', array(
 				$this,
 				'woocommerce_account_point_history_endpoint_hook'
+			) );
+			add_action( 'woocommerce_account_cash_redeem_endpoint', array(
+				$this,
+				'woocommerce_account_cash_redeem_endpoint_hook'
 			) );
 		} else {
 			add_action( 'woocommerce_before_my_account', array( $this, 'woocommerce_account_referral_endpoint_hook' ) );
@@ -261,6 +273,15 @@ class UserController extends FrontController implements FrontControllerInterface
 					wp_enqueue_script( 'Treant-raphael-js' );
 					wp_enqueue_script( 'credglv-referral' );
 					wp_enqueue_style( 'credglv-main-css', plugin_dir_url( __DIR__ ) . '/assets/css/main.css' );
+				}
+			}
+		}
+		if ( isset( $wp_query->query_vars['cash_redeem'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_style( 'credglv-main-css', plugin_dir_url( __DIR__ ) . '/assets/css/main.css' );
+					wp_enqueue_script( 'credglv-redeem-js', plugin_dir_url( __DIR__ ) . '/assets/js/redeem.js' );
 				}
 			}
 		}

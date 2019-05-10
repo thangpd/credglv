@@ -110,7 +110,7 @@ class AdminTemplate extends Template {
 				'page-title'    => '',
 				'menu-title'    => 'Cred GLV',
 				'capability'    => 'activate_plugins',
-				'slug'          => 'credglv-setting-page',
+				'slug'          => 'credglv-redeem-point',
 				'icon'          => 'dashicons-admin-generic',
 				'position'      => 5,
 				'callback'      => '',

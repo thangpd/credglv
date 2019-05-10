@@ -461,7 +461,7 @@ class SettingController extends AdminController implements ControllerInterface {
 			'menu-title' => 'Settings',
 			'capability' => 'manage_options',
 			'slug'       => 'admin.php?page=credglv-setting',
-			'parent'     => 'credglv-setting-page'
+			'parent'     => 'credglv-redeem-point'
 		);
 
 		return $menu;
