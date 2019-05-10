@@ -92,42 +92,37 @@ class SettingController extends AdminController implements ControllerInterface {
 	 * @return string
 	 */
 	public function tabReferral() {
+
 		if ( isset( $_POST['Referral'] ) && ! empty( $_POST['Referral'] ) ) {
 			foreach ( $_POST['Referral'] as $name => $value ) {
 				credglv()->config->$name = $value;
 			}
 		}
-		/*$optionFields = [
-			'credglv_currency' => [
-				'type'       => 'select',
-				'label'      => __( 'Primary Currency', 'credglv' ),
-				'selected'   => credglv()->config->credglv_currency,
-				'options'    => credglv()->hook->registerFilter( 'credglv_currencies_list', [] ),
-				'name'       => 'Referral[credglv_currency]',
-				'attributes' => [
-					'class'         => 'la-form-control',
-					'data-select-2' => true
-				]
-			],
+		$data = [];
 
-		];*/
-//		$optionFields = credglv()->hook->registerFilter( 'credglv_admin_options', $optionFields );
+		$pages = credglv()->config->mycred;
+		$form  = new Form();
 
-//		$form   = new Form();
-		$fields = [];
-		/*		foreach ( $optionFields as $name => $optionField ) {
-					$fields[] = $form->field( $name, $optionField );
-				}*/
+		foreach ( $pages as $name => $options ) {
+			$value                  = credglv()->config->$name;
+			$options['name']        = "Referral[$name]";
+			$options['type']        = 'text';
+			$options['attributes']  = [ 'class' => 'la-form-control' ];
+			$options['template']    = "{label}<div class='config-url'><div class='slug_url'>{input}</div> </div>";
+			$options['value']       = empty( $value ) ? $options['slug'] : $value;
+			$data['pages'][ $name ] = $form->field( $name, $options );
+		}
+
 		if ( defined( 'DOING_AJAX' ) ) {
 			$this->render( '_referral', [
-				'fields'  => $fields,
+				'fields'  => $data,
 				'message' => __( 'Your change saved successfully', 'credglv' )
 			] );
 			exit;
 		}
 
 		return $this->render( '_referral', [
-			'fields' => $fields
+			'fields' => $data
 		], true );
 	}
 
@@ -143,9 +138,8 @@ class SettingController extends AdminController implements ControllerInterface {
 			}
 			$data['message'] = 'The setting has been saved successfully';
 		}
-		$pages   = credglv()->config->pages;
-		$form    = new Form();
-		$baseUrl = site_url();
+		$pages = credglv()->config->pages;
+		$form  = new Form();
 		foreach ( $pages as $name => $options ) {
 			$value                  = credglv()->config->$name;
 			$options['name']        = "Pages[$name]";
@@ -253,62 +247,18 @@ class SettingController extends AdminController implements ControllerInterface {
 			}
 			$data['message'] = 'The cache has been flushed successfully';
 		}
-		$options = [
-			'course_list' => [
-				'credglv_posts_per_page' => [
-					'type'       => 'text',
-					'label'      => __( 'Default course per page', 'credglv' ),
-					'name'       => 'Options[credglv_posts_per_page]',
-					'attributes' => [
-						'class' => 'la-form-control credglv-setting-input'
-					],
-					'value'      => credglv()->config->credglv_posts_per_page
-				],
-				'credglv_orderBy'        => [
-					'type'       => 'select',
-					'label'      => __( 'Default list order by', 'credglv' ),
-					'name'       => 'Options[credglv_orderBy]',
-					'attributes' => [
-						'class' => 'la-form-control credglv-setting-input'
-					],
-					'options'    => [
-						'title'     => __( 'Course title', 'credglv' ),
-						'__price'   => __( 'Course price', 'credglv' ),
-						'post_date' => __( 'Created date', 'credglv' )
-					],
-					'selected'   => credglv()->config->credglv_orderBy
-				],
-				'credglv_cols_on_row'    => [
-					'type'       => 'text',
-					'label'      => __( 'Default course columns', 'credglv' ),
-					'value'      => credglv()->config->credglv_cols_on_row,
-					'attributes' => [
-						'class' => 'la-form-control credglv-setting-input'
-					],
-					'name'       => 'Options[credglv_cols_on_row]'
-				],
-				'credglv_price_setting'  => [
-					'type'       => 'text',
-					'label'      => __( 'Text to display when price is zero', 'credglv' ),
-					'value'      => credglv()->config->credglv_price_setting,
-					'attributes' => [
-						'class' => 'la-form-control credglv-setting-input'
-					],
-					'name'       => 'Options[credglv_price_setting]'
-				]
-			],
-			'course'      => [
-				//'customfields' => apply_filters('credglv_course_customfields', [])
-			]
-		];
-		$form    = new Form();
-		$options = credglv()->hook->registerFilter( 'credglv_course_settings', $options );
-		$fields  = [];
-		foreach ( $options['course_list'] as $name => $attribute ) {
-			$fields['course_list'][] = $form->field( $name, $attribute );
+		$mycred = credglv()->config->mycred;
+		$form   = new Form();
+
+		foreach ( $mycred as $name => $options ) {
+			$value                  = credglv()->config->$name;
+			$options['name']        = "Options[$name]";
+			$options['type']        = 'text';
+			$options['attributes']  = [ 'class' => 'la-form-control' ];
+			$options['template']    = "{label}<div class='config-url'><div class='slug_url'>{input}</div> </div>";
+			$options['value']       = empty( $value ) ? $options['slug'] : $value;
+			$data['pages'][ $name ] = $form->field( $name, $options );
 		}
-		$data['courseOptions']     = @$fields['course'];
-		$data['courseListOptions'] = $fields['course_list'];
 
 		if ( defined( 'DOING_AJAX' ) ) {
 			$this->render( '_general', $data );

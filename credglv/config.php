@@ -181,5 +181,27 @@ return [
 			'slug'  => 'credglv-register',
 			'label' => 'Register page'
 		]
+	],
+	'mycred'        => [
+		'min_transfer' => [
+			'slug'  => 'credglv-min-transfer',
+			'label' => __( 'Min transfer', 'credglv' ),
+		],
+		'level_1'      => [
+			'slug'  => 'credglv-level-1',
+			'label' => __( 'Commission Level 1', 'lame' )
+		],
+		'level_2'      => [
+			'slug'  => 'credglv-level-1',
+			'label' => __( 'Commission Level 1', 'lame' )
+		],
+		'level_3'      => [
+			'slug'  => 'credglv-level-1',
+			'label' => __( 'Commission Level 1', 'lame' )
+		],
+		'level_4'      => [
+			'slug'  => 'credglv-level-1',
+			'label' => __( 'Commission Level 1', 'lame' )
+		],
 	]
 ];
