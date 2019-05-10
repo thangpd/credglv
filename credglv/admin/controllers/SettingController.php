@@ -100,18 +100,6 @@ class SettingController extends AdminController implements ControllerInterface {
 		}
 		$data = [];
 
-		$pages = credglv()->config->mycred;
-		$form  = new Form();
-
-		foreach ( $pages as $name => $options ) {
-			$value                  = credglv()->config->$name;
-			$options['name']        = "Referral[$name]";
-			$options['type']        = 'text';
-			$options['attributes']  = [ 'class' => 'la-form-control' ];
-			$options['template']    = "{label}<div class='config-url'><div class='slug_url'>{input}</div> </div>";
-			$options['value']       = empty( $value ) ? $options['slug'] : $value;
-			$data['pages'][ $name ] = $form->field( $name, $options );
-		}
 
 		if ( defined( 'DOING_AJAX' ) ) {
 			$this->render( '_referral', [
@@ -241,25 +229,40 @@ class SettingController extends AdminController implements ControllerInterface {
 	 */
 	public function tabGeneral() {
 		$data = [];
+		/*$credglv_min_transfer = credglv()->config->credglv_min_transfer;
+
+		$credglv_mycred_fee = credglv()->config->credglv_mycred_fee;
+
+		$credglv_comission_level1 = credglv()->config->credglv_comission_level1;
+
+		$credglv_comission_level2 = credglv()->config->credglv_comission_level2;
+
+		$credglv_comission_level3 = credglv()->config->credglv_comission_level3;
+
+		$credglv_comission_level4 = credglv()->config->credglv_comission_level4;
+
+		$credglv_joining_fee = credglv()->config->credglv_joining_fee;*/
+
+
 		if ( isset( $_POST['Options'] ) ) {
-			foreach ( $_POST['Options'] as $name => $value ) {
-				credglv()->config->$name = $value;
+			$share = 0;
+			$options = $_POST['Options'];
+			$share   += $options['credglv_comission_level1'];
+			$share   += $options['credglv_comission_level2'];
+			$share   += $options['credglv_comission_level3'];
+			$share   += $options['credglv_comission_level4'];
+
+			if ( $share > $options['credglv_joining_fee'] ) {
+				$data['message'] = __( 'Can not save settings, Joining fee is lower than share commission', 'credglv' );
+			}else{
+				foreach ( $_POST['Options'] as $name => $value ) {
+					credglv()->config->$name = $value;
+				}
+				$data['message'] = __( 'The setting has been saved successfully', 'credglv' );
 			}
-			$data['message'] = 'The cache has been flushed successfully';
-		}
-		$mycred = credglv()->config->mycred;
-		$form   = new Form();
 
-		foreach ( $mycred as $name => $options ) {
-			$value                  = credglv()->config->$name;
-			$options['name']        = "Options[$name]";
-			$options['type']        = 'text';
-			$options['attributes']  = [ 'class' => 'la-form-control' ];
-			$options['template']    = "{label}<div class='config-url'><div class='slug_url'>{input}</div> </div>";
-			$options['value']       = empty( $value ) ? $options['slug'] : $value;
-			$data['pages'][ $name ] = $form->field( $name, $options );
-		}
 
+		}
 		if ( defined( 'DOING_AJAX' ) ) {
 			$this->render( '_general', $data );
 			exit;
@@ -428,7 +431,6 @@ class SettingController extends AdminController implements ControllerInterface {
 				'setting-cache-save'   => [ self::getInstance(), 'tabCache' ],
 				'options-cache-save'   => [ self::getInstance(), 'tabCache' ],
 				'setting-general-save' => [ self::getInstance(), 'tabGeneral' ],
-				'setting-course-save'  => [ self::getInstance(), 'tabCourse' ],
 				'setting-payment-save' => [ self::getInstance(), 'tabPayment' ],
 			]
 		];
