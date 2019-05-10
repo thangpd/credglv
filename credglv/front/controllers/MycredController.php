@@ -62,7 +62,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				return;
 			}
 			$balance = $mycred->get_users_balance( $user_id );
-			if ( $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+			if (  $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
 				$mycred->add_creds( 'register_fee',
 					$user_id,
 					- $this->joining_fee,
@@ -74,7 +74,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				$mycred->add_creds( 'benefit_register_fee',
 					1,
 					$benefit_of_joining_fee,
-					__( 'Benefit of register fee', 'credglv' ),
+					__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
 					'',
 					'',
 					$settings['point_type'] );
