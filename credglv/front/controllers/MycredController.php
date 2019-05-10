@@ -122,8 +122,8 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		if ( $context->request['amount'] < $this->minimum_transer ) {
 			return 'low_amount';
 		}
-
-		if ( $context->request['pin_transfer'] != get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true ) ) {
+		$pin = get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
+		if ( $context->request['pin_transfer'] != $pin && ! empty( $pin ) ) {
 			return 'invalid_pin';
 		}
 
@@ -168,9 +168,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 	}
 
 	public function credglv_mycred_add_fee_to_transfer( $transfer_amount, $context ) {
-		echo '<pre>';
-		print_r($this->transfer_fee);
-		echo '</pre>';
+
 		return $transfer_amount + $this->transfer_fee;
 
 
