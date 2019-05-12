@@ -6,6 +6,7 @@
  * Time: 6:49 PM
  */
 ?>
+<h1>Redeem order</h1>
 <section class="the-css-at-table">
     <header style="display: none;">
         <p class="tr">

@@ -346,7 +346,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 			global $flag;
 			$flag = 3;
 		}
-	} else if ( ! empty( $user_fullname ) && ! empty( $user_phone )  && ! empty( $user_address ) ) {
+	} else if ( ! empty( $user_fullname )  && ! empty( $user_address ) ) {
 		update_user_meta( $user_id, 'user_fullname', $user_fullname );
 		update_user_meta( $user_id, 'user_address', $user_address );
 		update_user_meta( $user_id, 'user_gender', $user_gender );
