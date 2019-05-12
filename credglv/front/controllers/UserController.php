@@ -253,7 +253,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		if ( version_compare( $woocommerce->version, '2.6.0', ">=" ) ) {
 			/* Hooks for myaccount referral endpoint */
 			add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
-			add_filter( 'query_vars', array( $this, 'add_referral_query_var' ) );
+			add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 			add_action( 'woocommerce_account_referral_endpoint', array(
 				$this,
 				'woocommerce_account_referral_endpoint_hook'
