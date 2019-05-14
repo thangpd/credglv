@@ -23,6 +23,8 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	 */
 
 	const TABLE_NAME = 'credglv_redeem_order';
+	const ORDER_TYPE_CASH = 'cash';
+	const ORDER_TYPE_LOCAL = 'local';
 
 	/**
 	 * Run this function when plugin was activated
@@ -37,9 +39,11 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 			$sql             = "CREATE TABLE $tableName (
                      `id` int(11) NOT NULL AUTO_INCREMENT,
                      `user_id` int(11) NOT NULL,
+                     `transaction_id` int(100) NOT NULL,
                      `active` tinyint(1) NULL DEFAULT '0',
                      `amount` varchar(50) NOT NULL,
                      `fee` float(11) NULL DEFAULT '0',
+                     `type` varchar(50) NOT NULL,
                      `data` varchar(255) NULL ,
                      `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                      `update_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -99,28 +103,34 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
                      `update_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
                      */
 		return [
-			'ID'           => [
+			'ID'             => [
 				'label' => 'ID'
 			],
-			'user_id'      => [
+			'user_id'        => [
 				'label' => 'User Id'
 			],
-			'active'       => [
+			'active'         => [
 				'label' => 'Active',
 			],
-			'amount'       => [
+			'amount'         => [
 				'label' => 'Amount'
 			],
-			'fee'          => [
+			'fee'            => [
 				'label' => 'Fee'
 			],
-			'data'         => [
+			'transaction_id' => [
+				'label' => 'Transaction'
+			],
+			'type'           => [
+				'label' => 'Type'
+			],
+			'data'           => [
 				'label' => 'Data'
 			],
-			'created_date' => [
+			'created_date'   => [
 				'label' => 'Create Date'
 			],
-			'update_date'  => [
+			'update_date'    => [
 				'label' => 'Update date'
 			],
 
@@ -146,14 +156,29 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	}
 
 
-	public function findAllrecordsUser( $user_id = '' ) {
+	public static function getPointConfigType( $type = self::ORDER_TYPE_CASH ) {
+		$data = [];
+		if ( $type == self::ORDER_TYPE_CASH ) {
+			$data['max_tax']         = 30;
+			$data['max_tax_percent'] = 6;
+		} elseif ( $type == self::ORDER_TYPE_LOCAL ) {
+			$data['max_tax']         = 0;
+			$data['max_tax_percent'] = 0;
+		}
+
+		return $data;
+
+	}
+
+
+	public function findAllrecordsUser( $user_id = '', $type = 'cash' ) {
 		global $wpdb;
 		$tablename = self::getTableName();
 		if ( ! empty( $user_id ) ) {
 
-			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where user_id=%s ", $user_id );
+			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where user_id=%s  and type=%s", $user_id, $type );
 		} else {
-			$prepare = "SELECT * FROM {$tablename}";
+			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where type=%s", $type );
 		}
 		$result = $wpdb->get_results( $prepare );
 
@@ -161,11 +186,11 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	}
 
 
-	public function getTotalUserCash( $user_id = '', $active = 1 ) {
+	public function getTotalUserCash( $user_id = '', $active = 1, $type = 'cash' ) {
 		global $wpdb;
 		$tablename = self::getTableName();
 		if ( ! empty( $user_id ) ) {
-			$prepare = $wpdb->prepare( "SELECT sum(amount) as total FROM {$tablename} where user_id=%s and active=%s ", $user_id, $active );
+			$prepare = $wpdb->prepare( "SELECT sum(amount) as total FROM {$tablename} where user_id=%s and active=%s and type=%s", $user_id, $active, $type );
 		} else {
 			$prepare = "SELECT sum(amount) FROM {$tablename}";
 		}
@@ -181,11 +206,11 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 	 *
 	 *
 	*/
-	public function check_actived_order( $id, $status = 1 ) {
+	public function check_actived_order( $id, $status = 1, $type = 'cash' ) {
 		global $wpdb;
 		$tablename = self::getTableName();
 		$prepare   = $wpdb->prepare( "SELECT ID FROM {
-				$tablename} where ID =%s and active =%s", $id, $status );
+				$tablename} where ID =%s and active =%s and and type=%s", $id, $status, $type );
 		$result    = $wpdb->get_results( $prepare );
 
 		return $result;

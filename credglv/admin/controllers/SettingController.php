@@ -273,25 +273,7 @@ class SettingController extends AdminController implements ControllerInterface {
 		return $this->render( '_cache', $data, true );
 	}
 
-	/**
-	 * Clear core caches
-	 * - Class cache
-	 * - Master data cache
-	 */
-	private function flushCoreCaches() {
-		credglv()->hook->registerHook( 'flushCache', 'all' );
-	}
 
-	/**
-	 * Clear all data cachea
-	 */
-	private function flushDataCaches() {
-
-	}
-
-	private function flushAssetsCaches() {
-		credglv()->helpers->file->removeDir( CREDGLV_WR_DIR . DIRECTORY_SEPARATOR . 'assets' );
-	}
 
 	/**
 	 * Course settings
@@ -487,7 +469,7 @@ class SettingController extends AdminController implements ControllerInterface {
 			'pages'   => [
 				'admin' => [
 					'credglv-setting' => [
-						'title'      => 'Learn master settings',
+						'title'      => 'Credglv settings',
 						'capability' => 'activate_plugins',
 						'action'     => [ self::getInstance(), 'generateTabs' ],
 						'menu'       => 'credglv-setting-menu'

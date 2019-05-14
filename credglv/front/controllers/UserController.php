@@ -143,6 +143,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					'profile'       => __( 'Profile', 'credglv' ),
 					'referral'      => __( 'Referral', 'credglv' ),
 					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
+					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
@@ -151,6 +152,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			$items['profile']       = __( 'Profile', 'credglv' );
 			$items['referral']      = __( 'Referral', 'credglv' );
 			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
+			$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
 			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
@@ -163,6 +165,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars[] = 'profile';
 		$vars[] = 'point_history';
 		$vars[] = 'cash_redeem';
+		$vars[] = 'local_redeem';
 
 		return $vars;
 	}
@@ -181,6 +184,55 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	public function woocommerce_account_point_history_endpoint_hook() {
 		$this->render( 'point_history', [], false );
+	}
+
+	public function woocommerce_account_local_redeem_endpoint_hook() {
+		$format = '<p class="tr">
+            <span>
+        <span class="title">#<br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Log: <br class="no-style-break"></span>
+        %2$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Status: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Amount: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+      <span>
+        <span class="title">Create Date: <br class="no-style-break"></span>
+       %5$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
+
+		$order               = new OrderModel();
+		$data                = [];
+		$data['html']        = '';
+		$data['total_cash']  = $order->getTotalUserCash( get_current_user_id(), 1, OrderModel::ORDER_TYPE_CASH );
+		$data['total_local'] = $order->getTotalUserCash( get_current_user_id(), 1, OrderModel::ORDER_TYPE_LOCAL );
+		$records             = $order->findAllrecordsUser( get_current_user_id(), OrderModel::ORDER_TYPE_LOCAL );
+		if ( ! empty( $records ) ) {
+			foreach ( $records as $val ) {
+				$log = json_decode( $val->data );
+
+				$log         = $log->message;
+				$status      = $val->active == 0 ? 'Pending' : 'Completed';
+				$amount      = $val->amount;
+				$create_date = $val->created_date;
+
+				$data['html'] .= sprintf( $format, $val->id, $log, $status, $amount, $create_date );
+			}
+		}
+		$this->render( 'redeem_local', [ 'data' => $data ], false );
 	}
 
 	public function woocommerce_account_cash_redeem_endpoint_hook() {
@@ -205,9 +257,6 @@ class UserController extends FrontController implements FrontControllerInterface
         %4$s
       </span><br class="no-style-break"><br class="no-style-break">
             <span>
-        <span class="title">Fee: <br class="no-style-break"></span>
-       %5$s
-      </span><br class="no-style-break"><br class="no-style-break">
       <span>
         <span class="title">Create Date: <br class="no-style-break"></span>
        %6$s
@@ -234,7 +283,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				$data['html'] .= sprintf( $format, $val->id, $log, $status, $amount, $fee, $create_date );
 			}
 		}
-		$this->render( 'redeem', [ 'data' => $data ], false );
+		$this->render( 'redeem_cash', [ 'data' => $data ], false );
 	}
 
 
@@ -242,42 +291,22 @@ class UserController extends FrontController implements FrontControllerInterface
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
 			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
 		}
-		add_rewrite_endpoint( 'referral', EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( 'payment', EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( 'profile', EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( 'cash_redeem', EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( 'point_history', EP_ROOT | EP_PAGES );
-		flush_rewrite_rules();
-		global $woocommerce;
 
-		if ( version_compare( $woocommerce->version, '2.6.0', ">=" ) ) {
-			/* Hooks for myaccount referral endpoint */
-			add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
-			add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
-			add_action( 'woocommerce_account_referral_endpoint', array(
+		$arr_pages = $this->add_referral_query_var( array() );
+		foreach ( $arr_pages as $val ) {
+			add_rewrite_endpoint( $val, EP_ROOT | EP_PAGES );
+			add_action( 'woocommerce_account_' . $val . '_endpoint', array(
 				$this,
-				'woocommerce_account_referral_endpoint_hook'
+				'woocommerce_account_' . $val . '_endpoint_hook'
 			) );
-			add_action( 'woocommerce_account_payment_endpoint', array(
-				$this,
-				'woocommerce_account_payment_endpoint_hook'
-			) );
-			add_action( 'woocommerce_account_profile_endpoint', array(
-				$this,
-				'woocommerce_account_profile_endpoint_hook'
-			) );
-			add_action( 'woocommerce_account_point_history_endpoint', array(
-				$this,
-				'woocommerce_account_point_history_endpoint_hook'
-			) );
-			add_action( 'woocommerce_account_cash_redeem_endpoint', array(
-				$this,
-				'woocommerce_account_cash_redeem_endpoint_hook'
-			) );
-		} else {
-			add_action( 'woocommerce_before_my_account', array( $this, 'woocommerce_account_referral_endpoint_hook' ) );
 		}
-//		add_filter( 'login_url', array( $this, 'redirectLoginUrl' ), 10, 3 );
+		flush_rewrite_rules();
+
+
+		/* Hooks for myaccount referral endpoint */
+		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
+		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
+
 
 	}
 
@@ -327,7 +356,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
-		if ( isset( $wp_query->query_vars['cash_redeem'] ) ) {
+		if ( isset( $wp_query->query_vars['cash_redeem'] ) || isset( $wp_query->query_vars['local_redeem'] ) ) {
 			global $post;
 			if ( isset( $post->ID ) ) {
 				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {

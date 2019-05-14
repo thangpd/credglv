@@ -1,13 +1,25 @@
 <?php
+/**
+ * @project  cred
+ * @copyright © 2019 by thomas
+ * @author thomas
+ */
+
 
 namespace credglv\admin\controllers;
 
 
-use credglv\core\interfaces\AdminControllerInterface;
+use credglv\core\components\Form;
+use credglv\core\components\Hook;
+use credglv\core\interfaces\ControllerInterface;
+use credglv\core\RuntimeException;
 use credglv\models\OrderModel;
+use credglv\models\UserModel;
 
 
-class AdminController extends \credglv\core\Controller implements AdminControllerInterface {
+class RedeemLocalController extends AdminController implements ControllerInterface {
+	public $viewPath = '';
+
 	public function init() {
 		$this->viewPath = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'views/' . $this->getControllerName();
 		parent::init();
@@ -57,24 +69,21 @@ class AdminController extends \credglv\core\Controller implements AdminControlle
 		$order        = new OrderModel();
 		$data         = [];
 		$data['html'] = '';
-		$records      = $order->findAllrecordsUser();
+		$records      = $order->findAllrecordsUser( '', OrderModel::ORDER_TYPE_LOCAL );
 		if ( ! empty( $records ) ) {
 			foreach ( $records as $val ) {
 				$user_name = get_user_by( 'ID', $val->user_id );
 				$user_name = $user_name->data->user_login;
 				$log       = json_decode( $val->data );
 
-				$log    = $log->message;
-				$status = $val->active == 0 ? 'Pending' : 'Completed';
-
-
-				/*$status      = $val->active == 0 ? '<label class="switch ">
+				$log         = $log->message;
+				$status      = $val->active == 0 ? '<label class="switch ">
           <input type="checkbox" name="credglv_active_order" data-order_id="' . $val->id . '" class="primary">
           <span class="slider round"></span>
         </label>' : '<label class="switch ">
           <input type="checkbox" name="credglv_active_order" data-order_id="' . $val->id . '" checked class="primary">
           <span class="slider round"></span>
-        </label>';*/
+        </label>';
 				$amount      = $val->amount;
 				$fee         = $val->fee;
 				$create_date = $val->created_date;
@@ -106,16 +115,22 @@ class AdminController extends \credglv\core\Controller implements AdminControlle
 		}
 	}
 
+	/**
+	 * Register all actions that controller want to hook
+	 * @return mixed
+	 */
 	public static function registerAction() {
+		// TODO: Implement registerAction() method.
+
 
 		return [
 			'pages'   => [
 				'admin' => [
-					'credglv-redeem-point' => [
-						'title'      => 'Cred GLV settings',
+					'credglv-redeem-local' => [
+						'title'      => 'Redeem Local Bank',
 						'capability' => 'activate_plugins',
 						'action'     => [ self::getInstance(), 'generateTabs' ],
-						'menu'       => 'credglv-redeem-point'
+						'menu'       => 'credglv-redeem-local'
 					]
 				]
 			],
@@ -123,9 +138,12 @@ class AdminController extends \credglv\core\Controller implements AdminControlle
 				'admin_enqueue_scripts' => [ self::getInstance(), 'disableAutosave' ],
 			],
 			'ajax'    => [
-				'credglv_ajax_active_order' => [ self::getInstance(), 'credglv_ajax_active_order' ],
-			],
+				'setting-data-save'    => [ self::getInstance(), 'tabData' ],
+				'setting-cache-save'   => [ self::getInstance(), 'tabCache' ],
+				'options-cache-save'   => [ self::getInstance(), 'tabCache' ],
+				'setting-general-save' => [ self::getInstance(), 'tabGeneral' ],
+				'setting-payment-save' => [ self::getInstance(), 'tabPayment' ],
+			]
 		];
 	}
-
 }

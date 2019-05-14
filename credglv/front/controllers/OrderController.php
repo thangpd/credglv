@@ -57,44 +57,97 @@ class OrderController extends FrontController implements FrontControllerInterfac
 	 * quantity
 	 */
 	public function addItem() {
-		$amount          = @$_POST['amount'];
-		$max_tax         = 30;
-		$max_tax_percent = 6;
-		if ( ! empty( $amount ) ) {
-			if ( $amount >= $max_tax ) {
-				$user_id = get_current_user_id();
-				$fee     = $amount * $max_tax_percent / 100;
-				if ( $fee > $max_tax ) {
-					$fee = $max_tax;
-				}
-				$settings = mycred_part_woo_settings();
-				$mycred   = mycred( $settings['point_type'] );
+		$amount         = @$_POST['amount'];
+		$type           = ! empty( $_POST['type'] ) ? $_POST['type'] : OrderModel::ORDER_TYPE_CASH;
+		$data_validate  = OrderModel::getPointConfigType( $type );
+		$transaction_id = preg_replace( '/\D/', '', strtotime( "now" ) );
 
-				$mycred->add_creds( 'cash_redeem',
-					$user_id,
-					- ( $amount + $fee ),
-					__( 'Cash redeem : ' . - ( $amount + $fee ), 'credglv' ) );
-				try {
-					$order          = new OrderModel();
-					$order->user_id = $user_id;
-					$order->amount  = $amount;
-					$order->fee     = $fee;
-					$order->data    = json_encode( array(
-						'cash_redeem' => '',
-						'message'     => __( 'Cash redeem : ' . - ( $amount + $fee ), 'credglv' )
-					) );
-					$order->save();
-				} catch ( Exception $e ) {
-					throw ( new Exception( 'Cant add order referral' ) );
+		if ( ! empty( $amount ) ) {
+			if ( $amount >= $data_validate['max_tax'] ) {
+
+				if ( $type == OrderModel::ORDER_TYPE_CASH ) {
+					$user_id = get_current_user_id();
+					$fee     = $amount * $data_validate['max_tax_percent'] / 100;
+					if ( $fee > $data_validate['max_tax'] ) {
+						$fee = $data_validate['max_tax'];
+					}
+					$settings = mycred_part_woo_settings();
+					$mycred   = mycred( $settings['point_type'] );
+					$mycred->add_creds( $type . '_redeem',
+						$user_id,
+						- ( $amount ),
+						__( 'Redeem : ' . - ( $amount ), 'credglv' ) );
+					try {
+						$order                 = new OrderModel();
+						$order->user_id        = $user_id;
+						$order->amount         = $amount - $fee;
+						$order->fee            = $fee;
+						$order->transaction_id = $transaction_id;
+						$order->type           = $type;
+						$order->active         = 1;
+						$order->data           = json_encode( array(
+							$type . '_redeem' => '',
+							'message'         => __( 'Cash Redeem from ' . $mycred->core['name']['singular'] .' : '. ( $amount - $fee ) . $mycred->core['after'], 'credglv' )
+						) );
+						$order->save();
+					} catch ( Exception $e ) {
+						throw ( new Exception( 'Cant add order referral' ) );
+					}
+					$this->responseJson( [
+						'message' => 'Add item ok redeem',
+						'data'    => $order->data,
+					] );
+				} elseif ( $type == OrderModel::ORDER_TYPE_LOCAL ) {
+					$order = new OrderModel();
+
+					$user_id = get_current_user_id();
+
+					$total_user_cash = $order->getTotalUserCash( $user_id, 1, OrderModel::ORDER_TYPE_CASH );
+					$fee             = 0;
+					if ( $amount <= $total_user_cash->total ) {
+						try {
+							$order->user_id        = $user_id;
+							$order->transaction_id = $transaction_id;
+							$order->amount         = $amount - $fee;
+							$order->fee            = $fee;
+							$order->type           = $type;
+							$order->active         = 0;
+							$order->data           = json_encode( array(
+								$type . '_redeem' => '',
+								'message'         => __( 'Local bank redeem from cash : ' . ( $amount - $fee ), 'credglv' )
+							) );
+							$order->save();
+							//minus cash balance;
+							$order->user_id        = $user_id;
+							$order->transaction_id = $transaction_id;
+							$order->amount         = - $amount - $fee;
+							$order->fee            = $fee;
+							$order->type           = OrderModel::ORDER_TYPE_CASH;
+							$order->active         = 1;
+							$order->data           = json_encode( array(
+								$type . '_redeem' => '',
+								'message'         => __( 'Redeem to local bank : ' . ( $amount - $fee ), 'credglv' )
+							) );
+							$order->save();
+						} catch ( Exception $e ) {
+							throw ( new Exception( 'Cant add order referral' ) );
+						}
+						$this->responseJson( [
+							'message' => 'Add cash to local redeem transfered',
+							'data'    => $order->data,
+						] );
+					} else {
+						$this->responseJson( [
+							'code'    => 403,
+							'message' => 'Cash insufficient funds',
+							'data'    => '',
+						] );
+					}
 				}
-				$this->responseJson( [
-					'message' => 'Add item ok redeem',
-					'data'    => $order->data,
-				] );
 			} else {
 				$this->responseJson( [
 					'code'    => 403,
-					'message' => 'Amount lower than 30',
+					'message' => 'Amount lower than ' . $data_validate['max_tax'],
 					'data'    => 'data',
 				] );
 			}

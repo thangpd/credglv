@@ -9,10 +9,15 @@ jQuery(function ($) {
         $('form').on('submit', function (e) {
             e.preventDefault();
             var amount = $(this).find('input[name="amount"]').val();
+            var type = $(this).find('input[name="type"]');
+
             var data = {
                 amount: amount,
                 action: 'credglv_order_add_item'
             };
+            if (type.length) {
+                data.type = type.val();
+            }
             $.ajax({
                 type: 'POST',
                 url: credglvConfig.ajaxurl,
@@ -20,7 +25,7 @@ jQuery(function ($) {
                 async: false,
                 success: function (res) {
                     if (res.code === 200) {
-                        console.log(res);
+                        console.log(res.message);
 
                         location.reload();
 

@@ -108,9 +108,19 @@ class AdminTemplate extends Template {
 		$list_menu = [
 			'setting' => array(
 				'page-title'    => '',
-				'menu-title'    => 'Cred GLV',
+				'menu-title'    => 'Redeem Cash',
 				'capability'    => 'activate_plugins',
 				'slug'          => 'credglv-redeem-point',
+				'icon'          => 'dashicons-admin-generic',
+				'position'      => 5,
+				'callback'      => '',
+				'menu-sub-item' => []
+			),
+			'redeem' => array(
+				'page-title'    => '',
+				'menu-title'    => 'Redeem Local Bank',
+				'capability'    => 'activate_plugins',
+				'slug'          => 'credglv-redeem-local',
 				'icon'          => 'dashicons-admin-generic',
 				'position'      => 5,
 				'callback'      => '',
