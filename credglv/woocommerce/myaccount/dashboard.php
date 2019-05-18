@@ -24,34 +24,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 $user    = new \credglv\models\UserModel();
 $user_id = get_current_user_id();
 
-$wmc_html = '<div id="credglv-qr-code">
+if ( $user->check_actived_referral( $user_id ) ) {
+
+	$wmc_html = '<div id="credglv-qr-code">
                 <h2>' . __( 'Your share link QR code', 'credglv' ) . '</h2>
                 <div class="wmc-banners">';
 
-$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
+	$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
 
-$wmc_html .= '</div>';
+	$wmc_html .= '</div>';
 
-echo $wmc_html;
-?>
+	echo $wmc_html;
+	?>
     <div class="link-url">
         <h2><?php echo __( 'Your share link url:', 'credglv' ); ?></h2>
-		<?php echo $user->get_url_share_link() ?>
     </div>
-
-
-<?php if ( $user->check_actived_referral( $user_id ) ) {
-
-	echo 'Your account is not active. Contact admin or transfer at least' . credglv()->config->credglv_joining_fee . ' to active';
+	<?php
 } else {
-	echo 'chua active';
-
+	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
 };
 
 
 ?>
-    <!-- Customisation -->
+    <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
+    <!-- The button used to copy the text -->
+    <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
+    <button onclick="share_link()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
+    <script>
+        function myFunction() {
+            /* Get the text field */
+            var copyText = document.getElementById("myInput");
+
+            /* Select the text field */
+            copyText.select();
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+        }
+
+        function share_link() {
+            alert('share');
+        }
+
+
+    </script>
 <?php
 /**
  * My Account dashboard.

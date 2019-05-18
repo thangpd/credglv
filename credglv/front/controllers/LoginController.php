@@ -74,7 +74,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		?>
         <p class="form-row form-row-wide">
-            <a class="login-with-what" href="#">Login with username/email</a>
+            <a class="login-with-what" href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
         </p>
         <div class="phone_login">
             <div class="form-row form-row-wide">

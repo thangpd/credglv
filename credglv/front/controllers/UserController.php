@@ -310,7 +310,6 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}
 
-
 	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
 		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
 			if ( preg_match( '#wp-login.php#', $login_url ) ) {
@@ -325,16 +324,7 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 	function credglv_assets_enqueue() {
-		/*wp_register_script( 'Treant-js', plugin_dir_url( __DIR__ ) . '/assets/libs/treant-js-master/Treant.js', [
-			'jquery-easing',
-			'jquery',
-			'jquery-ui'
-		] );
-		wp_register_script( 'Treant-raphael-js', plugin_dir_url( __DIR__ ) . '/assets/libs/treant-js-master/vendor/raphael.js', [
-			'jquery-easing',
-			'jquery',
-			'jquery-ui'
-		] );*/
+
 		wp_register_script( 'd3', plugin_dir_url( __DIR__ ) . '/assets/libs/d3/d3.js', [
 			'jquery',
 			'jquery-ui'
@@ -365,44 +355,20 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
-
 	}
 
 	public static function registerAction() {
-
-
-		/*'login_url'             => [
-			'\credglv\models\UserModel' => [ 'redirectLoginUrl', 10, 3 ],
-		],*/
 		return [
 			'actions' => [
 				'woocommerce_save_account_details_errors' => [
 					self::getInstance(),
 					'credglv_wooc_edit_profile_save_fields'
 				],
-				/*'woocommerce_account_content'             => [
-					self::getInstance(),
-					'credglv_myaccount_customer_avatar',
-					5
-				],*/
 				'init'                                    => [ self::getInstance(), 'init_hook' ],
 				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
 
 			],
 			'assets'  => [
-				/*'css' => [
-					[
-						'id'           => 'credglv-user-profile',
-						'isInline'     => false,
-						'url'          => '/front/assets/css/credglv-user-profile.css',
-						'dependencies' => [ 'credglv-style', 'font-awesome' ]
-					],
-					[
-						'id'       => 'category',
-						'isInline' => false,
-						'url'      => '/front/assets/css/category.css'
-					],
-				],*/
 				'js' => [
 					[
 						'id'       => 'credglv-main-js',
