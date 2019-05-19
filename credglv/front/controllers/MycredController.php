@@ -155,6 +155,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			</div>
 		</div>
 		<br>
+		<p>Phí chuyển: $G 1. Chuyển tối thiếu $G 10. Người chuyển chịu phí.</p>
 ';
 		$fields .= $fields_temp;
 
@@ -200,26 +201,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				'mycred_transfer_form_extra' => [ self::getInstance(), 'credglv_transfer_form_extra_otp_field', 10, 3 ],
 			],
 			'assets'  => [
-				/*'css' => [
-					[
-						'id'           => 'credglv-user-profile',
-						'isInline'     => false,
-						'url'          => '/front/assets/css/credglv-user-profile.css',
-						'dependencies' => [ 'credglv-style', 'font-awesome' ]
-					],
-					[
-						'id'       => 'category',
-						'isInline' => false,
-						'url'      => '/front/assets/css/category.css'
-					],
-				],
-				'js' => [
-					[
-						'id'       => 'credglv-main-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/main.js',
-					]
-				]*/
+
 			],
 			'ajax'    => [
 //				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],

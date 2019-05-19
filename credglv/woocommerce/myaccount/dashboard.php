@@ -39,13 +39,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
     <div class="link-url">
         <h2><?php echo __( 'Your share link url:', 'credglv' ); ?></h2>
     </div>
-	<?php
-} else {
-	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
-};
-
-
-?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
     <!-- The button used to copy the text -->
     <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
@@ -69,6 +62,14 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
 
     </script>
+	<?php
+} else {
+	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
+};
+
+
+?>
+
 <?php
 /**
  * My Account dashboard.

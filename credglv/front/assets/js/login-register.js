@@ -217,7 +217,7 @@ jQuery(function ($) {
                 text_toggle.text('Login with phone number');
                 otp.attr("data-phone", "no");
             } else {
-                text_toggle.text('Login with phone username/email');
+                text_toggle.text('Login with username/email');
                 otp.attr("data-phone", "yes");
             }
             e.preventDefault();
