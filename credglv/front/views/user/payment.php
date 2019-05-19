@@ -131,7 +131,7 @@ function render_payment_html()
 
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankpin">Pin';
-    $html .= '<input type="text" id="user_bankpin" name="user_bankpin" class="woocommerce-Input woocommerce-Input--password input-text">';
+    $html .= '<input type="password" maxlength="4" id="user_bankpin" name="user_bankpin" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
 
     $html .= '<input type="submit" name="paymentclick" value="Update"/>';
@@ -283,7 +283,7 @@ function render_payment_error_html()
     $html .= '</p>';
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankpin">Pin';
-    $html .= '<input type="text" id="user_bankpin" name="user_bankpin" value="" class="woocommerce-Input woocommerce-Input--password input-text">';
+    $html .= '<input type="password" maxlength="4" id="user_bankpin"  name="user_bankpin" value="" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
     $html .= '<input type="submit" name="paymentclick" value="Update"/>';
     $html .= '</from>';
@@ -324,8 +324,8 @@ if(isset($_POST['paymentclick'])){
     $banknumber = $_POST['user_banknumber'];
     $bankpin = $_POST['user_bankpin'];
 
-
-    if(empty($bankname) || empty($bankbranch) || empty($bankcountry) || empty($bankowner) || empty($banknumber) || empty($bankpin) || $bankpin != '7777' ) {
+$bankpin_data=get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
+    if(empty($bankname) || empty($bankbranch) || empty($bankcountry) || empty($bankowner) || empty($banknumber) || empty($bankpin) || $bankpin != $bankpin_data ) {
             if (empty($bankname)) {
                 echo '<div style="background-color: red;text-align: center;color:white;">Invalid Bank Name</div>';
                 global $flag ;
@@ -351,7 +351,7 @@ if(isset($_POST['paymentclick'])){
                 global $flag ;
                 $flag = 5;
             }
-            else if(empty($bankpin) || $bankpin != '7777'){
+            else if(empty($bankpin) || $bankpin != $bankpin_data){
                 echo '<div style="background-color: red;text-align: center;color:white;">Invalid Bank Pin</div>';
                 global $flag ;
                 $flag = 6;
@@ -359,7 +359,7 @@ if(isset($_POST['paymentclick'])){
 
 
 
-    }else if(!empty($bankname) && !empty($bankbranch) && !empty($bankcountry) && !empty($bankowner) && !empty($banknumber) && !empty($bankpin) && $bankpin == get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true )) {
+    }else if(!empty($bankname) && !empty($bankbranch) && !empty($bankcountry) && !empty($bankowner) && !empty($banknumber) && !empty($bankpin) && $bankpin == $bankpin_data) {
         update_user_meta($user_id, 'bank_name', $bankname);
         update_user_meta($user_id, 'bank_branch', $bankbranch);
         update_user_meta($user_id, 'bank_country', $bankcountry);

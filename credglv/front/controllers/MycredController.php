@@ -62,7 +62,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				return;
 			}
 			$balance = $mycred->get_users_balance( $user_id );
-			if (  $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+			if ( $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
 				$mycred->add_creds( 'register_fee',
 					$user_id,
 					- $this->joining_fee,
@@ -149,7 +149,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				<div class="form-group select-recipient-wrapper">
 				<label>' . __( "Pin", "credglv" ) . '</label>
 				<br>
-				<input type="text" name="mycred_new_transfer[pin_transfer]" 
+				<input type="password" maxlength="4" name="mycred_new_transfer[pin_transfer]" 
 				value="" aria-required="true" class="form-control" >
 				</div>
 			</div>
