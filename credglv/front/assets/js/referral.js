@@ -94,21 +94,17 @@ jQuery(function ($) {
                 .attr("r", 1e-6)
                 .style("fill", function (d) {
                     return d.children ? "lightsteelblue" : "#fff";
-                }).style("stroke-width", function (d) {
-                return d.children ? 5 : 1;
-            });
+                });
 
             var g = nodeEnter.append("g");
 
             g.append("text")
-                .attr("x", function (d) {
-                    return d.children || d._children ? 8 : -15;
-                }).attr("y", function (d) {
-                return d.children || d._children ? 30 : 30;
+                .attr("y", function (d) {
+                return d.children || d._children ? 35 : 35;
             })
                 .attr("dy", "1.35em")
                 .attr("text-anchor", function (d) {
-                    return d.children || d._children ? "end" : "start";
+                    return d.children || d._children ? "middle" : "middle";
                 })
                 .text(function (d) {
                     return d.display_name;
@@ -139,7 +135,10 @@ jQuery(function ($) {
                 .attr("r", 30)
                 .style("fill", function (d, i) {
                     return 'url(#pic_' + d.display_name + ')';
-                });
+                }).style("stroke-width", function (d) {
+
+                return d.children || d._children ? 5 : 1;
+            });
 
             nodeUpdate.selectAll("text")
                 .style("fill-opacity", 1);

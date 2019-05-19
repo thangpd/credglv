@@ -108,7 +108,7 @@ function render_profile_html() {
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_date">Date of Birth';
-	$html .= '<input type="date" id="user_date" name="user_date" value="' . $get_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '<input type="date" min="1999-01-01" max="2012-12-30" id="user_date" name="user_date" value="' . $get_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_fullname">Address';
@@ -236,7 +236,7 @@ function render_profile_error_html() {
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_date">Date of Birth';
-	$html .= '<input type="date" id="user_date" name="user_date" value="' . $user_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '<input type="date" min="2017-01-01" max="2017-12-30" id="user_date" name="user_date" value="' . $user_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_fullname">Address';
