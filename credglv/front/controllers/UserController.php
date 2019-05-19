@@ -141,7 +141,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				array(
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
-					'referral'      => __( 'Referral', 'credglv' ),
+					'referral'      => __( 'Network', 'credglv' ),
 					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
 					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
