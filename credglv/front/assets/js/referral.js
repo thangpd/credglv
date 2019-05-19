@@ -68,7 +68,7 @@ jQuery(function ($) {
                 .attr("transform", function (d) {
                     return "translate(" + source.y0 + "," + source.x0 + ")";
                 })
-                .on("click", click);
+            ;
 
             // add picture
             nodeEnter
@@ -94,14 +94,15 @@ jQuery(function ($) {
                 .attr("r", 1e-6)
                 .style("fill", function (d) {
                     return d.children ? "lightsteelblue" : "#fff";
-                });
+                }).on("click", click);
 
             var g = nodeEnter.append("g");
 
+
             g.append("text")
                 .attr("y", function (d) {
-                return d.children || d._children ? 35 : 35;
-            })
+                    return d.children || d._children ? 35 : 35;
+                })
                 .attr("dy", "1.35em")
                 .attr("text-anchor", function (d) {
                     return d.children || d._children ? "middle" : "middle";
@@ -109,7 +110,7 @@ jQuery(function ($) {
                 .text(function (d) {
                     return d.display_name;
                 })
-                .style("fill-opacity", 1e-6);
+                .style("fill-opacity", 1e-6).on("click", username_click);
 
             g.append("text")
                 .attr("x", function (d) {
@@ -136,7 +137,6 @@ jQuery(function ($) {
                 .style("fill", function (d, i) {
                     return 'url(#pic_' + d.display_name + ')';
                 }).style("stroke-width", function (d) {
-
                 return d.children || d._children ? 5 : 1;
             });
 
@@ -202,6 +202,17 @@ jQuery(function ($) {
                 d._children = null;
             }
             update(d);
+        }
+
+        function username_click(d) {
+            $([document.documentElement, document.body]).animate({
+                scrollTop: $("#mycred_widget_transfer-4").offset().top
+            }, 2000);
+            console.log(d);
+            var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
+            input_username.val(d.display_name);
+            input_username.focus();
+            console.log(input_username);
         }
     }
 
