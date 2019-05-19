@@ -307,7 +307,23 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
 		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 
+//		delete require first name and last name
+		add_filter( 'woocommerce_save_account_details_required_fields', array( $this, 'remove_save_account_detail' ) );
 
+
+	}
+
+
+	public function remove_save_account_detail( $arr ) {
+		if ( isset( $arr['account_first_name'] ) ) {
+			unset( $arr['account_first_name'] );
+		}
+		if ( isset( $arr['account_last_name'] ) ) {
+			unset( $arr['account_last_name'] );
+		}
+
+
+		return $arr;
 	}
 
 	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
