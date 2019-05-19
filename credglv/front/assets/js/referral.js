@@ -211,7 +211,7 @@ jQuery(function ($) {
             console.log(d);
             var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
             input_username.val(d.display_name);
-            input_username.focus();
+            $('input[name="mycred_new_transfer[amount]"]').focus();
             console.log(input_username);
         }
     }
