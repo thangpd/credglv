@@ -1,116 +1,77 @@
 <?php
+/**
+ * Login Form
+ *
+ * This template can be overridden by copying it to yourtheme/woocommerce/myaccount/form-login.php.
+ *
+ * HOWEVER, on occasion WooCommerce will need to update template files and you
+ * (the theme developer) will need to copy the new files to your theme to
+ * maintain compatibility. We try to do this as little as possible, but it does
+ * happen. When this occurs the version of the template file will be bumped and
+ * the readme will list any important changes.
+ *
+ * @see     https://docs.woocommerce.com/document/template-structure/
+ * @package WooCommerce/Templates
+ * @version 3.5.0
+ */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
-?>
+do_action( 'woocommerce_before_customer_login_form' ); ?>
 
+<?php if ( get_option( 'woocommerce_enable_myaccount_registration' ) === 'yes' ) : ?>
 
-<header class="entry-header">
-    <h1 class="entry-title"><?php echo __( 'Be a GLV Member – Be Gold', 'credglv' ); ?></h1>
-</header><!-- .entry-header -->
-
-<div class="entry-content">
-    <p><?php echo __( 'You are about to register to be an official GLV member. Please confidentially fill in the below form to be apart
-        of us.', 'credglv' ) ?></p>
-    <form action="" id="register-form" class="form-register-cred">
-        <div class="form-group  selector-referrer">
-            <label for="referrer"><?php echo __( 'Referrer', 'credglv' ); ?>
-            </label><span class="selector-search"></span>
-            <select id="referrer" class="referrer-ajax-search form-control disable" style="width:100%"></select>
-        </div>
-        <div class="form-group">
-            <label for="email"><?php echo __( 'Email', 'credglv' ); ?>
-            </label><span class="email"></span>
-            <input type="email" id="email" required>
-        </div>
-        <div class="form-group">
-            <label for="password"><?php echo __( 'Password', 'credglv' ); ?>
-            </label><span class="password"></span>
-            <input type="password" id="password" required>
-        </div>
-        <div class="form-group">
-            <label for="repassword"><?php echo __( 'Repeat Password', 'credglv' ); ?>
-            </label><span class="repassword"></span>
-            <input type="password" id="repassword" required>
-        </div>
-        <div class="form-group" style="padding-bottom:20px">
-            <label for="phone"><?php echo __( 'Phone', 'credglv' ); ?>
-            </label><span class="phone"></span>
-            <div class="phone-zone"><input placeholder="+" type="number" class="sub-phone" id="sub-phone"
-                                           required><input
-                        class="main-phone"
-                        type="number"
-                        id="main-phone"
-                        required>
-            </div>
-        </div>
-        <span class="error-msg-front"></span>
-        <div class="verify-block hide">
-			<?php \credglv\front\controllers\ThirdpartyController::getInstance()->captcha_field( array( 'callback' => 'recaptcha_callback' ) ); ?>
-
-            <div class="form-group" style="padding-top:20px;">
-                <label for="otp"><?php echo __( 'OTP', 'credglv' ); ?>
-                </label><span class="otp"></span>
-                <input type="number" disabled id="otp">
-            </div>
-        </div>
-        <!--<span class="submit" style="display:block"></span>
-        <button id="submit-button" type="submit" disabled
-                class="btn btn-primary btn-submit"><?php /*echo __( 'Submit', 'credglv' ); */ ?></button>-->
-        <script type="text/javascript">
-
-            function recaptcha_callback() {
-                // document.getElementById("otp").value = "ok";
-                var xhttp = new XMLHttpRequest();
-                var main_phone = document.getElementById("main-phone").value;
-                if (main_phone) {
-                } else {
-                    main_phone = '';
-                }
-
-                var sub_phone = document.getElementById("sub-phone").value;
-                if (sub_phone) {
-                    sub_phone.replace('+', sub_phone);
-                } else {
-                    sub_phone = '';
-                }
-                var phone = sub_phone + "" + main_phone;
-                console.log(phone);
-                console.log(xhttp);
-                xhttp.onreadystatechange = function () {
-                    var list = document.getElementsByClassName("otp")[0];
-                    if (this.responseText) {
-                        var response = JSON.parse(this.responseText);
-                    }
-                    if (response) {
-                        if (this.readyState === 4 && response.code === 200) {
-                            console.log('200');
-                            console.log(response.message);
-                            list.innerHTML = response.message;
-                            // document.getElementById("demo").innerHTML = this.responseText;
-                            document.getElementById("otp").removeAttribute("disabled");
-                            document.getElementById("otp").value = '';
-
-                        } else if (response.code === 403) {
-                            console.log('error 403');
-                            console.log(response.message);
-                            list.innerHTML = response.message;
-
-                        }
-                    }
-                };
-                xhttp.open("POST", "<?php echo admin_url( 'admin-ajax.php' ); ?>", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("action=sendphone_message&phone=" + phone);
-            };
-
-        </script>
-
-    </form>
-
-</div><!-- .entry-content -->
+<div class="u-columns col2-set" id="customer_login">
 
 
 
+    <div class="u-column2 col-2">
 
+        <h2><?php esc_html_e( 'Register', 'woocommerce' ); ?></h2>
 
+        <form method="post" class="woocommerce-form woocommerce-form-register register" <?php do_action( 'woocommerce_register_form_tag' ); ?> >
 
+			<?php do_action( 'woocommerce_register_form_start' ); ?>
+
+			<?php if ( 'no' === get_option( 'woocommerce_registration_generate_username' ) ) : ?>
+
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                    <label for="reg_username"><?php esc_html_e( 'Username', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="reg_username" autocomplete="username" value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
+                </p>
+
+			<?php endif; ?>
+
+            <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                <label for="reg_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+                <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email" id="reg_email" autocomplete="email" value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>" /><?php // @codingStandardsIgnoreLine ?>
+            </p>
+
+			<?php if ( 'no' === get_option( 'woocommerce_registration_generate_password' ) ) : ?>
+
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                    <label for="reg_password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+                    <input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password" id="reg_password" autocomplete="new-password" />
+                </p>
+
+			<?php endif; ?>
+
+			<?php do_action( 'woocommerce_register_form' ); ?>
+
+            <p class="woocommerce-FormRow form-row">
+				<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
+                <button type="submit" class="woocommerce-Button button" name="register" value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></button>
+            </p>
+
+			<?php do_action( 'woocommerce_register_form_end' ); ?>
+
+        </form>
+
+    </div>
+
+</div>
+<?php endif; ?>
+
+<?php do_action( 'woocommerce_after_customer_login_form' ); ?>

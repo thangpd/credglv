@@ -135,7 +135,7 @@ class RegisterController extends FrontController implements FrontControllerInter
             <label for="cred_otp_code">
 				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
             </label>
-            <input type="text" class="input-otp-code"
+            <input type="number" class="input-otp-code"
                    name="cred_otp_code"
                    id="cred_otp_code"
                    value="" maxlength="4"/>
@@ -203,21 +203,55 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 	function credglv_assets_enqueue() {
 		global $post;
+		wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
+		wp_register_script( 'cred-my-account-detail', plugin_dir_url( __DIR__ ) . '/assets/js/account-details.js' );
+
 		if ( isset( $post->ID ) ) {
 			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
-				wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
 				wp_enqueue_script( 'cred-my-account-login-page' );
+				wp_enqueue_script( 'cred-my-account-detail' );
 				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
 			}
+
+
+		}
+		$page_name = get_query_var( 'name' );
+		if ( ! credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_register' ) ) {
+			wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+			wp_enqueue_script( 'cred-my-account-login-page' );
+
 		}
 	}
 
+	public function registerPage() {
+
+		$user = UserController::getInstance();
+
+		$data      = [];
+		$page_name = get_query_var( 'name' );
+		if ( credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_register' ) ) {
+			if ( current_user_can( 'administrator' ) ) {
+				wp_redirect( admin_url() );
+				exit;
+			} else {
+				wp_redirect( home_url() );
+				exit;
+			}
+		} else {
+
+
+			return $this->render( 'register', [ 'data' => $data ] );
+
+		}
+	}
 
 	/**
 	 * Register all actions that controller want to hook
 	 * @return mixed
 	 */
 	public static function registerAction() {
+
+
 		return [
 			'actions' => [
 				'wp_head' => [ self::getInstance(), 'add_custom_js' ],
@@ -245,7 +279,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 			],
 			'pages'   => [
-				/*'front' => [
+				'front' => [
 					credglv()->config->getUrlConfigs( 'credglv_register' ) =>
 						[
 							'registerPage',
@@ -255,7 +289,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 							]
 						],
 
-				]*/
+				]
 			],
 			'assets'  => [
 				'css' => [
