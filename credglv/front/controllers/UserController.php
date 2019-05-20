@@ -26,6 +26,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	const METAKEY_PHONE = 'cred_billing_phone';
 	const METAKEY_PIN = 'cred_user_pin';
+	const METAKEY_COOKIE = 'CREDGLV_REFERRAL_CODE';
 
 	/**
 	 * Get user id by phone
@@ -312,7 +313,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	public function init_hook() {
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
-			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
+			setcookie( self::METAKEY_COOKIE, $_GET['ru'], time() + 2628000 );
 		}
 
 		$arr_pages = $this->add_referral_query_var( array() );

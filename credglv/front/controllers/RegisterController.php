@@ -119,6 +119,19 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 
 	function credglv_extra_otp_register_fields() {
+
+		if ( isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
+			$user_ref = $_COOKIE[ UserController::METAKEY_COOKIE ];
+		} elseif ( isset( $_GET['ru'] ) ) {
+			$user_ref = $_GET['ru'];
+		}
+		$user = get_user_by( 'login', $user_ref );
+
+
+		$option = '';
+		if ( $user ) {
+			$option = '<option value="' . $user->data->ID . '">' . $user->data->user_login . '</option>';
+		}
 		?>
         <p class="form-row form-row-wide">
             <label for="reg_referral">
@@ -126,7 +139,7 @@ class RegisterController extends FrontController implements FrontControllerInter
             </label>
 
             <select id="input_referral" name="input_referral" class="input-referral" style="width:100%">
-                <option value="54">usertest1</option>
+				<?php echo $option ?>
             </select><!--
             <input type="text" class="input-referral"
                    name="input_referral"
