@@ -27,7 +27,7 @@ $user_id = get_current_user_id();
 if ( $user->check_actived_referral( $user_id ) ) {
 
 	$wmc_html = '<div id="credglv-qr-code">
-                <h2>' . __( 'Your share link QR code', 'credglv' ) . '</h2>
+                
                 <div class="wmc-banners">';
 
 	$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
@@ -36,9 +36,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
 	echo $wmc_html;
 	?>
-    <div class="link-url">
-        <h2><?php echo __( 'Your share link url:', 'credglv' ); ?></h2>
-    </div>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
     <!-- The button used to copy the text -->
     <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
