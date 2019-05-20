@@ -82,5 +82,17 @@ table.mycred-table .column-entry {
 .mycred-history-wrapper nav ul li {
     list-style: none;
     display: inline-block;
-    padding:10px;
+    padding: 10px;
+}
+
+@media screen and (min-width: 769px) {
+    .u-column1.col-1 {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .u-column2.col-2 {
+        display: none;
+    }
 }
