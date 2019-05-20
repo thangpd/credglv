@@ -95,7 +95,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
                     </div>
-                    <input type="text" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                    <input type="text" autofocus class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
                            id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
@@ -117,7 +117,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
             <label for="cred_otp_code_login">
 				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
             </label>
-            <input type="text" class="input-otp-code"
+            <input type="number" class="input-otp-code"
                    name="cred_otp_code"
                    id="cred_otp_code_login"
                    value="" maxlength="4"/>
