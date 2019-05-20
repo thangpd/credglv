@@ -67,7 +67,7 @@ jQuery(function ($) {
                     },
                     cred_otp_code: {
                         required: true,
-                        minlength: 4
+                        maxlength: 4
                     },
                 },
                 messages: {

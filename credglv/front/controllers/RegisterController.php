@@ -125,7 +125,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 				<?php _e( 'Referral', 'credglv' ); ?>
             </label>
 
-            <select id="input_referral" name="input_referral" class="input-referral" style="width:100%"></select><!--
+            <select id="input_referral" name="input_referral" class="input-referral" style="width:100%">
+                <option value="54">usertest1</option>
+            </select><!--
             <input type="text" class="input-referral"
                    name="input_referral"
                    id="reg_referral"
@@ -138,7 +140,7 @@ class RegisterController extends FrontController implements FrontControllerInter
             <input type="number" class="input-otp-code"
                    name="cred_otp_code"
                    id="cred_otp_code"
-                   value="" maxlength="4"/>
+                    maxlength="4"  />
         </p>
         <span class="error_log"></span>
 
@@ -184,7 +186,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                         <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                     </ul>
                 </div>
-                <input autofocus type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                <input  type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                        name="cred_billing_phone"
                        id="reg_phone_register"
                        value="<?php echo $num_val; ?>" maxlength="10"/>
