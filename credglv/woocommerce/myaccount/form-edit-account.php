@@ -86,7 +86,16 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         </p>
     </fieldset>
     <div class="clear"></div>
-
+    <p class="form-row form-row-wide otp-code hide" data-phone="yes">
+        <label for="cred_otp_code">
+			<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
+        </label>
+        <input type="number" class="input-otp-code"
+               name="cred_otp_code"
+               id="cred_otp_code"
+               value="" maxlength="4"/>
+        <span class="error_log"></span>
+    </p>
 	<?php do_action( 'woocommerce_edit_account_form' ); ?>
 
     <p>

@@ -123,9 +123,13 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 	public function sendphone_message() {
 		$res = array( 'status' => 'success', 'message' => __( 'No phone number', 'credglv' ) );
 
-
+		$user_front = UserController::getInstance();
 		if ( isset( $_POST['phone'] ) && ! empty( $_POST['phone'] ) ) {
 			$data = array( 'phone' => $_POST['phone'] );
+			$res  = $this->sendphone_otp( $data );
+			$this->responseJson( $res );
+		} elseif ( ! empty( $phone_num = $user_front->getPhoneByUserID( get_current_user_id() ) ) ) {
+			$data = array( 'phone' => $phone_num );
 			$res  = $this->sendphone_otp( $data );
 			$this->responseJson( $res );
 		} else {

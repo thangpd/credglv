@@ -108,6 +108,21 @@ class UserController extends FrontController implements FrontControllerInterface
 			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
 		}
 
+		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
+//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
+			$data = array(
+				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
+				'otp'   => $_POST['cred_otp_code']
+			);
+
+			$third_party = ThirdpartyController::getInstance();
+
+			$res = $third_party->verify_otp( $data );
+			if ( $res['code'] != 200 ) {
+				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
+			}
+		}
+
 
 	}
 
@@ -160,12 +175,12 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 	public function add_referral_query_var( $vars ) {
-		$vars[] = 'referral';
-		$vars[] = 'payment';
-		$vars[] = 'profile';
-		$vars[] = 'point_history';
-		$vars[] = 'cash_redeem';
-		$vars[] = 'local_redeem';
+		$vars['referral']      = 'referral';
+		$vars['payment']       = 'payment';
+		$vars['profile']       = 'profile';
+		$vars['point_history'] = 'point_history';
+		$vars['cash_redeem']   = 'cash_redeem';
+		$vars['local_redeem']  = 'local_redeem';
 
 		return $vars;
 	}
@@ -287,6 +302,14 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 
+	function wpb_woo_endpoint_title( $title, $id ) {
+		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
+			$title = ""; // change your entry-title
+		}
+
+		return $title;
+	}
+
 	public function init_hook() {
 		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
 			setcookie( 'CREDGLV_REFERRAL_CODE', $_GET['ru'], time() + 2628000 );
@@ -301,7 +324,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			) );
 		}
 		flush_rewrite_rules();
-
+		//add endpoint title
 
 		/* Hooks for myaccount referral endpoint */
 		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
@@ -311,10 +334,16 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_filter( 'woocommerce_save_account_details_required_fields', array( $this, 'remove_save_account_detail' ) );
 
 
+		add_filter( 'the_title', array( $this, 'wpb_woo_endpoint_title' ), 10, 2 );
+
+
 	}
 
 
-	public function remove_save_account_detail( $arr ) {
+	public
+	function remove_save_account_detail(
+		$arr
+	) {
 		if ( isset( $arr['account_first_name'] ) ) {
 			unset( $arr['account_first_name'] );
 		}
@@ -326,7 +355,10 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $arr;
 	}
 
-	public function redirectLoginUrl( $login_url, $redirect, $force_reauth ) {
+	public
+	function redirectLoginUrl(
+		$login_url, $redirect, $force_reauth
+	) {
 		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
 			if ( preg_match( '#wp-login.php#', $login_url ) ) {
 				if ( ! is_admin() || ! current_user_can( 'administrator' ) ) {
@@ -373,7 +405,9 @@ class UserController extends FrontController implements FrontControllerInterface
 		}
 	}
 
-	public static function registerAction() {
+
+	public
+	static function registerAction() {
 		return [
 			'actions' => [
 				'woocommerce_save_account_details_errors' => [
@@ -382,7 +416,6 @@ class UserController extends FrontController implements FrontControllerInterface
 				],
 				'init'                                    => [ self::getInstance(), 'init_hook' ],
 				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
-
 			],
 			'assets'  => [
 				'js' => [
