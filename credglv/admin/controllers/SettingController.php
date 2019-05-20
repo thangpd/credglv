@@ -52,11 +52,11 @@ class SettingController extends AdminController implements ControllerInterface {
 		'payment'  => [
 			'label'    => 'Payment',
 			'renderer' => [ 'credglv\admin\controllers\SettingController', 'tabPayment' ]
-		],
+		],*/
 		'frontend' => [
 			'label'    => 'Frontend',
 			'renderer' => [ 'credglv\admin\controllers\SettingController', 'tabData' ]
-		]*/
+		]
 	];
 
 	/**
@@ -272,7 +272,6 @@ class SettingController extends AdminController implements ControllerInterface {
 
 		return $this->render( '_cache', $data, true );
 	}
-
 
 
 	/**

@@ -128,7 +128,8 @@ return [
 					'id'       => 'font-awesome',
 					'isInline' => false,
 					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/font-awesome.css' ),
-				],[
+				],
+				[
 					'id'       => 'font-flaticon',
 					'isInline' => false,
 					'url'      => plugins_url( 'credglv/assets/libs/font-flaticon/flaticon.css' ),
@@ -182,7 +183,7 @@ return [
 			'label' => 'Login page'
 		],
 		'credglv_register'            => [
-			'slug'  => 'credglv-register',
+			'slug'  => 'register',
 			'label' => 'Register page'
 		]
 	],
