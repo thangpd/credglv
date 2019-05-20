@@ -140,7 +140,7 @@ class RegisterController extends FrontController implements FrontControllerInter
             <input type="number" class="input-otp-code"
                    name="cred_otp_code"
                    id="cred_otp_code"
-                    maxlength="4"  />
+                   maxlength="4"/>
         </p>
         <span class="error_log"></span>
 
@@ -186,7 +186,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                         <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                     </ul>
                 </div>
-                <input  type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                <input type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                        name="cred_billing_phone"
                        id="reg_phone_register"
                        value="<?php echo $num_val; ?>" maxlength="10"/>
@@ -236,7 +236,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 				wp_redirect( admin_url() );
 				exit;
 			} else {
-				wp_redirect( home_url() );
+				wp_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
 				exit;
 			}
 		} else {
