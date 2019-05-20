@@ -205,7 +205,7 @@ jQuery(function ($) {
         }
 
         function username_click(d) {
-            $([document.documentElement, document.body]).animate({
+            $('form#mycred-transfer-form-transfer').animate({
                 scrollTop: $("#transfer-form-transfer").offset().top
             }, 2000);
             console.log(d);
