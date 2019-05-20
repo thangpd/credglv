@@ -337,6 +337,12 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_filter( 'the_title', array( $this, 'wpb_woo_endpoint_title' ), 10, 2 );
 
 
+		if ( ! is_user_logged_in() ) {
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper', 42);
+			remove_action( 'storefront_header', 'storefront_primary_navigation', 50);
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper_close', 68);
+
+		}
 	}
 
 
@@ -403,6 +409,10 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
+	}
+
+	public function remove_action_header_woocommerce() {
+
 	}
 
 
