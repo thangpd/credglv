@@ -184,7 +184,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                         <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                     </ul>
                 </div>
-                <input type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                <input autofocus type="number" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                        name="cred_billing_phone"
                        id="reg_phone_register"
                        value="<?php echo $num_val; ?>" maxlength="10"/>
