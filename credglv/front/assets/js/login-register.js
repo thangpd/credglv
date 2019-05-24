@@ -122,14 +122,15 @@ jQuery(function ($) {
     credglv.validate_submitform = function (form) {
         $(form).on('submit', function (e) {
 
-            var otp_div = $(this).find('.otp-code');
+            var otp_div = $(document).find('.otp-code');
+            var text_toggle = $('.login-with-what');
 
-            if ($(this).valid() && otp_div.data('phone') === 'yes' && otp_div.is(':hidden')) {
+            if ($(this).valid() && text_toggle.data('phone') === 'yes' && otp_div.is(':hidden')) {
                 console.log('login 1');
                 credglv.sendmessage_otp(form);
                 e.preventDefault();
             } else {
-                if ($(this).valid() && form === 'form.login' && otp_div.data('phone') === 'yes') {
+                if ($(this).valid() && form === 'form.login' && text_toggle.data('phone') === 'yes') {
                     console.log('login2');
                     e.preventDefault();
                     credglv.ajax_login(form);
@@ -210,15 +211,14 @@ jQuery(function ($) {
             if (otp.is(':visible')) {
                 otp.toggle('hide');
             }
-            console.log(otp.attr("data-phone"));
-
             var text_toggle = $('.login-with-what');
-            if (otp.attr("data-phone") === 'yes') {
+            console.log(text_toggle.data("phone"));
+            if (text_toggle.data("phone") === 'yes') {
+                text_toggle.data("phone", "no");
                 text_toggle.text('Login with phone number');
-                otp.attr("data-phone", "no");
             } else {
+                text_toggle.data("phone", "yes");
                 text_toggle.text('Login with username/email');
-                otp.attr("data-phone", "yes");
             }
             e.preventDefault();
 

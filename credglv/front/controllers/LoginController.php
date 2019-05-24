@@ -74,7 +74,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		?>
         <p class="form-row form-row-wide">
-            <a class="login-with-what" href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
+            <a class="login-with-what" data-phone="yes" href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
         </p>
         <div class="phone_login">
             <div class="form-row form-row-wide">
@@ -87,7 +87,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 
 					?>">
-                        <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
+                        <input type="tel" pattern="[0-9]*" class="woocommerce-phone-countrycode" placeholder="+84"
                                value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
                                name="number_countrycode" size="4">
                         <ul class="digit_cs-list">
@@ -95,7 +95,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
                     </div>
-                    <input type="text"  class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                    <input type="tel"  class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
                            id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
@@ -117,7 +117,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
             <label for="cred_otp_code_login">
 				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
             </label>
-            <input type="number" class="input-otp-code"
+            <input type="tel" class="input-otp-code" pattern="[0-9]*"
                    name="cred_otp_code"
                    id="cred_otp_code_login"
                    value="" maxlength="4"/>
