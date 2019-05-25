@@ -108,13 +108,41 @@ jQuery(function ($) {
                     return d.children || d._children ? "middle" : "middle";
                 })
                 .text(function (d) {
-                    return d.display_name;
+                    var d_display_name = d.display_name;
+                    return d_display_name.toString().toUpperCase();
                 })
                 .style("fill-opacity", 1e-6).on("click", username_click);
 
             g.append("text")
                 .attr("x", function (d) {
                     return d.children || d._children ? -35 : 35;
+                })
+                .attr("dy", "2.5em")
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "end" : "start";
+                })
+                .text(function (d) {
+                    return d.title;
+                })
+                .style("fill-opacity", 1e-6);
+
+            g.append("text")
+                .attr("y", function (d) {
+                    return d.children || d._children ? 50 : 50;
+                })
+                .attr("dy", "1.35em")
+                .attr("text-anchor", function (d) {
+                    return d.children || d._children ? "middle" : "middle";
+                })
+                .text(function (d) {
+                    var d_display_fullname = d.display_fullname;
+                    return d_display_fullname.toString().toUpperCase();
+                })
+                .style("fill-opacity", 1e-6).on("click", username_click);
+
+            g.append("text")
+                .attr("x", function (d) {
+                    return d.children || d._children ? -50 : 50;
                 })
                 .attr("dy", "2.5em")
                 .attr("text-anchor", function (d) {

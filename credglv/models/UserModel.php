@@ -340,21 +340,24 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	// write [when active = 1] and to function mysql to turn of debug
 	public function recursive_tree_referral_user( $id, $level = 0 ) {
 		$user   = get_user_by( 'ID', $id );
+		$user_fullname = get_user_meta($id,'user_fullname',true);
 		$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
 
 		$subarr = array(
-			'ID'           => $id,
-			'display_name' => $user->data->display_name,
-			'photo'        => $avatar,
-			'level'        => $level,
+			'ID'           		=> $id,
+			'display_name' 		=> $user->data->display_name,
+			'display_fullname' 	=> $user_fullname,
+			'photo'        		=> $avatar,
+			'level'        		=> $level,
 		);
 		if ( $this->count_referral_user( $id ) ) {
 			$subarr['children'] = $this->get_children_referral_user( $id, $level );
 		} else {
 			$subarr['children'][] = (object) array(
-				'ID'           => '0',
-				'display_name' => __( 'Undefined', 'credglv' ),
-				'photo'        => get_avatar_url( '', [ 'default' => 'mysteryman' ] )
+				'ID'           		=> '0',
+				'display_name' 		=> __( 'Undefined', 'credglv' ),
+				'display_fullname' 	=> $user_fullname,
+				'photo'        		=> get_avatar_url( '', [ 'default' => 'mysteryman' ] )
 			);
 		}
 
@@ -373,20 +376,23 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$subarr = array();
 			foreach ( $result as $k => $v ) {
 				$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+				$user_fullname = get_user_meta($v['ID'],'user_fullname',true);
 				if ( $this->count_referral_user( $v['ID'] ) ) {
 					$subarr[] = (object) array(
-						'ID'           => $v['ID'],
-						'display_name' => $v['display_name'],
-						'photo'        => $avatar,
-						'level'        => $level,
-						'children'     => $this->get_children_referral_user( $v['ID'], $level )
+						'ID'          		=> $v['ID'],
+						'display_name' 		=> $v['display_name'],
+						'display_fullname' 	=> $user_fullname,
+						'photo'        		=> $avatar,
+						'level'        		=> $level,
+						'children'     		=> $this->get_children_referral_user( $v['ID'], $level )
 					);
 				} else {
 					$subarr[] = (object) array(
-						'ID'           => $v['ID'],
-						'display_name' => $v['display_name'],
-						'photo'        => $avatar,
-						'level'        => $level,
+						'ID'           		=> $v['ID'],
+						'display_name' 		=> $v['display_name'],
+						'display_fullname' 	=> $user_fullname,
+						'photo'        		=> $avatar,
+						'level'        		=> $level,
 					);
 				}
 			}

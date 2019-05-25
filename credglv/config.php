@@ -125,9 +125,9 @@ return [
 			],
 			'styles'  => [
 				[
-					'id'       => 'font-awesome',
+					'id'       => 'font-awesomessss',
 					'isInline' => false,
-					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/font-awesome.css' ),
+					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/all.css' ),
 				],
 				[
 					'id'       => 'font-flaticon',
