@@ -87,7 +87,9 @@ function render_profile_html() {
 	$get_country  = get_country();
 
 	$html = '';
+	$html .= '<form  method="post" enctype="multipart/form-data">';
 	$html .= '<form class="profile-update" method="post" enctype="multipart/form-data">';
+	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
 	$html .= '<select id="user_gender" name="user_gender">';
@@ -211,7 +213,10 @@ function render_profile_error_html() {
 
 
 	$html = '';
-	$html .= '<form class="profile-update" method="post" enctype="multipart/form-data">';
+
+	$html .= '<form method="post" enctype="multipart/form-data">';
+	$html .= '<form class="profile-update"  method="post" enctype="multipart/form-data">';
+	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
 	$html .= '<select id="user_gender" name="user_gender">';
@@ -327,6 +332,25 @@ if ( isset( $_POST['uploadclick'] ) ) {
 				if ( ! is_file( $src ) ) {
 					move_uploaded_file( $from_iden, $src );
 					update_user_meta( $user_id, 'iden', $url );
+				}
+			}
+		}
+	}
+	if ( isset( $_FILES['user_avatar'] ) ) {
+		if ( $_FILES['user_avatar']['error'] <= 0 ) {
+			$type_avatar = $_FILES['user_avatar']['type'];
+			$explode   = explode( '/', $type_avatar );
+			if ( $explode[0] == 'image' ) {
+				$from_avatar = $_FILES['user_avatar']['tmp_name'];
+				$to        = wp_upload_dir()['basedir'];
+				$timezone  = + 7;
+				$time      = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
+				$name_avatar = $user_id . '_ava_' . $time . '_' . $_FILES['user_avatar']['name'];
+				$url       = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
+				$src       = $to . '/credglv/img/' . $name_avatar;
+				if ( ! is_file( $src ) ) {
+					move_uploaded_file( $from_avatar, $src );
+					update_user_meta( $user_id, 'avatar', $url );
 				}
 			}
 		}
