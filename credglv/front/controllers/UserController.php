@@ -410,6 +410,10 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
+		if ( isset( $wp_query->query_vars['payment'] ) || isset( $wp_query->query_vars['profile'] ) ) {
+			wp_enqueue_script( 'credglv-profile-payment-js', plugin_dir_url( __DIR__ ) . '/assets/js/profile.js' );
+
+		}
 	}
 
 	public function remove_action_header_woocommerce() {
