@@ -24,7 +24,6 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 	<?php do_action( 'woocommerce_edit_account_form_start' ); ?>
 
 
-
     <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
         <label for="account_display_name"><?php esc_html_e( 'Display name', 'woocommerce' ); ?>&nbsp;<span
                     class="required">*</span></label>
@@ -37,7 +36,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 			<?php _e( 'Mobile Number', 'woocommerce' ); ?> <span class="required">*</span>
         </label>
 
-        <input type="text"  class="input-text" name="cred_billing_phone" id="cred_billing_phone"
+        <input type="text" class="input-text" name="cred_billing_phone" id="cred_billing_phone"
                value="<?php
 		       echo esc_attr( get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ); ?>"
                maxlength="10"/>
@@ -53,7 +52,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         <label for="cred_user_pin">
 			<?php _e( 'Pin', 'woocommerce' );
 			echo get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PIN, true )
-            ?>
+			?>
             <span
                     class="required">*</span>
         </label>
@@ -90,7 +89,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         <label for="cred_otp_code">
 			<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
         </label>
-        <input type="number" class="input-otp-code"
+        <input type="tel" pattern="[0-9]*" class="input-otp-code"
                name="cred_otp_code"
                id="cred_otp_code"
                value="" maxlength="4"/>
@@ -101,7 +100,9 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
     <p>
 		<?php wp_nonce_field( 'save_account_details', 'save-account-details-nonce' ); ?>
         <button type="submit" class="woocommerce-Button button btn btn-default ld-ext-right" name="save_account_details"
-                value="<?php esc_attr_e( 'Save changes', 'woocommerce' ); ?>"><?php esc_html_e( 'Save changes', 'woocommerce' ); ?><div class="ld ld-spinner ld-spin"></div></button>
+                value="<?php esc_attr_e( 'Save changes', 'woocommerce' ); ?>"><?php esc_html_e( 'Save changes', 'woocommerce' ); ?>
+            <div class="ld ld-spinner ld-spin"></div>
+        </button>
         <input type="hidden" name="action" value="save_account_details"/>
     </p>
 
