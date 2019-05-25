@@ -146,6 +146,7 @@ jQuery(function ($) {
                     credglv.ajax_login(form);
                 }
             }
+            credglv.toggle_loading_button(form);
 
         })
     };
