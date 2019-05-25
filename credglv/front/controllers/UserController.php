@@ -158,8 +158,8 @@ class UserController extends FrontController implements FrontControllerInterface
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
 					'referral'      => __( 'Network', 'credglv' ),
-					'cashredeem'   => __( 'Cash Redeem', 'credglv' ),
-					'localredeem'  => __( 'Local Redeem', 'credglv' ),
+					'cashredeem'    => __( 'Cash Redeem', 'credglv' ),
+					'localredeem'   => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
@@ -167,8 +167,8 @@ class UserController extends FrontController implements FrontControllerInterface
 			$items['payment']       = __( 'Payment', 'credglv' );
 			$items['profile']       = __( 'Profile', 'credglv' );
 			$items['referral']      = __( 'Referral', 'credglv' );
-			$items['cashredeem']   = __( 'Cash Redeem', 'credglv' );
-			$items['localredeem']  = __( 'Local Redeem', 'credglv' );
+			$items['cashredeem']    = __( 'Cash Redeem', 'credglv' );
+			$items['localredeem']   = __( 'Local Redeem', 'credglv' );
 			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
@@ -178,8 +178,8 @@ class UserController extends FrontController implements FrontControllerInterface
 	public function add_referral_query_var( $vars ) {
 		$vars['referral']      = 'referral';
 		$vars['payment']       = 'payment';
-		$vars['cashredeem']   = 'cashredeem';
-		$vars['localredeem']  = 'localredeem';
+		$vars['cashredeem']    = 'cashredeem';
+		$vars['localredeem']   = 'localredeem';
 		$vars['profile']       = 'profile';
 		$vars['point_history'] = 'point_history';
 
@@ -401,6 +401,16 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
+
+
+		if ( isset( $wp_query->query_vars['profile'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_script( 'credglv-profile-js', plugin_dir_url( __DIR__ ) . '/assets/js/profile.js' );
+				}
+			}
+		}
 		if ( isset( $wp_query->query_vars['cashredeem'] ) || isset( $wp_query->query_vars['localredeem'] ) ) {
 			global $post;
 			if ( isset( $post->ID ) ) {
@@ -411,11 +421,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 		}
 		if ( is_user_logged_in() ) {
-			if ( isset( $post->ID ) ) {
-				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
-					wp_enqueue_script( 'credglv-loadingbutton-js', plugin_dir_url( __DIR__ ) . '/assets/js/loadingbutton.js' );
-				}
-			}
+			wp_enqueue_script( 'credglv-loadingbutton-js', plugin_dir_url( __DIR__ ) . '/assets/js/loadingbutton.js' );
 		}
 	}
 
