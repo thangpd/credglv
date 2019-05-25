@@ -158,8 +158,8 @@ class UserController extends FrontController implements FrontControllerInterface
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
 					'referral'      => __( 'Network', 'credglv' ),
-					'cashredeem'    => __( 'Cash Redeem', 'credglv' ),
-					'localredeem'   => __( 'Local Redeem', 'credglv' ),
+					'cash_redeem'    => __( 'Cash Redeem', 'credglv' ),
+					'local_redeem'   => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
@@ -167,8 +167,8 @@ class UserController extends FrontController implements FrontControllerInterface
 			$items['payment']       = __( 'Payment', 'credglv' );
 			$items['profile']       = __( 'Profile', 'credglv' );
 			$items['referral']      = __( 'Referral', 'credglv' );
-			$items['cashredeem']    = __( 'Cash Redeem', 'credglv' );
-			$items['localredeem']   = __( 'Local Redeem', 'credglv' );
+			$items['cash_redeem']    = __( 'Cash Redeem', 'credglv' );
+			$items['local_redeem']   = __( 'Local Redeem', 'credglv' );
 			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
@@ -179,8 +179,8 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars['referral']      = 'referral';
 		$vars['payment']       = 'payment';
 		$vars['profile']       = 'profile';
-		$vars['localredeem']   = 'localredeem';
-		$vars['cashredeem']    = 'cashredeem';
+		$vars['local_redeem']   = 'local_redeem';
+		$vars['cash_redeem']    = 'cash_redeem';
 		$vars['point_history'] = 'point_history';
 
 		return $vars;
@@ -202,7 +202,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'point_history', [], false );
 	}
 
-	public function woocommerce_account_localredeem_endpoint_hook() {
+	public function woocommerce_account_local_redeem_endpoint_hook() {
 		$format = '<p class="tr">
             <span>
         <span class="title">#<br class="no-style-break"></span>
@@ -251,7 +251,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$this->render( 'redeem_local', [ 'data' => $data ], false );
 	}
 
-	public function woocommerce_account_cashredeem_endpoint_hook() {
+	public function woocommerce_account_cash_redeem_endpoint_hook() {
 
 		$format = '<p class="tr">
             <span>
