@@ -28,7 +28,10 @@ define( 'CREDGLV_PATH_PLUGIN', plugins_url() . DIRECTORY_SEPARATOR . NAME_PLUGIN
 defined( 'CREDGLV_PATH' ) or define( 'CREDGLV_PATH', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . NAME_PLUGIN );
 defined( 'PUBLIC_PATH' ) or define( 'PUBLIC_PATH', dirname( CREDGLV_PATH ) . DIRECTORY_SEPARATOR . 'public' );
 defined( 'CREDGLV_DEBUG' ) or define( 'CREDGLV_DEBUG', defined( 'WP_DEBUG' ) ? WP_DEBUG : true );
-defined( 'CREDGLV_WR_DIR' ) or define( 'CREDGLV_WR_DIR', ABSPATH . DIRECTORY_SEPARATOR . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' );
+defined( 'CREDGLV_WR_DIR' ) or define( 'CREDGLV_WR_DIR', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' );
+defined( 'CREDGLV_QR_CODE' ) or define( 'CREDGLV_QR_CODE', ABSPATH . 'wp-content' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'credglv' . DIRECTORY_SEPARATOR . 'qrcode' );
+$glv_upload_path = wp_upload_dir();
+defined( 'CREDGLV_QR_CODE_URI' ) or define( 'CREDGLV_QR_CODE_URI', $glv_upload_path ['baseurl'] . '/credglv/qrcode/' );
 define( 'CREDGLV_PATH_TEMPLATE', ABSPATH . '/wp-content/plugins/' . NAME_PLUGIN . '/admin/templates/' );
 
 return [
@@ -104,13 +107,32 @@ return [
 						'jquery'
 					],
 				],
+				[
+					'id'           => 'jquery-validate',
+					'url'          => plugins_url( 'credglv/assets/libs/jquery-validation-1.19.0/dist/jquery.validate.js' ),
+					'dependencies' => [
+						'jquery'
+					],
+				],
+				[
+					'id'           => 'jquery-ui',
+					'url'          => plugins_url( 'credglv/assets/libs/jquery-ui/jquery-ui.js' ),
+					'dependencies' => [
+						'jquery'
+					],
+				],
 
 			],
 			'styles'  => [
 				[
 					'id'       => 'font-awesome',
 					'isInline' => false,
-					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/font-awesome.css' ),
+					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/all.css' ),
+				],
+				[
+					'id'       => 'font-flaticon',
+					'isInline' => false,
+					'url'      => plugins_url( 'credglv/assets/libs/font-flaticon/flaticon.css' ),
 				],
 				[
 					'id'           => 'credglv-style',
@@ -120,6 +142,11 @@ return [
 				[
 					'id'           => 'select2',
 					'url'          => plugins_url( 'credglv/assets/libs/select2/css/select2.min.css' ),
+					'dependencies' => []
+				],
+				[
+					'id'           => 'jquery-ui',
+					'url'          => plugins_url( 'credglv/assets/libs/jquery-ui/jquery-ui.css' ),
 					'dependencies' => []
 				],
 			]
@@ -156,8 +183,8 @@ return [
 			'label' => 'Login page'
 		],
 		'credglv_register'            => [
-			'slug'  => 'credglv-register',
+			'slug'  => 'register',
 			'label' => 'Register page'
 		]
-	]
+	],
 ];

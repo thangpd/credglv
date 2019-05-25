@@ -21,7 +21,7 @@
         <div class="form-group hide" style="padding-top:20px;">
             <label for="otp"><?php echo __( 'OTP', 'credglv' ); ?>
             </label><span class="otp"></span>
-            <input type="number" disabled id="otp">
+            <input pattern="[0-9]*" type="tel" disabled id="otp">
         </div>
         <span class="error-msg-front"></span>
         <div class="form-group ">

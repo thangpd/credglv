@@ -13,6 +13,7 @@ namespace credglv\admin\controllers;
 
 use credglv\core\interfaces\AdminControllerInterface;
 use credglv\models\Instructor;
+use credglv\models\UserModel;
 
 class UserController extends AdminController implements AdminControllerInterface {
 	/**
@@ -112,6 +113,17 @@ class UserController extends AdminController implements AdminControllerInterface
 		<?php
 	}
 
+
+	public function ajax_active_user() {
+		if ( isset( $_POST['user_id'] ) ) {
+			$user = UserModel::getInstance();
+			$user->update_active_status( $_POST['user_id'], $_POST['active'] );
+			$this->responseJson( array( 'code' => 200, 'Updated user' ) );
+		} else {
+			$this->responseJson( array( 'code' => 404, 'message' => 'No user_id' ) );
+		}
+	}
+
 	/**
 	 * Register all actions that controller want to hook
 	 * @return mixed
@@ -119,6 +131,9 @@ class UserController extends AdminController implements AdminControllerInterface
 	public static function registerAction() {
 
 		return [
+			'ajax'    => [
+				'ajax_active_user' => [ self::getInstance(), 'ajax_active_user' ],
+			],
 			'actions' => [
 //				'manage_users_columns'       => [ self::getInstance(), 'userColumns' ],
 //				'manage_users_custom_column' => [ self::getInstance(), 'userColumnValue', 15, 3 ],

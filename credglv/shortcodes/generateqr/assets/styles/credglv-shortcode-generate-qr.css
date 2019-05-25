@@ -1,0 +1,31 @@
+label.payment-block {
+    max-width: 250px;
+    border: 2px #ddd solid;
+    padding: 10px;
+    float: left;
+    text-align: center;
+}
+.payment-block.payment-method-active{
+    border-color: #0a6aa1;
+}
+
+label.payment-block hr{
+    color: #ddd;
+}
+.credglv-cart-checkout {
+	position: relative;
+	z-index: 3;
+}
+.credglv-cart-checkout form:before{
+	content: "";
+	display: table;
+}
+.credglv-cart-checkout form:after {
+	content: "";
+	display: table;
+	clear: both;
+}
+.credglv-checkout-billing, .credglv-checkout-payment{
+    width  : 50%;
+    float: left;
+}

@@ -1,152 +1,131 @@
 <?php
+
 namespace credglv\admin\controllers;
 
 
-use credglv\core\components\Script;
-use credglv\core\components\Style;
 use credglv\core\interfaces\AdminControllerInterface;
+use credglv\models\OrderModel;
 
 
-class AdminController extends \credglv\core\Controller implements AdminControllerInterface{
-	public function init(){
-        $this->viewPath = dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'views/' . $this->getControllerName();
-        parent::init();
+class AdminController extends \credglv\core\Controller implements AdminControllerInterface {
+	public function init() {
+		$this->viewPath = dirname( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'views/' . $this->getControllerName();
+		parent::init();
 	}
 
 
-    /**
-     *
-     */
-	public function searchUser()
-    {
-        $response = [];
-        if (isset($_GET['q'])) {
-            $q = $_GET['q'];
-            $users = new \WP_User_Query( array(
-                'search'         => '*'.esc_attr( $q ).'*',
-                'search_columns' => array(
-                    'user_login',
-                    'user_nicename',
-                    'user_email',
-                    'user_url',
-                ),
-            ) );
-            $users = $users->get_results();
-            $data = [];
-            if ($users) {
-                $response['message'] = 'Success';
-                $response['data'] = [];
-                foreach ($users as $user) {
-                    /** @var \WP_User $user */
-                    $data[] = [
-                        'id'    => $user->ID,
-                        'text'  => $user->display_name
-                    ];
-                }
-            }
-            $data = apply_filters('credglv_search_user', $data, $q);
-            $response['data'] = $data;
-        }
+	/**
+	 * Generate setting tabs page
+	 */
+	public function generateTabs() {
+		$format = '<p class="tr">
+<span>
+        <span class="title">#<br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span> 
+        <span class="title">User<br class="no-style-break"></span>
+        %2$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Log: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
 
-        return $this->responseJson($response);
-    }
+            <span>
+        <span class="title">Status: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Amount: <br class="no-style-break"></span>
+        %5$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Fee: <br class="no-style-break"></span>
+       %6$s
+      </span><br class="no-style-break"><br class="no-style-break">
+      <span>
+        <span class="title">Create Date: <br class="no-style-break"></span>
+       %7$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
 
-    public function searchCourse()
-    {
-        $response = [];
-        if (isset($_GET['q'])) {
-            $q = $_GET['q'];
-            /** @var \WP_Query $query */
-            $query = new \WP_Query( array(
-                's'         => esc_attr( $q ),
-                'post_type' => array('course'),
-                'posts_per_page' => -1,
-                'post_status' => ['publish'],
-                'orderby' => 'menu_order',
-                'order' => 'ASC',
-            ) );
-            $courses = $query->posts;
-            if ($courses) {
-                $response['message'] = 'Success';
-                $response['data'] = [];
-                foreach ($courses as $course) {
-                    $response['data'][] = [
-                        'id'    => $course->ID,
-                        'text'  => $course->post_title
-                    ];
-                }
-            }
-        }
+		$order        = new OrderModel();
+		$data         = [];
+		$data['html'] = '';
+		$records      = $order->findAllrecordsUser();
+		if ( ! empty( $records ) ) {
+			foreach ( $records as $val ) {
+				$user_name = get_user_by( 'ID', $val->user_id );
+				$user_name = $user_name->data->user_login;
+				$log       = json_decode( $val->data );
 
-        return $this->responseJson($response);
-    }
+				$log    = $log->message;
+				$status = $val->active == 0 ? 'Pending' : 'Completed';
 
-    /**
-     * Search an member
-     */
-    public function searchInstructor()
-    {
-        $response = [];
-        if (isset($_GET['q'])) {
-            $q = $_GET['q'];
-            $users = new \WP_User_Query( array(
-                'search'         => '*'.esc_attr( $q ).'*',
-                'role' => ['credglv_member'],
-                'search_columns' => array(
-                    'user_login',
-                    'user_nicename',
-                    'user_email',
-                    'user_url',
-                ),
-            ) );
-            $users = $users->get_results();
-            $data = [];
-            if ($users) {
-                $response['message'] = 'Success';
-                $response['data'] = [];
-                foreach ($users as $user) {
-                    /** @var \WP_User $user */
-                    $data[] = [
-                        'id'    => $user->ID,
-                        'text'  => $user->display_name
-                    ];
-                }
-            }
-            $data = apply_filters('credglv_search_member', $data, $q);
-            $response['data'] = $data;
-        }
 
-        return $this->responseJson($response);
-    }
+				/*$status      = $val->active == 0 ? '<label class="switch ">
+          <input type="checkbox" name="credglv_active_order" data-order_id="' . $val->id . '" class="primary">
+          <span class="slider round"></span>
+        </label>' : '<label class="switch ">
+          <input type="checkbox" name="credglv_active_order" data-order_id="' . $val->id . '" checked class="primary">
+          <span class="slider round"></span>
+        </label>';*/
+				$amount      = $val->amount;
+				$fee         = $val->fee;
+				$create_date = $val->created_date;
 
-    /**
-     * [sortData sort post]
-     * @return [data] [data]
-     */
-    public function sortData(){
-        if(isset($_POST['data']) && count($_POST['data'])){
-            foreach($_POST['data'] as $key=>$data){
-                wp_update_post(['ID' => $data, 'menu_order' => $key]);
-            }
+				$data['html'] .= sprintf( $format, $val->id, $user_name, $log, $status, $amount, $fee, $create_date );
+			}
+		}
 
-            return $this->responseJson(['data' => $_POST['data']]);
-        }
-    }
+		return $this->render( 'admin', array( 'data' => $data ) );
+	}
 
-    /**
-     * @return array
-     */
+	public function disableAutosave() {
+		wp_enqueue_script( 'credglv-sw-admin-js', plugins_url( 'assets/js/admin-sw-js.js', __DIR__ ), array( 'jquery' ), '1.0' );
+		wp_enqueue_style( 'credglv-sw-referrer-css', plugins_url( 'assets/css/setting-admin.css', __DIR__ ) );
+	}
 
-    public static  function registerAction(){
+	/**
+	 * @return array
+	 */
 
-        return [
-            'ajax' => [
-                'credglv_search_user' => [self::getInstance(), 'searchUser'],
-                'credglv_search_course' => [self::getInstance(), 'searchCourse'],
-                'credglv_search_member' => [self::getInstance(), 'searchInstructor'],
-                'credglv_sort' => [self::getInstance(), 'sortData'],
-            ],
-        ];
-    }
+	public function credglv_ajax_active_order() {
+		if ( isset( $_POST['order_id'] ) ) {
+			$order = OrderModel::getInstance();
+			$order->update_active_status( $_POST['order_id'], $_POST['active'] );
+
+			$this->responseJson( array( 'code' => 200, 'Updated user' ) );
+		} else {
+			$this->responseJson( array( 'code' => 404, 'message' => 'No order_id' ) );
+		}
+	}
+
+	public static function registerAction() {
+
+		return [
+			'pages'   => [
+				'admin' => [
+					'credglv-redeem-point' => [
+						'title'      => 'Cred GLV settings',
+						'capability' => 'activate_plugins',
+						'action'     => [ self::getInstance(), 'generateTabs' ],
+						'menu'       => 'credglv-redeem-point'
+					]
+				]
+			],
+			'actions' => [
+				'admin_enqueue_scripts' => [ self::getInstance(), 'disableAutosave' ],
+			],
+			'ajax'    => [
+				'credglv_ajax_active_order' => [ self::getInstance(), 'credglv_ajax_active_order' ],
+			],
+		];
+	}
 
 }

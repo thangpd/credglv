@@ -103,7 +103,6 @@ jQuery(function ($) {
             console.log('no');
             x--;
         });
-
     };
     credglv.checksubmit_form = function (data) {
 
@@ -115,7 +114,7 @@ jQuery(function ($) {
         }
         var email = $('#login-form #email');
         if (email.val()) {
-
+            
         } else {
             error = 1;
         }

@@ -11,161 +11,425 @@
 namespace credglv\front\controllers;
 
 use credglv\core\RuntimeException;
+use credglv\helpers\GeneralHelper;
 use credglv\models\Instructor;
+use credglv\models\OrderModel;
 use credglv\models\UserModel;
 use credglv\core\components\Style;
 use credglv\core\components\Script;
 use credglv\core\interfaces\FrontControllerInterface;
+use mysql_xdevapi\Exception;
 
 
 class UserController extends FrontController implements FrontControllerInterface {
-	public function profilePage() {
-		return $this->checkLogin( 'user-profile' );
-	}
 
-	public function checkLogin( $template ) {
-		if ( credglv()->wp->is_user_logged_in() ) {
-			$user = wp_get_current_user();
 
-			return $this->render( $template, [ 'user' => $user ] );
-		} else {
-			if ( class_exists( 'WooCommerce' ) && get_option( 'woocommerce_myaccount_page_id' ) ) {
-				wp_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
-			} else {
-				echo '<div class="container"><div class="user-login-wrapper"><a class="credglv-btn credglv-btn-primary" href="' . wp_login_url() . '">' . __( "Login", "credglv" ) . '</a></div></div>';
-			}
-
-			return '';
-		}
-	}
+	const METAKEY_PHONE = 'cred_billing_phone';
+	const METAKEY_PIN = 'cred_user_pin';
+	const METAKEY_COOKIE = 'CREDGLV_REFERRAL_CODE';
 
 	/**
-	 * Edit user info
-	 */
-	public function editProfilePage() {
-		return $this->checkLogin( 'edit-profile' );
-	}
-
-	/**
-	 * Update user profile
-	 * @return bool
-	 */
-	public function updateProfile() {
-		$user_id = wp_get_current_user()->ID;
-		$res     = [];
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return false;
-		}
-
-		if ( count( $_POST ) ) {
-			$list_posts = [];
-
-			//check if user have changed password
-			if ( isset( $_POST['password'] ) ) {
-				$user = get_userdata( $user_id );
-				if ( $user && wp_check_password( $_POST['password']['old'], $user->user_pass, $user_id ) ) {
-					if ( $_POST['password']['new'] == $_POST['password']['confirm'] ) {
-						//$res['message'] = 'Success change password !';
-						$new_pass = $_POST['password']['new'];
-						wp_set_password( $new_pass, $user_id );
-
-					} else {
-						$res['message'] = 'Password confirm invalid !';
-					}
-				} else {
-					$res['message'] = 'Old password invalid !';
-				}
-				unset( $_POST['password'] );
-			}
-
-			// edit meta user
-			if ( isset( $_POST['meta'] ) && count( $_POST['meta'] ) ) {
-				foreach ( $_POST['meta'] as $key => $meta ) {
-					update_user_meta( $user_id, $key, $meta );
-				}
-				unset( $_POST['meta'] );
-			}
-
-			if ( isset( $_POST ) ) {
-
-				if ( isset( $_POST['first_name'] ) && $_POST['first_name'] !== '' ) {
-					$list_posts['display_name'] = $_POST['first_name'];
-				}
-
-				if ( isset( $_POST['last_name'] ) && $_POST['last_name'] !== '' ) {
-					$list_posts['display_name'] .= $_POST['last_name'];
-				}
-
-				foreach ( $_POST as $key => $post ) {
-					$list_posts[ $key ] = esc_attr( $post );
-				}
-				$list_posts['ID'] = $user_id;
-				wp_update_user( $list_posts );
-			}
-
-			return $this->responseJson( $res );
-		}
-	}
-
-	public function listInfo() {
-		return [
-			'first_name' => 'First Name',
-			'last_name'  => 'Last Name',
-		];
-	}
-
-	public function showList() {
-		return [
-			[
-				'title' => 'Enrolled',
-				'name'  => 'enrolled',
-			],
-			[
-				'title' => 'Bookmarked',
-				'name'  => 'bookmarked',
-			],
-		];
-	}
-
-	/**
-	 * Register all actions that controller want to hook
+	 * Get user id by phone
 	 * @return mixed
 	 */
+	public static function getUserIDByPhone( $phone ) {
+		global $wpdb;
 
-	public static function registerAction() {
+		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+
+		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+
+
+		if ( ! empty( $mobile_num_result ) ) {
+
+			$res['userID'] = $mobile_num_result;
+
+			return $res;
+
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'Phone is not registered', 'credglv' );
+
+			return $res;
+		}
+
+
+	}
+
+	/**
+	 * Get phone by userid
+	 * @return mixed
+	 */
+	public static function getPhoneByUserID( $userID ) {
+
+		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
+
+		return $phone;
+	}
+
+	/**
+	 * Register new endpoints to use inside My Account page.
+	 */
+
+
+	function credglv_wooc_edit_profile_save_fields( $args ) {
+		$user_id = get_current_user_ID();
+
+		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
+			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
+
+			return $_POST;
+		}
+		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && ! empty( $_POST[ self::METAKEY_PHONE ] ) ) {
+			$current_phone = UserController::getPhoneByUserID( $user_id );
+			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
+				$mobile_num_result = self::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
+				if ( isset( $mobile_num_result['code'] ) && $mobile_num_result['code'] == 200 ) {
+					if ( $user_id != $mobile_num_result ) {
+						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
+
+						return $_POST;
+					} else {
+						update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
+					}
+				} else {
+					update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
+				}
+			}
+
+		}
+
+		if ( ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) ) {
+			if ( empty( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ) ) {
+				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
+
+				return $_POST;
+			}
+		} else {
+			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
+		}
+
+		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
+//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
+			$data = array(
+				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
+				'otp'   => $_POST['cred_otp_code']
+			);
+
+			$third_party = ThirdpartyController::getInstance();
+
+			$res = $third_party->verify_otp( $data );
+			if ( $res['code'] != 200 ) {
+				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
+			}
+		}
+
+
+	}
+
+
+	/**
+	 * Print the customer avatar in My Account page, after the welcome message
+	 */
+	public function credglv_myaccount_customer_avatar() {
+		$current_user = wp_get_current_user();
+
+		echo '<div class="my-account-div"><div class="myaccount_avatar">' . get_avatar( $current_user->user_email, 72, '', $current_user->display_name ) . '</div>';
+		?><p><?php
+		/* translators: 1: user display name 2: logout url */
+		printf(
+			__( 'Hello %1$s (not %1$s? <a href="%2$s">Log out</a>)', 'woocommerce' ),
+			'<strong>' . esc_html( $current_user->display_name ) . '</strong>',
+			esc_url( wc_logout_url( wc_get_page_permalink( 'myaccount' ) ) )
+		);
+		?></p>
+        </div><?php
+	}
+
+	public function add_my_account_menu( $items ) {
+
+		$key = array_search( 'edit-account', array_keys( $items ) );
+
+		if ( $key !== false ) {
+			$items = (
+			array_merge(
+				array_splice( $items, 0, $key + 1 ),
+				array(
+					'payment'       => __( 'Payment', 'credglv' ),
+					'profile'       => __( 'Profile', 'credglv' ),
+					'referral'      => __( 'Network', 'credglv' ),
+					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
+					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
+					'point_history' => __( 'History Log', 'credglv' ),
+				),
+				$items ) );
+		} else {
+			$items['payment']       = __( 'Payment', 'credglv' );
+			$items['profile']       = __( 'Profile', 'credglv' );
+			$items['referral']      = __( 'Referral', 'credglv' );
+			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
+			$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
+			$items['point_history'] = __( 'History Log', 'credglv' );
+		}
+
+		return $items;
+	}
+
+	public function add_referral_query_var( $vars ) {
+		$vars['referral']      = 'referral';
+		$vars['payment']       = 'payment';
+		$vars['profile']       = 'profile';
+		$vars['point_history'] = 'point_history';
+		$vars['cash_redeem']   = 'cash_redeem';
+		$vars['local_redeem']  = 'local_redeem';
+
+		return $vars;
+	}
+
+	public function woocommerce_account_referral_endpoint_hook() {
+		$this->render( 'referral', [], false );
+	}
+
+	public function woocommerce_account_payment_endpoint_hook() {
+		$this->render( 'payment', [], false );
+	}
+
+	public function woocommerce_account_profile_endpoint_hook() {
+		$this->render( 'profile', [], false );
+	}
+
+	public function woocommerce_account_point_history_endpoint_hook() {
+		$this->render( 'point_history', [], false );
+	}
+
+	public function woocommerce_account_local_redeem_endpoint_hook() {
+		$format = '<p class="tr">
+            <span>
+        <span class="title">#<br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Log: <br class="no-style-break"></span>
+        %2$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Status: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Amount: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+      <span>
+        <span class="title">Create Date: <br class="no-style-break"></span>
+       %5$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
+
+		$order               = new OrderModel();
+		$data                = [];
+		$data['html']        = '';
+		$data['total_cash']  = $order->getTotalUserCash( get_current_user_id(), 1, OrderModel::ORDER_TYPE_CASH );
+		$data['total_local'] = $order->getTotalUserCash( get_current_user_id(), 1, OrderModel::ORDER_TYPE_LOCAL );
+		$records             = $order->findAllrecordsUser( get_current_user_id(), OrderModel::ORDER_TYPE_LOCAL );
+		if ( ! empty( $records ) ) {
+			foreach ( $records as $val ) {
+				$log = json_decode( $val->data );
+
+				$log         = $log->message;
+				$status      = $val->active == 0 ? 'Pending' : 'Completed';
+				$amount      = $val->amount;
+				$create_date = $val->created_date;
+
+				$data['html'] .= sprintf( $format, $val->id, $log, $status, $amount, $create_date );
+			}
+		}
+		$this->render( 'redeem_local', [ 'data' => $data ], false );
+	}
+
+	public function woocommerce_account_cash_redeem_endpoint_hook() {
+
+		$format = '<p class="tr">
+            <span>
+        <span class="title">#<br class="no-style-break"></span>
+        %1$s
+      </span>
+            <br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Log: <br class="no-style-break"></span>
+        %2$s
+      </span><br class="no-style-break"><br class="no-style-break">
+
+            <span>
+        <span class="title">Status: <br class="no-style-break"></span>
+        %3$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+        <span class="title">Amount: <br class="no-style-break"></span>
+        %4$s
+      </span><br class="no-style-break"><br class="no-style-break">
+            <span>
+      <span>
+        <span class="title">Create Date: <br class="no-style-break"></span>
+       %6$s
+      </span><br class="no-style-break"><br class="no-style-break">
+        </p>
+        <p class="spacer">&nbsp;</p>
+';
+
+		$order              = new OrderModel();
+		$data               = [];
+		$data['html']       = '';
+		$data['total_cash'] = $order->getTotalUserCash( get_current_user_id() );
+		$records            = $order->findAllrecordsUser( get_current_user_id() );
+		if ( ! empty( $records ) ) {
+			foreach ( $records as $val ) {
+				$log = json_decode( $val->data );
+
+				$log         = $log->message;
+				$status      = $val->active == 0 ? 'Pending' : 'Completed';
+				$amount      = $val->amount;
+				$fee         = $val->fee;
+				$create_date = $val->created_date;
+
+				$data['html'] .= sprintf( $format, $val->id, $log, $status, $amount, $fee, $create_date );
+			}
+		}
+		$this->render( 'redeem_cash', [ 'data' => $data ], false );
+	}
+
+
+	function wpb_woo_endpoint_title( $title, $id ) {
+		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
+			$title = ""; // change your entry-title
+		}
+
+		return $title;
+	}
+
+	public function init_hook() {
+		if ( isset( $_GET['ru'] ) && $_GET['ru'] != '' ) {
+			setcookie( self::METAKEY_COOKIE, $_GET['ru'], time() + 2628000 );
+		}
+
+		$arr_pages = $this->add_referral_query_var( array() );
+		foreach ( $arr_pages as $val ) {
+			add_rewrite_endpoint( $val, EP_ROOT | EP_PAGES );
+			add_action( 'woocommerce_account_' . $val . '_endpoint', array(
+				$this,
+				'woocommerce_account_' . $val . '_endpoint_hook'
+			) );
+		}
+		flush_rewrite_rules();
+		//add endpoint title
+
+		/* Hooks for myaccount referral endpoint */
+		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
+		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
+
+//		delete require first name and last name
+		add_filter( 'woocommerce_save_account_details_required_fields', array( $this, 'remove_save_account_detail' ) );
+
+
+		add_filter( 'the_title', array( $this, 'wpb_woo_endpoint_title' ), 10, 2 );
+
+
+		if ( ! is_user_logged_in() ) {
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper', 42);
+			remove_action( 'storefront_header', 'storefront_primary_navigation', 50);
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper_close', 68);
+
+		}
+	}
+
+
+	public
+	function remove_save_account_detail(
+		$arr
+	) {
+		if ( isset( $arr['account_first_name'] ) ) {
+			unset( $arr['account_first_name'] );
+		}
+		if ( isset( $arr['account_last_name'] ) ) {
+			unset( $arr['account_last_name'] );
+		}
+
+
+		return $arr;
+	}
+
+	public
+	function redirectLoginUrl(
+		$login_url, $redirect, $force_reauth
+	) {
+		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
+			if ( preg_match( '#wp-login.php#', $login_url ) ) {
+				if ( ! is_admin() || ! current_user_can( 'administrator' ) ) {
+					$login_url = $myaccount_page;
+				}
+				die;
+			}
+		}
+
+		return $login_url;
+	}
+
+	function credglv_assets_enqueue() {
+
+		wp_register_script( 'd3', plugin_dir_url( __DIR__ ) . '/assets/libs/d3/d3.js', [
+			'jquery',
+			'jquery-ui'
+		] );
+		wp_register_script( 'credglv-referral', plugin_dir_url( __DIR__ ) . '/assets/js/referral.js', [
+			'jquery',
+			'jquery-ui',
+			'd3'
+		] );
+		global $wp_query;
+		if ( isset( $wp_query->query_vars['referral'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_script( 'Treant-js' );
+					wp_enqueue_script( 'Treant-raphael-js' );
+					wp_enqueue_script( 'credglv-referral' );
+					wp_enqueue_style( 'credglv-main-css', plugin_dir_url( __DIR__ ) . '/assets/css/main.css' );
+				}
+			}
+		}
+		if ( isset( $wp_query->query_vars['cash_redeem'] ) || isset( $wp_query->query_vars['local_redeem'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_style( 'credglv-main-css', plugin_dir_url( __DIR__ ) . '/assets/css/main.css' );
+					wp_enqueue_script( 'credglv-redeem-js', plugin_dir_url( __DIR__ ) . '/assets/js/redeem.js' );
+				}
+			}
+		}
+	}
+
+	public function remove_action_header_woocommerce() {
+
+	}
+
+
+	public
+	static function registerAction() {
 		return [
-			'pages'  => [
-				'front' => [
-					credglv()->config->getUrlConfigs( 'credglv_user_profile' )      => [
-						'profilePage',
-						[ 'title' => __( 'Cred GLV - User Profile', 'credglv' ) ]
-					],
-					credglv()->config->getUrlConfigs( 'credglv_user_edit_profile' ) => [
-						'editProfilePage',
-						[ 'title' => __( 'Cred GLV - Edit User Profile', 'credglv' ) ]
-					],
-				]
-			],
-			'assets' => [
-				'css' => [
-					[
-						'id'           => 'credglv-user-profile',
-						'isInline'     => false,
-						'url'          => '/front/assets/css/credglv-user-profile.css',
-						'dependencies' => [ 'credglv-style', 'font-awesome' ]
-					],
-					[
-						'id'       => 'category',
-						'isInline' => false,
-						'url'      => '/front/assets/css/category.css'
-					],
-					/* [
-						 'id' => 'temp',
-						 'isInline' => false,
-						 'url'   => '/front/assets/css/temp.css'
-					 ]*/
+			'actions' => [
+				'woocommerce_save_account_details_errors' => [
+					self::getInstance(),
+					'credglv_wooc_edit_profile_save_fields'
 				],
-				'js'  => [
+				'init'                                    => [ self::getInstance(), 'init_hook' ],
+				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
+			],
+			'assets'  => [
+				'js' => [
 					[
 						'id'       => 'credglv-main-js',
 						'isInline' => false,
@@ -173,7 +437,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					]
 				]
 			],
-			'ajax'   => [
+			'ajax'    => [
 				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
 			]
 		];

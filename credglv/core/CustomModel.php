@@ -60,7 +60,7 @@ abstract class CustomModel extends Model
                 $data[$attribute] = $this->{$attribute};
             }
             if ($this->isNew) {
-                $wpdb->insert($this->getName(), $data);
+                $wpdb->insert($this->getName(), $data );
             } else {
                 $wpdb->update($this->getName(), $data, [
                     "{$idKey}" => $this->id

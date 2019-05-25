@@ -1,0 +1,86 @@
+
+.list_countrycode {
+    width: 20%;
+    float: left;
+}
+
+.list_countrycode input {
+    display: block;
+}
+
+.list_countrycode + input {
+}
+
+.width100 {
+    width: 100% !important;
+}
+
+.width80 {
+    width: 80% !important;
+}
+
+.hide {
+    display: none;
+}
+
+.digit_cs-list {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.digit_cs-list li {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.digit_cs-list li:hover {
+    background-color: #ddd;
+}
+
+form.register .select2-selection__arrow {
+    display: none;
+}
+
+.referrer-ajax-search.form-control.disable + .select2.select2-container .select2-selection--single {
+    background-color: #f7f7f7;
+}
+
+
+.mycred-history-wrapper {
+
+}
+
+table.mycred-table {
+}
+
+table.mycred-table .column-time {
+}
+
+table.mycred-table .column-username {
+}
+
+table.mycred-table .column-creds {
+}
+
+table.mycred-table .column-entry {
+}
+
+.mycred-history-wrapper nav {
+}
+
+.mycred-history-wrapper nav ul {
+}
+
+.mycred-history-wrapper nav ul li {
+    list-style: none;
+    display: inline-block;
+    padding: 10px;
+}

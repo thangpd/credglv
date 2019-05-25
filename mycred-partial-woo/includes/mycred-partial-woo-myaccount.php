@@ -20,7 +20,7 @@ if ( ! function_exists( 'mycred_woo_partial_setup_my_account' ) ) :
 			return;
 		}
 
-		add_filter( 'woocommerce_account_menu_items',                                 'mycred_woo_partial_account_menu' );
+//		add_filter( 'woocommerce_account_menu_items',                                 'mycred_woo_partial_account_menu' );
 		add_action( 'woocommerce_account_' . $my_account_setup['slug'] . '_endpoint', 'mycred_woo_partial_account_menu_content' );
 		add_filter( 'the_title',                                                      'mycred_woo_partial_account_title' );
 
