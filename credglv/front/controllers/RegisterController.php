@@ -120,11 +120,12 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 	function credglv_extra_otp_register_fields() {
 
-		if ( isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
-			$user_ref = $_COOKIE[ UserController::METAKEY_COOKIE ];
-		} elseif ( isset( $_GET['ru'] ) ) {
+		if (  isset( $_GET['ru'] ) ) {
 			$user_ref = $_GET['ru'];
+		} elseif (isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
+			$user_ref = $_COOKIE[ UserController::METAKEY_COOKIE ];
 		}
+		
 		$user = get_user_by( 'login', $user_ref );
 
 
