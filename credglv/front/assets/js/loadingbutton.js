@@ -12,7 +12,6 @@ jQuery(function ($) {
                 submitHandler: function (form) {
                     form_register.find('button[type="submit"]').toggleClass('running');
                     form.submit();
-
                 }
             }
         )
@@ -20,8 +19,7 @@ jQuery(function ($) {
 
     };
     $(document).ready(function () {
-        credglv.loadingbutton_login('form.profile-update');
-        credglv.loadingbutton_login('form.payment-edit');
+        credglv.loadingbutton_login('form');
 
 
     });

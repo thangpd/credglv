@@ -19,9 +19,15 @@ $total_local = isset( $data['total_local']->total ) ? number_format( $data['tota
     </label>
     <input type="hidden" name="type" value="local" id="type">
 
+    <p>
+    <?php echo __('Withdrawal fee is 20,000 VND per request.','credglv'); ?>
+    </p>
     <br>
     <br>
-    <input type="submit">
+    <button class="btn btn-default ld-ext-right" type="submit"
+            name="cach_redeem"><?php echo __( 'Submit', 'credglv' ) ?>
+        <div class="ld ld-spinner ld-spin"></div>
+    </button>
 </form>
 
 <?php

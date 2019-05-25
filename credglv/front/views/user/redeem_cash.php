@@ -13,7 +13,11 @@ if ( ! empty( $data ) ) {
         </label>
         <br>
         <br>
-        <input type="submit">
+        <button class="btn btn-default ld-ext-right" type="submit"
+                name="cash_redeem"><?php echo __('Submit','credglv') ?>
+            <div class="ld ld-spinner ld-spin"></div>
+        </button>
+
     </form>
 
 
