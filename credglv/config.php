@@ -125,6 +125,16 @@ return [
 			],
 			'styles'  => [
 				[
+					'id'       => 'loading',
+					'isInline' => false,
+					'url'      => plugins_url( 'credglv/assets/libs/loading-btn/loading.css' ),
+				],
+				[
+					'id'       => 'loading-btn',
+					'isInline' => false,
+					'url'      => plugins_url( 'credglv/assets/libs/loading-btn/loading-btn.css' ),
+				],
+				[
 					'id'       => 'font-awesome',
 					'isInline' => false,
 					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/all.css' ),

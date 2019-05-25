@@ -52,8 +52,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
             <p class="form-row">
 				<?php wp_nonce_field( 'woocommerce-login', 'woocommerce-login-nonce' ); ?>
-                <button type="submit" class="woocommerce-Button button" name="login"
-                        value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?></button>
+                <button type="submit" class="woocommerce-Button button btn btn-default ld-ext-right " name="login"
+                        value="<?php esc_attr_e( 'Log in', 'woocommerce' ); ?>"><?php esc_html_e( 'Log in', 'woocommerce' ); ?><div class="ld ld-spinner ld-spin"></div></button>
 
             </p>
             <p class="woocommerce-LostPassword lost_password">
