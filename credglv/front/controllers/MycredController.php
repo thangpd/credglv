@@ -154,7 +154,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			</div>
 		</div>
 		<br>
-		<p>Phí chuyển: $G 1. Chuyển tối thiếu $G 10. Người chuyển chịu phí.</p>
+		<p>'.__('Transaction fee (will be debited to sender’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold.','credglv').'</p>
 ';
 		$fields .= $fields_temp;
 
