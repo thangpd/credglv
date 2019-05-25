@@ -158,8 +158,8 @@ class UserController extends FrontController implements FrontControllerInterface
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
 					'referral'      => __( 'Network', 'credglv' ),
-					'cash_redeem'    => __( 'Cash Redeem', 'credglv' ),
-					'local_redeem'   => __( 'Local Redeem', 'credglv' ),
+					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
+					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
@@ -167,8 +167,8 @@ class UserController extends FrontController implements FrontControllerInterface
 			$items['payment']       = __( 'Payment', 'credglv' );
 			$items['profile']       = __( 'Profile', 'credglv' );
 			$items['referral']      = __( 'Referral', 'credglv' );
-			$items['cash_redeem']    = __( 'Cash Redeem', 'credglv' );
-			$items['local_redeem']   = __( 'Local Redeem', 'credglv' );
+			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
+			$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
 			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
@@ -179,8 +179,8 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars['referral']      = 'referral';
 		$vars['payment']       = 'payment';
 		$vars['profile']       = 'profile';
-		$vars['local_redeem']   = 'local_redeem';
-		$vars['cash_redeem']    = 'cash_redeem';
+		$vars['local_redeem']  = 'local_redeem';
+		$vars['cash_redeem']   = 'cash_redeem';
 		$vars['point_history'] = 'point_history';
 
 		return $vars;
@@ -347,8 +347,7 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 
-	public
-	function remove_save_account_detail(
+	public function remove_save_account_detail(
 		$arr
 	) {
 		if ( isset( $arr['account_first_name'] ) ) {
@@ -362,8 +361,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $arr;
 	}
 
-	public
-	function redirectLoginUrl(
+	public function redirectLoginUrl(
 		$login_url, $redirect, $force_reauth
 	) {
 		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
@@ -378,7 +376,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $login_url;
 	}
 
-	function credglv_assets_enqueue() {
+	public function credglv_assets_enqueue() {
 
 		wp_register_script( 'd3', plugin_dir_url( __DIR__ ) . '/assets/libs/d3/d3.js', [
 			'jquery',
@@ -430,8 +428,7 @@ class UserController extends FrontController implements FrontControllerInterface
 	}
 
 
-	public
-	static function registerAction() {
+	public static function registerAction() {
 		return [
 			'actions' => [
 				'woocommerce_save_account_details_errors' => [

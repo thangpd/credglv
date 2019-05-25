@@ -117,7 +117,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 		return $validation_errors;
 	}
 
-
+	/**
+	 * Extra otp register fields
+	 */
 	function credglv_extra_otp_register_fields() {
 
 		if ( isset( $_GET['ru'] ) ) {
@@ -161,7 +163,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 		<?php
 	}
 
-
+	/**
+	 * Extra register fields
+	 */
 	function credglv_extra_register_fields() {
 		$num_val = '';
 		if ( is_user_logged_in() ) {
