@@ -11,7 +11,7 @@ $total_local = isset( $data['total_local']->total ) ? number_format( $data['tota
 	if ( ! empty( $data ) ) {
 		echo $total_local . __( 'USD', 'credglv' );
 	} ?></h2>
-<form method="POST" action="" class="form-control form-redeem">
+<form method="POST" action="" class="form-control form-redeem local-redeem">
 
     <label for="redeem_cash">
 		<?php echo __( 'Local Bank Redeem', 'credglv' ) ?>

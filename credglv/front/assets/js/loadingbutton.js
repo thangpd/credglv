@@ -19,7 +19,11 @@ jQuery(function ($) {
 
     };
     $(document).ready(function () {
-        credglv.loadingbutton_login('form');
+         credglv.loadingbutton_login('form.profile-update');
+         credglv.loadingbutton_login('form.payment-edit');
+         credglv.loadingbutton_login('form.edit-account');
+         credglv.loadingbutton_login('form.local-redeem');
+         credglv.loadingbutton_login('form.cash-redeem');
 
 
     });

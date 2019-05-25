@@ -216,7 +216,7 @@ function render_payment_error_html()
 
 
     $html = '';
-    $html .= '<form method="post" enctype="multipart/form-data">';
+    $html .= '<form class="payment-edit" method="post" enctype="multipart/form-data">';
 
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankname">Bank Name';

@@ -178,9 +178,9 @@ class UserController extends FrontController implements FrontControllerInterface
 	public function add_referral_query_var( $vars ) {
 		$vars['referral']      = 'referral';
 		$vars['payment']       = 'payment';
-		$vars['cashredeem']    = 'cashredeem';
-		$vars['localredeem']   = 'localredeem';
 		$vars['profile']       = 'profile';
+		$vars['localredeem']   = 'localredeem';
+		$vars['cashredeem']    = 'cashredeem';
 		$vars['point_history'] = 'point_history';
 
 		return $vars;

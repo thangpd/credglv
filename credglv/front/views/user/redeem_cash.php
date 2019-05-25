@@ -5,7 +5,7 @@ if ( ! empty( $data ) ) {
     <h2>Cash Balance:
         USD <?php echo $total_cash ?></h2>
 
-    <form action="" class="form-control form-redeem" method="POST">
+    <form action="" class="form-control form-redeem cash-redeem" method="POST">
 
         <label for="redeem_cash">
 			<?php echo __( 'Cash redeem', 'credglv' ) ?>
