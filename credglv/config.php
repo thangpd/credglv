@@ -125,7 +125,7 @@ return [
 			],
 			'styles'  => [
 				[
-					'id'       => 'font-awesomessss',
+					'id'       => 'font-awesome',
 					'isInline' => false,
 					'url'      => plugins_url( 'credglv/assets/libs/font-awesome/css/all.css' ),
 				],
