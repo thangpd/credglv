@@ -90,6 +90,13 @@ return [
 					],
 				],
 				[
+					'id'           => 'pulltorefresh',
+					'url'          => plugins_url( 'credglv/assets/libs/pulltorefresh/pulltorefresh.js' ),
+					'dependencies' => [
+						'jquery',
+					],
+				],
+				[
 					'id'  => 'credglv.shortcode',
 					'url' => plugins_url( 'credglv/assets/scripts/credglv.shortcode.js' )
 				],
