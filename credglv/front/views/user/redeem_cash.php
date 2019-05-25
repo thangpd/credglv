@@ -11,10 +11,13 @@ if ( ! empty( $data ) ) {
 			<?php echo __( 'Cash redeem', 'credglv' ) ?>
             <input type="text" name="amount" id="amount">
         </label>
+        <p>
+			<?php echo __( 'Conversion fee: $60 or 10% total Gold which is higher. Minimum conversion Gold: 100 Gold.', 'credglv' ); ?>
+        </p>
         <br>
         <br>
         <button class="btn btn-default ld-ext-right" type="submit"
-                name="cash_redeem"><?php echo __('Submit','credglv') ?>
+                name="cash_redeem"><?php echo __( 'Submit', 'credglv' ) ?>
             <div class="ld ld-spinner ld-spin"></div>
         </button>
 
