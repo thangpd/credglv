@@ -344,9 +344,25 @@ class UserController extends FrontController implements FrontControllerInterface
 			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper_close', 68 );
 
 		}
+
+		add_filter( 'show_admin_bar', 'hide_admin_bar' );
 	}
 
+	/**
+	 * Hide menu with customer
+	 *
+	 * */
+	function hide_admin_bar() {
 
+		if ( ! is_admin() || ! current_user_can( 'administrator' ) ) {
+			return false;
+		}
+
+	}
+
+    /**
+     * Remove first name last name validate
+     * */
 	public function remove_save_account_detail(
 		$arr
 	) {
@@ -360,6 +376,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		return $arr;
 	}
+
 
 	public function redirectLoginUrl(
 		$login_url, $redirect, $force_reauth
