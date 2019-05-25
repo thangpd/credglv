@@ -356,7 +356,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$subarr['children'][] = (object) array(
 				'ID'           		=> '0',
 				'display_name' 		=> __( 'Undefined', 'credglv' ),
-				'display_fullname' 	=> $user_fullname,
+				'display_fullname' 	=> __( 'Undefined', 'credglv' ),
 				'photo'        		=> get_avatar_url( '', [ 'default' => 'mysteryman' ] )
 			);
 		}
