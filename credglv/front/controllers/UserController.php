@@ -345,7 +345,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		}
 
-		add_filter( 'show_admin_bar', 'hide_admin_bar' );
+		add_filter( 'show_admin_bar', array( $this, 'hide_admin_bar' ) );
 	}
 
 	/**
@@ -360,9 +360,9 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}
 
-    /**
-     * Remove first name last name validate
-     * */
+	/**
+	 * Remove first name last name validate
+	 * */
 	public function remove_save_account_detail(
 		$arr
 	) {
