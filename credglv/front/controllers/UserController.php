@@ -357,7 +357,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		$user = wp_get_current_user();
 
-		if ( in_array(  'customer' , (array) $user->roles ) ) {
+		if ( ! is_user_logged_in() || in_array( 'customer', (array) $user->roles ) ) {
 			return false;
 			//The user has the "author" role
 		}
