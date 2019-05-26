@@ -354,9 +354,15 @@ class UserController extends FrontController implements FrontControllerInterface
 	 * */
 	function hide_admin_bar() {
 
-		if ( ! is_admin() || ! current_user_can( 'administrator' ) ) {
+
+		$user = wp_get_current_user();
+
+		if ( in_array(  'customer' , (array) $user->roles ) ) {
 			return false;
+			//The user has the "author" role
 		}
+
+		return true;
 
 	}
 
