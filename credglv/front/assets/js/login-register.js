@@ -84,7 +84,7 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "We sent verify code to your phone.",
+                        required: "An One Time PIN was sent to your phone.",
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 }
@@ -111,7 +111,7 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "We sent verify code to your phone.",
+                        required: "An One Time PIN was sent to your phone.",
                         minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 }
