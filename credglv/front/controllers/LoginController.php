@@ -74,8 +74,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		?>
         <p class="form-row form-row-wide">
-            <a class="login-with-what" data-phone="yes"
-               href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
+            <a class="login-with-what" data-phone="yes" href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
         </p>
         <div class="phone_login">
             <div class="form-row form-row-wide">
@@ -96,7 +95,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
                     </div>
-                    <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                    <input type="tel"  class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
                            id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
@@ -127,6 +126,13 @@ class LoginController extends FrontController implements FrontControllerInterfac
         <span class="error_log"></span>
 		<?php
 	}
+
+//add_filter( 'woocommerce_locate_template', 'csp_locate_template', 10, 3 );
+	public function add_custom_js() {
+//		echo '<script src="https://www.google.com/recaptcha/api.js?render=6Lc38psUAAAAAJuh9FtinaKCMZPGnTIYk2VFSrlA" async defer >';
+		echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+	}
+
 
 	public function credglv_login() {
 		$data = $_POST;
@@ -159,8 +165,8 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		return [
 			'actions' => [
-//				'template_redirect'            => [ self::getInstance(), 'redirectUserLoggedIn' ],
-//				'wp_head'                      => [ self::getInstance(), 'add_custom_js' ],
+				'template_redirect'            => [ self::getInstance(), 'redirectUserLoggedIn' ],
+				'wp_head'                      => [ self::getInstance(), 'add_custom_js' ],
 				'woocommerce_login_form_start' => [ self::getInstance(), 'credglv_extra_login_fields' ],
 				'woocommerce_login_form'       => [ self::getInstance(), 'credglv_extra_otp_login_fields' ],
 			],

@@ -6,37 +6,35 @@ jQuery(function ($) {
 
 
     credglv.redeem = function () {
-        var form=$('form');
-        form.find('button[type="submit"]').on('click', function (e) {
-                e.preventDefault();
-                var amount = form.find('input[name="amount"]').val();
-                var type = form.find('input[name="type"]');
-                var data = {
-                    amount: amount,
-                    action: 'credglv_order_add_item'
-                };
-                if (type.length) {
-                    data.type = type.val();
-                }
-                $(this).toggleClass('running');
-                $.ajax({
-                    type: 'POST',
-                    url: credglvConfig.ajaxurl,
-                    data: data,
-                    async: false,
-                    success: function (res) {
-                        if (res.code === 200) {
-                            console.log(res.message);
-                            location.reload();
-                        } else {
-                            alert(res.message);
-                            location.reload();
+        $('form').on('submit', function (e) {
+            e.preventDefault();
+            var amount = $(this).find('input[name="amount"]').val();
+            var type = $(this).find('input[name="type"]');
 
-                        }
-                    }
-                });
+            var data = {
+                amount: amount,
+                action: 'credglv_order_add_item'
+            };
+            if (type.length) {
+                data.type = type.val();
             }
-        )
+            $.ajax({
+                type: 'POST',
+                url: credglvConfig.ajaxurl,
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (res.code === 200) {
+                        console.log(res.message);
+
+                        location.reload();
+
+                    } else {
+                        alert(res.message);
+                    }
+                }
+            });
+        })
     };
     $(document).ready(function () {
 

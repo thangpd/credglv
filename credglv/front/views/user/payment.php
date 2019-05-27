@@ -76,7 +76,7 @@ function render_payment_html()
     $get_bankcard = get_bankcard();
 
     $html = '';
-    $html .= '<form class="payment-edit" method="post" enctype="multipart/form-data">';
+    $html .= '<form method="post" enctype="multipart/form-data">';
 
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankname">Bank Name';
@@ -134,8 +134,7 @@ function render_payment_html()
     $html .= '<input type="password" maxlength="4" id="user_bankpin" name="user_bankpin" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
 
-	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="paymentclick" >'.__('Update Payment','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
-
+    $html .= '<input type="submit" name="paymentclick" value="Update"/>';
     $html .= '</from>';
     echo $html;
 }
@@ -216,7 +215,7 @@ function render_payment_error_html()
 
 
     $html = '';
-    $html .= '<form class="payment-edit" method="post" enctype="multipart/form-data">';
+    $html .= '<form method="post" enctype="multipart/form-data">';
 
     $html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
     $html .= '<label for="user_bankname">Bank Name';
@@ -286,8 +285,8 @@ function render_payment_error_html()
     $html .= '<label for="user_bankpin">Pin';
     $html .= '<input type="password" maxlength="4" id="user_bankpin"  name="user_bankpin" value="" class="woocommerce-Input woocommerce-Input--password input-text">';
     $html .= '</p>';
-	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="paymentclick" >'.__('Update Payment','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
-	$html .= '</from>';
+    $html .= '<input type="submit" name="paymentclick" value="Update"/>';
+    $html .= '</from>';
     echo $html;
 }
 $upload = wp_upload_dir();

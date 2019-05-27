@@ -148,13 +148,13 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 				<div class="form-group select-recipient-wrapper">
 				<label>' . __( "Pin", "credglv" ) . '</label>
-				<input type="password" maxlength="4" name="mycred_new_transfer[pin_transfer]"  pattern="[0-9]"
+				<input type="password" maxlength="4" name="mycred_new_transfer[pin_transfer]"  pattern="[0-9]*"
 				value="" aria-required="true" class="form-control" >
 				</div>
 			</div>
 		</div>
 		<br>
-		<p>'.__('Transaction fee (will be debited to sender’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold.','credglv').'</p>
+		<p>Phí chuyển: $G 1. Chuyển tối thiếu $G 10. Người chuyển chịu phí.</p>
 ';
 		$fields .= $fields_temp;
 

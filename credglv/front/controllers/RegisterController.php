@@ -117,17 +117,14 @@ class RegisterController extends FrontController implements FrontControllerInter
 		return $validation_errors;
 	}
 
-	/**
-	 * Extra otp register fields
-	 */
+
 	function credglv_extra_otp_register_fields() {
 
-		if ( isset( $_GET['ru'] ) ) {
-			$user_ref = $_GET['ru'];
-		} elseif ( isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
+		if ( isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
 			$user_ref = $_COOKIE[ UserController::METAKEY_COOKIE ];
+		} elseif ( isset( $_GET['ru'] ) ) {
+			$user_ref = $_GET['ru'];
 		}
-
 		$user = get_user_by( 'login', $user_ref );
 
 
@@ -163,9 +160,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 		<?php
 	}
 
-	/**
-	 * Extra register fields
-	 */
+
 	function credglv_extra_register_fields() {
 		$num_val = '';
 		if ( is_user_logged_in() ) {
@@ -204,8 +199,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                         <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                     </ul>
                 </div>
-                <input type="tel" pattern="[0-9]*"
-                       class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                <input type="tel" pattern="[0-9]*"  class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                        name="cred_billing_phone"
                        id="reg_phone_register"
                        value="<?php echo $num_val; ?>" maxlength="10"/>
@@ -223,22 +217,14 @@ class RegisterController extends FrontController implements FrontControllerInter
 	}
 
 	function credglv_assets_enqueue() {
-		global $post, $wp_query;
-
-
-		wp_register_script( 'cred-my-account-detail', plugin_dir_url( __DIR__ ) . '/assets/js/account-details.js' );
+		global $post;
 		wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
-
+		wp_register_script( 'cred-my-account-detail', plugin_dir_url( __DIR__ ) . '/assets/js/account-details.js' );
 
 		if ( isset( $post->ID ) ) {
 			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
-
-				if ( ! is_user_logged_in() ) {
-					wp_enqueue_script( 'cred-my-account-login-page' );
-				}
-				if ( isset( $wp_query->query_vars['edit-account'] ) || isset( $wp_query->query_vars['edit-account'] ) ) {
-					wp_enqueue_script( 'cred-my-account-detail' );
-				}
+				wp_enqueue_script( 'cred-my-account-login-page' );
+				wp_enqueue_script( 'cred-my-account-detail' );
 				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
 			}
 
@@ -250,8 +236,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 			wp_enqueue_script( 'cred-my-account-login-page' );
 
 		}
-
-
 	}
 
 	public function registerPage() {
