@@ -87,7 +87,7 @@ function render_profile_html() {
 	$get_country  = get_country();
 
 	$html = '';
-	$html .= '<form method="post" enctype="multipart/form-data">';
+	$html .= '<form class="profile-update" method="post" enctype="multipart/form-data">';
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
@@ -149,8 +149,8 @@ function render_profile_html() {
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
-	$html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
-	$html .= '</from>';
+	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
+	$html .= '</form>';
 	echo $html;
 }
 
@@ -212,7 +212,8 @@ function render_profile_error_html() {
 
 
 	$html = '';
-	$html .= '<form method="post" enctype="multipart/form-data">';
+
+	$html .= '<form class="profile-update"  method="post" enctype="multipart/form-data">';
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
@@ -282,8 +283,8 @@ function render_profile_error_html() {
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
-	$html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
-	$html .= '</from>';
+	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
+	$html .= '</form>';
 	echo $html;
 }
 

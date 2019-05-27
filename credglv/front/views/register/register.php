@@ -39,7 +39,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                         <label for="reg_username"><?php esc_html_e( 'Username', 'woocommerce' ); ?>&nbsp;<span
                                     class="required">*</span></label>
-                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username"
+                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" autocapitalize="none" pattern="[a-z]*"
                                id="reg_username" autocomplete="username"
                                value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
                     </p>
@@ -59,7 +59,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                         <label for="reg_password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span
                                     class="required">*</span></label>
-                        <input type="password" class="woocommerce-Input woocommerce-Input--text input-text"
+                        <input type="password" class="woocommerce-Input woocommerce-Input--text input-text" autocapitalize="none" pattern="[a-z]*"
                                name="password" id="reg_password" autocomplete="new-password"/>
                     </p>
 
@@ -69,8 +69,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
                 <p class="woocommerce-FormRow form-row">
 					<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
-                    <button type="submit" class="woocommerce-Button button" name="register"
-                            value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></button>
+                    <button type="submit" class="woocommerce-Button button  btn btn-default ld-ext-right " name="register"
+                            value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?><div class="ld ld-spinner ld-spin"></div></button>
                 </p>
 
 				<?php do_action( 'woocommerce_register_form_end' ); ?>

@@ -154,7 +154,8 @@ class OrderController extends FrontController implements FrontControllerInterfac
 		} else {
 			$this->responseJson( [
 				'code' => 403,
-				'data' => 'Empty amount'
+				'data' => 'Empty amount',
+				'message' => 'Empty amount'
 			] );
 		}
 
