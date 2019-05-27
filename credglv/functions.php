@@ -79,7 +79,6 @@ function credglv_minify_html( $html ) {
 
 }
 
-add_filter( 'show_admin_bar', '__return_false' );
 
 /**
  * @return bool
