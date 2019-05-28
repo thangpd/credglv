@@ -96,12 +96,18 @@ class LoginController extends FrontController implements FrontControllerInterfac
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
                     </div>
+                    <input type="button" id="hide_button" style="display: none" onclick="autofocus_input()">
                     <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
                            id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
 
                 </div>
+                <script type="text/javascript">
+                	function autofocus_input(){
+                		document.getElementById('reg_phone').focus();
+                	}
+                </script>
 
             </div>
         </div>

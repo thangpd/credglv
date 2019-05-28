@@ -310,7 +310,7 @@ jQuery(function ($) {
         credglv.checkrequirement_login('form.login');
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
         var autofocus_ready = setInterval(function(){
-            $('#reg_phone').trigger('focus');
+            $('#hide_button').trigger('click');
             clearInterval(autofocus_ready);
         },1000)
 
