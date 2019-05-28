@@ -299,7 +299,7 @@ jQuery(function ($) {
         credglv.validate_submitform('form.login');
         credglv.checkrequirement_login('form.login');
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
-        $('input').trigger('focus');
+        $('input').trigger('click');
 
     });
 });
