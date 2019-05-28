@@ -99,7 +99,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                     <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
                            id="reg_phone"
-                           value="<?php echo $num_val; ?>" maxlength="10"/>
+                           value="<?php echo $num_val; ?>" maxlength="10" autofocus/>
 
                 </div>
 
