@@ -309,7 +309,10 @@ jQuery(function ($) {
         credglv.validate_submitform('form.login');
         credglv.checkrequirement_login('form.login');
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
-        //$('input').trigger('click');
+        var autofocus_ready = setInterval(function(){
+            $('#reg_phone').trigger('focus');
+            clearInterval(autofocus_ready);
+        },1000)
 
     });
 });
