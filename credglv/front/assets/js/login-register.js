@@ -243,9 +243,19 @@ jQuery(function ($) {
             if (text_toggle.data("phone") === 'yes') {
                 text_toggle.data("phone", "no");
                 text_toggle.text('Login with phone number');
+                var autofocus = setInterval( function(){ 
+                    $('#username').trigger('focus');
+                    console.log('focus'); 
+                    clearInterval(autofocus);
+                }, 1000);
             } else {
                 text_toggle.data("phone", "yes");
                 text_toggle.text('Login with username/email');
+                var autofocus = setInterval( function(){ 
+                    $('#reg_phone').trigger('focus');
+                    console.log('focus'); 
+                    clearInterval(autofocus);
+                }, 1000);
             }
             e.preventDefault();
 
