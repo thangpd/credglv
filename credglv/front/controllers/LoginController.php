@@ -105,7 +105,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                 </div>
                 <script type="text/javascript">
                 	function autofocus_input(){
-                		document.getElementById('reg_phone').focus();
+                		jQuery('#reg_phone').trigger('focus');
                 	}
                 </script>
 
