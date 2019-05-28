@@ -80,7 +80,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
         <div class="phone_login">
             <div class="form-row form-row-wide">
                 <label for="reg_phone">
-					<?php _e( 'Mobile Number', 'credglv' ); ?> <span class="required">*</span>
+					<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
                 </label>
 
                 <div class="login_countrycode">

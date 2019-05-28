@@ -191,7 +191,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
         <div class="form-row form-row-wide">
             <label for="reg_phone_register">
-				<?php _e( 'Mobile Number', 'credglv' ); ?> <span class="required">*</span>
+				<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
             </label>
             <div class="login_countrycode">
 
