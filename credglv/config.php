@@ -97,6 +97,13 @@ return [
 					],
 				],
 				[
+					'id'           => 'credglv-toaster',
+					'url'          => plugins_url( 'credglv/assets/scripts/credglv-toaster.js' ),
+					'dependencies' => [
+						'jquery',
+					],
+				],
+				[
 					'id'  => 'credglv.shortcode',
 					'url' => plugins_url( 'credglv/assets/scripts/credglv.shortcode.js' )
 				],
