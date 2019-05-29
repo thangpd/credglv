@@ -96,40 +96,37 @@
 
 				submitbutton.val( buttonlabel );
 
-				if ( response.success !== undefined ) {
+                if (response.success !== undefined) {
 
-					if ( response.success ) {
+                    if (response.success) {
 
-						// Allow customizations to present custom success messages
-						if ( response.data.message !== undefined && response.data.message != '' )
-							alert( response.data.message );
-						else
-							alert( myCREDTransfer.completed );
+                        // Allow customizations to present custom success messages
+                        if (response.data.message !== undefined && response.data.message != '')
+                            toaster('warning', '', response.data.message);
+                        else
+                            toaster('success', '', myCREDTransfer.completed);
 
-						if ( $( response.data.css ) !== undefined )
-							$( response.data.css ).empty().html( response.data.balance );
+                        if ($(response.data.css) !== undefined)
+                            $(response.data.css).empty().html(response.data.balance);
 
-						// Reset form
-						$( formid + ' input.form-control' ).each(function(index){
-							$(this).val( '' );
-						});
+                        // Reset form
+                        $(formid + ' input.form-control').each(function (index) {
+                            $(this).val('');
+                        });
 
-						$( formid + ' select' ).each(function(index){
-							var selecteditem = $(this).find( ':selected' );
-							if ( selecteditem !== undefined )
-								selecteditem.removeAttr( 'selected' );
-						});
+                        $(formid + ' select').each(function (index) {
+                            var selecteditem = $(this).find(':selected');
+                            if (selecteditem !== undefined)
+                                selecteditem.removeAttr('selected');
+                        });
 
-						// If we require reload after submission, do so now
-						if ( myCREDTransfer.reload == '1' ) location.reload();
+                        // If we require reload after submission, do so now
+                        if (myCREDTransfer.reload == '1') location.reload();
 
-					}
+                    } else if (myCREDTransfer[response.data] !== undefined)
+                        toaster('danger', '', myCREDTransfer[response.data]);
 
-					else if ( myCREDTransfer[ response.data ] !== undefined )
-						alert( myCREDTransfer[ response.data ] );
-
-				}
-
+                }
 			}
 
 		});

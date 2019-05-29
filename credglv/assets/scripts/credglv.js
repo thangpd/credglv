@@ -1,8 +1,6 @@
-
-
-;(function($){
+;(function ($) {
     function Cred() {
-        this.config  = credglvConfig;
+        this.config = credglvConfig;
         this.components = {};
         if (typeof (this.config) === 'undefined') {
             throw new Error('No config for Cred GLV found');
@@ -29,7 +27,7 @@
          */
         var self = this;
         //Init
-        $(document).ready(function(){
+        $(document).ready(function () {
             for (var name in self.components) {
                 var component = self.components[name];
                 try {
@@ -63,14 +61,14 @@
         this.url = '';
         this.headers = [];
         this.data = {};
-        this.ajaxUrl = credglv.config.baseUrl  + '/wp-admin/admin-ajax.php';
+        this.ajaxUrl = credglv.config.baseUrl + '/wp-admin/admin-ajax.php';
         this.ajax = false;
         var reqObj = {
-            dataType : 'JSON'
+            dataType: 'JSON'
         };
         var self = this;
         var busy = false;
-        this.send = function(callback){
+        this.send = function (callback) {
             /*if (busy) return callback(false);
             busy = true;*/
             if (self.url === '') {
@@ -79,7 +77,7 @@
             reqObj.url = self.url;
             reqObj.type = self.type;
             reqObj.data = self.data;
-            reqObj.success = function(response) {
+            reqObj.success = function (response) {
                 callback(response);
                 busy = false;
             };
@@ -98,7 +96,7 @@
     Request.prototype.get = function (url, callback) {
         this.url = url;
         this.type = 'GET';
-        this.data  = {};
+        this.data = {};
         this.send(callback);
     };
 
@@ -123,7 +121,7 @@
         this.load = function (type, id, url, position, callback) {
             var element;
             if (typeof (callback) == 'undefined') {
-                callback = function() {
+                callback = function () {
                     credglv.log(url, 'loaded');
                 }
             }
@@ -132,18 +130,18 @@
                     case 'script' :
                         element = $('<script/>', {
                             //onload : callback,
-                            src : url,
-                            id : id
+                            src: url,
+                            id: id
                         });
                         break;
                     case 'style' :
                         element = $('<link>', {
-                            rel : 'stylesheet',
-                            href :  url,
-                            type : 'text/css',
-                            media : 'all',
+                            rel: 'stylesheet',
+                            href: url,
+                            type: 'text/css',
+                            media: 'all',
                             //onload : callback,
-                            id : id
+                            id: id
                         });
 
                         break;
@@ -167,6 +165,7 @@
     function Debug(credglv) {
 
     }
+
     Debug.prototype.testSpeed = function (requestNumber) {
         if (typeof (requestNumber) === 'undefined') {
             requestNumber = 10;
@@ -174,20 +173,20 @@
         var startTime = (new Date()).getTime();
         var totalTime = 0;
         console.log('Starting testing speed by : ' + requestNumber + ' request.');
-        for (var i =0 ; i < requestNumber; i++) {
+        for (var i = 0; i < requestNumber; i++) {
             var url = window.location.href;
             url = credglv.utils.updateQueryStringParameter(url, 'ts', (new Date()).getTime() + '' + Math.random());
             $.ajax({
-                async : false,
-                url : url,
-                success : function(){
+                async: false,
+                url: url,
+                success: function () {
                     var currentTime = (new Date()).getTime();
                     var spentTime = currentTime - startTime;
                     startTime = currentTime;
                     totalTime += spentTime;
-                    console.log('Request number ', i +1 , ' : ', spentTime, ' milisecond');
+                    console.log('Request number ', i + 1, ' : ', spentTime, ' milisecond');
                 },
-                error : function(){
+                error: function () {
 
                 }
             })
@@ -195,10 +194,11 @@
         console.log('Testing completed. Total request : ', requestNumber, ' .Total time : ', totalTime, '. Avg time : ', totalTime / requestNumber);
     };
 
-    function Utitils(){
+    function Utitils() {
 
     }
-    Utitils.prototype.updateQueryStringParameterSearch = function(uri, key, value, push) {
+
+    Utitils.prototype.updateQueryStringParameterSearch = function (uri, key, value, push) {
         key = encodeURIComponent(key);
         value = encodeURIComponent(value);
         var re = new RegExp("([?&])" + key + "=(.*?)(&|$)", "i");
@@ -209,11 +209,10 @@
         }
         uri = uri.replace('?&', '?');
         uri = uri.replace('&&', '&');
-        
+
         if (uri.match(re)) {
             url = uri.replace(re, "$1" + key + "=" + value + "," + "$2" + "$3");
-        }
-        else {
+        } else {
             url = uri + separator + key + "=" + value;
         }
 
@@ -224,7 +223,7 @@
         }
 
     };
-    Utitils.prototype.updateQueryStringParameter = function(uri, key, value, push) {
+    Utitils.prototype.updateQueryStringParameter = function (uri, key, value, push) {
         key = encodeURIComponent(key);
         value = encodeURIComponent(value);
         var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -235,11 +234,10 @@
         }
         uri = uri.replace('?&', '?');
         uri = uri.replace('&&', '&');
-        
+
         if (uri.match(re)) {
             url = uri.replace(re, '$1' + key + "=" + value + '$2');
-        }
-        else {
+        } else {
             url = uri + separator + key + "=" + value;
         }
 
@@ -250,7 +248,7 @@
         }
 
     };
-    Utitils.prototype.removeQueryStringParameter = function(uri, key, value, push) {
+    Utitils.prototype.removeQueryStringParameter = function (uri, key, value, push) {
         key = encodeURIComponent(key);
         var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
         if (value) {
@@ -262,7 +260,7 @@
         if (uri.match(re)) {
             url = uri.replace(re, '$1' + '$2');
             if (/(\?|&)$/.test(url)) {
-                url = url.substr(0, url.length -1);
+                url = url.substr(0, url.length - 1);
             }
         }
         url = url.replace('?&', '?');
@@ -275,11 +273,11 @@
 
     };
 
-    Utitils.prototype.removeQueryStringParameterSearch = function(uri, key, value, push) {
+    Utitils.prototype.removeQueryStringParameterSearch = function (uri, key, value, push) {
 
         key = encodeURIComponent(key);
         value = encodeURIComponent(value);
-        
+
         var url = uri;
 
         var re = new RegExp("([?&])" + key + "=(.*?)(&|$)", "i");
@@ -287,16 +285,16 @@
         var matches = url.match(re);
         if (matches) {
             ids = matches[2].split(',');
-            $.each(ids, function(i, vl){    
-                if(vl == value){
+            $.each(ids, function (i, vl) {
+                if (vl == value) {
                     ids.splice(i, 1)
                 }
             })
             ids = ids.join(',');
         }
-        if(ids){
+        if (ids) {
             url = url.replace(re, "$1" + key + "=" + ids + "$3");
-        }else{
+        } else {
             url = url.replace(re, "$1");
         }
 
@@ -310,7 +308,7 @@
 
     window.credglv = new Cred();
     credglv.request = new Request(credglv);
-    credglv.resource =  new Resource(credglv);
+    credglv.resource = new Resource(credglv);
     credglv.utils = new Utitils(credglv);
     credglv.debug = new Debug(credglv);
     credglv.init();

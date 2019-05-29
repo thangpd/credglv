@@ -25,15 +25,15 @@ if ( ! class_exists( 'myCRED_Notifications_Module' ) ) :
 			parent::__construct( 'myCRED_Notifications_Module', array(
 				'module_name' => 'notifications',
 				'defaults'    => array(
-					'life'      => 7,
-					'template'  => '<p>%entry%</p><h1>%cred_f%</h1>',
-					'use_css'   => 1,
-					'duration'  => 3
+					'life'     => 7,
+					'template' => '<p>%entry%</p><h1>%cred_f%</h1>',
+					'use_css'  => 1,
+					'duration' => 5
 				),
 				'register'    => false,
 				'add_to_core' => true
 			) );
-			
+
 			add_filter( 'mycred_add_finished', array( $this, 'mycred_finished' ), 40, 3 );
 
 		}
