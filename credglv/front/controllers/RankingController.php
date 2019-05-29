@@ -42,22 +42,6 @@ class RankingController extends FrontController implements FrontControllerInterf
 		return [
 			'actions' => [
 
-				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
-				'woocommerce_register_form'       => [
-					self::getInstance(),
-					'credglv_extra_otp_register_fields'
-				],
-//				'woocommerce_save_account_details_errors' => [ self::getInstance(), 'credglv_edit_save_fields' ],
-				'woocommerce_register_post'       => [
-					self::getInstance(),
-					'credglv_validate_extra_register_fields',
-					10,
-					3,
-				],
-				'woocommerce_created_customer'    => [
-					self::getInstance(),
-					'credglv_validate_extra_register_fields_update'
-				],
 				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
@@ -77,14 +61,6 @@ class RankingController extends FrontController implements FrontControllerInterf
 				]
 			],
 			'assets'  => [
-				'css' => [
-					[
-						'id'           => 'credglv-user-register',
-						'isInline'     => false,
-						'url'          => '/front/assets/css/register.css',
-						'dependencies' => [ 'credglv-style', 'select2' ]
-					],
-				],
 				'js'  => [
 					/*[
 						'id'       => 'credglv-register-page-js',
