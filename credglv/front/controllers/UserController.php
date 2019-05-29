@@ -450,6 +450,29 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}
 
+	public function uploadAvatar() {
+		if ( isset( $_FILES['file'] ) ) {
+			if ( $_FILES['file']['error'] <= 0 ) {
+				$type_avatar = $_FILES['file']['type'];
+				$user_id = get_current_user_id();
+				$explode   = explode( '/', $type_avatar );
+				if ( $explode[0] == 'image' ) {
+					$from_avatar = $_FILES['file']['tmp_name'];
+					$to        = wp_upload_dir()['basedir'];
+					$timezone  = + 7;
+					$time      = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
+					$name_avatar = $user_id . '_ava_' . $time . '_' . $_FILES['file']['name'];
+					$url       = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
+					$src       = $to . '/credglv/img/' . $name_avatar;
+					if ( ! is_file( $src ) ) {
+						move_uploaded_file( $from_avatar, $src );
+						update_user_meta( $user_id, 'avatar', $url );
+					}
+				}
+			}
+		}
+		$this->responseJson( array( 'code' => 200, $name_avatar ) );
+	}
 
 	public static function registerAction() {
 		return [
@@ -472,6 +495,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			],
 			'ajax'    => [
 				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
+				'upload_avatar'		  => [ self::getInstance(), 'uploadAvatar' ],
 			]
 		];
 	}
