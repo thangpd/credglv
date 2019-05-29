@@ -432,7 +432,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
-		if ( isset( $wp_query->query_vars['cashredeem'] ) || isset( $wp_query->query_vars['localredeem'] ) ) {
+		if ( isset( $wp_query->query_vars['cash_redeem'] ) || isset( $wp_query->query_vars['local_redeem'] ) ) {
 			global $post;
 			if ( isset( $post->ID ) ) {
 				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
