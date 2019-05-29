@@ -28,10 +28,33 @@ jQuery(function ($) {
             }
         }
     }
+
+    credglv.onchange_user_avatar = function (form){
+        $(form).find('#user_avatar').change(function(){
+            var file_data = $(this).prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('file', file_data);
+            form_data.append('action','upload_avatar');
+            $.ajax({
+                url: credglvConfig.ajaxurl,
+                dataType: 'text',
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: form_data,
+                type: 'post',
+                success: function(response){
+                    console.log(response);
+                }
+            });
+        })
+    }
+
     $(document).ready(function () {
 
-        credglv.onclick_avatar('#user_avatar','input[name="user_avatar"]');
-        credglv.onchange_avatar('#user_avatar','input[name="user_avatar"]');
+        //credglv.onclick_avatar('#user_avatar','input[name="user_avatar"]');
+        //credglv.onchange_avatar('#user_avatar','input[name="user_avatar"]');
+        credglv.onchange_user_avatar('form.profile-update');
 
     });
 });
