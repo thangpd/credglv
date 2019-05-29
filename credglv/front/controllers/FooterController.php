@@ -12,14 +12,13 @@ namespace credglv\front\controllers;
 use credglv\core\components\Script;
 use credglv\core\interfaces\FrontControllerInterface;
 
-class FooterController extends FrontController implements FrontControllerInterface
-{
+class FooterController extends FrontController implements FrontControllerInterface {
 
-    /**
-     * Cred home page
-     * @return string
-     */
-	public function credglv_add_script_to_footer(){
+	/**
+	 * Cred home page
+	 * @return string
+	 */
+	public function credglv_add_script_to_footer() {
 		echo '<script type="text/javascript">
             
         PullToRefresh.init({
@@ -28,39 +27,57 @@ class FooterController extends FrontController implements FrontControllerInterfa
         });
         </script>';
 	}
-    /**
-     * Register all actions that controller want to hook
-     * @return mixed
-     */
-    public static function registerAction()
-    {
-        // TODO: Implement registerAction() method.
-        return [
-	        'actions' => [
-		        'wp_footer' => [ self::getInstance(), 'credglv_add_script_to_footer' ],
-
-	        ],
-	        'ajax'    => [
 
 
-	        ],
-	        'assets'  => [
-		        'css' => [
-			        [
-				        'id'           => 'credglv-user-register',
-				        'isInline'     => false,
-				        'url'          => '/front/assets/css/register.css',
-				        'dependencies' => [ 'credglv-style', 'select2' ]
-			        ],
-		        ],
-		        'js'  => [
-			        [
-				        'id'       => 'credglv-main-js',
-				        'isInline' => false,
-				        'url'      => '/front/assets/js/main.js',
-			        ]
-		        ]
-	        ]
-        ];
-    }
+	function cred_add_class_body( $classes ) {
+		if ( credglv_get_woo_myaccount() && ! is_user_logged_in() ) {
+			$classes[] = 'login-register';
+		}
+
+		return $classes;
+
+	}
+
+
+	function credglv_init_hook( $classes ) {
+		add_filter( 'body_class', [ $this, 'cred_add_class_body' ] );
+
+	}
+
+
+	/**
+	 * Register all actions that controller want to hook
+	 * @return mixed
+	 */
+	public static function registerAction() {
+		// TODO: Implement registerAction() method.
+		return [
+			'actions' => [
+				'init'      => [ self::getInstance(), 'credglv_init_hook' ],
+				'wp_footer' => [ self::getInstance(), 'credglv_add_script_to_footer' ],
+
+			],
+			'ajax'    => [
+
+
+			],
+			'assets'  => [
+				'css' => [
+					[
+						'id'           => 'credglv-user-register',
+						'isInline'     => false,
+						'url'          => '/front/assets/css/register.css',
+						'dependencies' => [ 'credglv-style', 'select2' ]
+					],
+				],
+				'js'  => [
+					[
+						'id'       => 'credglv-main-js',
+						'isInline' => false,
+						'url'      => '/front/assets/js/main.js',
+					]
+				]
+			]
+		];
+	}
 }

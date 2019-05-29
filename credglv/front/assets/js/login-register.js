@@ -123,8 +123,8 @@ jQuery(function ($) {
                 submitHandler: function (form) {
 
                     credglv.toggle_loading_button(form);
-                    var text_toggle = $('.login-with-what');
-                    if (text_toggle.data('phone') !== 'yes') {
+                    var login_user = $('#login-with-user');
+                    if (login_user.prop('checked')) {
                         form.submit();
                     }
                 }
@@ -133,23 +133,33 @@ jQuery(function ($) {
     };
 
 
-    credglv.toggle_loading_button = function (form) {
-        var button = $(form).find('button[type="submit"]');
-        button.toggleClass('running')
-    }
+    credglv.toggle_loading_button = function (form, hide) {
 
+
+        var button = $(form).find('button[type="submit"]');
+        var i = 0;
+        button.toggleClass('running');
+        credglv.checkstatus_button(1);
+    }
+    credglv.checkstatus_button = function stateChange(newState) {
+        setTimeout(function () {
+            var button = $(document).find('button.ld-ext-right.running');
+            button.toggleClass('running');
+        }, 2000);
+    }
 
     credglv.validate_submitform = function (form) {
         $(form).on('submit', function (e) {
 
             var otp_div = $(document).find('.otp-code');
-            var text_toggle = $('.login-with-what');
+            var login_phone = $('#login-with-phone');
 
-            if ($(this).valid() && text_toggle.data('phone') === 'yes' && otp_div.is(':hidden')) {
+
+            if ($(this).valid() && login_phone.prop('checked') && otp_div.is(':hidden')) {
                 console.log('login 1');
                 credglv.sendmessage_otp(form);
                 e.preventDefault();
-            } else if ($(this).valid() && form === 'form.login' && text_toggle.data('phone') === 'yes') {
+            } else if ($(this).valid() && form === 'form.login' && login_phone.prop('checked')) {
                 console.log('login2');
                 e.preventDefault();
 
@@ -161,8 +171,7 @@ jQuery(function ($) {
         })
     };
     credglv.ajax_login = function (form) {
-        credglv.toggle_loading_button(form);
-
+        credglv.toggle_loading_button();
         var data = {
             phone: credglv.get_phone_data(form),
             otp: $(form).find('#cred_otp_code_login').val(),
@@ -173,21 +182,21 @@ jQuery(function ($) {
             url: credglvConfig.ajaxurl,
             data: data,
             async: false,
+            beforeSend: function (res) {
+            },
             success: function (res) {
-
                 $(form).find('.error_log').text(res.message);
                 if (res.code === 200) {
-
-                    //toggle loading button
-
                     location.reload();
+
+                } else {
+                    //toggle loading button
+                    var otp_div = $(form).find('.otp-code');
+                    otp_div.toggle('hide');
                 }
 
             }
         });
-
-
-        credglv.toggle_loading_button(form);
 
 
     };
@@ -216,7 +225,7 @@ jQuery(function ($) {
     credglv.get_phone_data = function (form) {
         var phone_div = $(form).find('.login_countrycode');
         var country_code = phone_div.find('input[name="number_countrycode"]');
-        console.log(country_code);
+        // console.log(country_code);
         if (country_code.length) {
             if (country_code.val()) {
                 country_code = country_code.val();
@@ -234,7 +243,33 @@ jQuery(function ($) {
     }
 
     credglv.login_toggle_login = function (form) {
-        $(form).find('a.login-with-what').on('click', function (e) {
+
+        $(form).find('#login-with-phone').on('click', function (e) {
+            var phone_login = $(form).find('.phone_login');
+            if (phone_login.is(':hidden')) {
+                phone_login.toggle('show');
+            }
+            var user = $(form).find('.phone_login').nextUntil('.otp-code');
+            if (user.is(':visible')) {
+                user.toggle('hide');
+            }
+        });
+        $(form).find('#login-with-user').on('click', function (e) {
+            var otp = $(form).find('.otp-code');
+            if (otp.is(':visible')) {
+                otp.toggle('hide');
+            }
+            var phone_login = $(form).find('.phone_login');
+            if (phone_login.is(':visible')) {
+                phone_login.toggle('hide');
+            }
+            var user = $(form).find('.phone_login').nextUntil('.otp-code');
+            if (user.is(':hidden')) {
+                user.toggle('show');
+            }
+            $(form).find('.error_log').text('');
+        });
+        /*$(form).find('a.login-with-what').on('click', function (e) {
             $(form).find('.phone_login').toggle('hide');
             $(form).find('.phone_login').nextUntil('.otp-code').toggle('show');
             var otp = $(form).find('.otp-code');
@@ -246,23 +281,23 @@ jQuery(function ($) {
             if (text_toggle.data("phone") === 'yes') {
                 text_toggle.data("phone", "no");
                 text_toggle.text('Login with phone number');
-                var autofocus = setInterval( function(){ 
+                var autofocus = setInterval(function () {
                     $('#username').trigger('focus');
-                    console.log('focus'); 
+                    console.log('focus');
                     clearInterval(autofocus);
                 }, 1000);
             } else {
                 text_toggle.data("phone", "yes");
                 text_toggle.text('Login with username/email');
-                var autofocus = setInterval( function(){ 
+                var autofocus = setInterval(function () {
                     $('#reg_phone').trigger('focus');
-                    console.log('focus'); 
+                    console.log('focus');
                     clearInterval(autofocus);
                 }, 1000);
             }
             e.preventDefault();
 
-        });
+        });*/
     };
 
     credglv.select2login = function () {
@@ -312,10 +347,10 @@ jQuery(function ($) {
         credglv.validate_submitform('form.login');
         credglv.checkrequirement_login('form.login');
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
-        var autofocus_ready = setInterval(function(){
+        var autofocus_ready = setInterval(function () {
             $('#hide_button').trigger('click');
             clearInterval(autofocus_ready);
-        },1000)
+        }, 1000)
 
     });
 });

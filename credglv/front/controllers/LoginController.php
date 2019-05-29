@@ -74,8 +74,10 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		?>
         <p class="form-row form-row-wide">
-            <a class="login-with-what" data-phone="yes"
-               href="#"><?php echo __( 'Login with username/email', 'credglv' ); ?></a>
+            <label for="login-with-phone"> <input type="radio" id="login-with-phone" name="selector" checked>
+                <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
+            <label for="login-with-user"> <input type="radio" id="login-with-user" name="selector">
+                <span><?php echo __( 'With username/ email', 'credglv' ); ?></span></label>
         </p>
         <div class="phone_login">
             <div class="form-row form-row-wide">
@@ -104,9 +106,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
                 </div>
                 <script type="text/javascript">
-                	function autofocus_input(){
-                		jQuery('#reg_phone').trigger('focus');
-                	}
+                    function autofocus_input() {
+                        jQuery('#reg_phone').trigger('focus');
+                    }
                 </script>
 
             </div>
