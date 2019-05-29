@@ -90,6 +90,20 @@ return [
 					],
 				],
 				[
+					'id'           => 'pulltorefresh',
+					'url'          => plugins_url( 'credglv/assets/libs/pulltorefresh/pulltorefresh.js' ),
+					'dependencies' => [
+						'jquery',
+					],
+				],
+				[
+					'id'           => 'credglv-toaster',
+					'url'          => plugins_url( 'credglv/assets/scripts/credglv-toaster.js' ),
+					'dependencies' => [
+						'jquery',
+					],
+				],
+				[
 					'id'  => 'credglv.shortcode',
 					'url' => plugins_url( 'credglv/assets/scripts/credglv.shortcode.js' )
 				],
@@ -124,6 +138,16 @@ return [
 
 			],
 			'styles'  => [
+				[
+					'id'       => 'loading',
+					'isInline' => false,
+					'url'      => plugins_url( 'credglv/assets/libs/loading-btn/loading.css' ),
+				],
+				[
+					'id'       => 'loading-btn',
+					'isInline' => false,
+					'url'      => plugins_url( 'credglv/assets/libs/loading-btn/loading-btn.css' ),
+				],
 				[
 					'id'       => 'font-awesome',
 					'isInline' => false,

@@ -69,8 +69,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
                 <p class="woocommerce-FormRow form-row">
 					<?php wp_nonce_field( 'woocommerce-register', 'woocommerce-register-nonce' ); ?>
-                    <button type="submit" class="woocommerce-Button button" name="register"
-                            value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></button>
+                    <button type="submit" class="woocommerce-Button button  btn btn-default ld-ext-right " name="register"
+                            value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?><div class="ld ld-spinner ld-spin"></div></button>
                 </p>
 
 				<?php do_action( 'woocommerce_register_form_end' ); ?>

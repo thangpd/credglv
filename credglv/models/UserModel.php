@@ -345,7 +345,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 		$subarr = array(
 			'ID'           		=> $id,
-			'display_name' 		=> $user->data->display_name,
+			'display_name' 		=> $user->data->user_login,
 			'display_fullname' 	=> $user_fullname,
 			'photo'        		=> $avatar,
 			'level'        		=> $level,
@@ -370,7 +370,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		$level ++;
 		if ( $this->count_referral_user( $id ) ) {
 			$tablename = self::getTableName();
-			$prepare   = $wpdb->prepare( "select ID,display_name from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
+			$prepare   = $wpdb->prepare( "select ID,display_name,user_login from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
 			$result    = $wpdb->get_results( $prepare, ARRAY_A );
 
 			$subarr = array();
@@ -380,7 +380,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 				if ( $this->count_referral_user( $v['ID'] ) ) {
 					$subarr[] = (object) array(
 						'ID'          		=> $v['ID'],
-						'display_name' 		=> $v['display_name'],
+						'display_name' 		=> $v['user_login'],
 						'display_fullname' 	=> $user_fullname,
 						'photo'        		=> $avatar,
 						'level'        		=> $level,
@@ -389,7 +389,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 				} else {
 					$subarr[] = (object) array(
 						'ID'           		=> $v['ID'],
-						'display_name' 		=> $v['display_name'],
+						'display_name' 		=> $v['user_login'],
 						'display_fullname' 	=> $user_fullname,
 						'photo'        		=> $avatar,
 						'level'        		=> $level,

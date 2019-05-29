@@ -179,9 +179,9 @@ class UserController extends FrontController implements FrontControllerInterface
 		$vars['referral']      = 'referral';
 		$vars['payment']       = 'payment';
 		$vars['profile']       = 'profile';
-		$vars['point_history'] = 'point_history';
-		$vars['cash_redeem']   = 'cash_redeem';
 		$vars['local_redeem']  = 'local_redeem';
+		$vars['cash_redeem']   = 'cash_redeem';
+		$vars['point_history'] = 'point_history';
 
 		return $vars;
 	}
@@ -339,16 +339,37 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 		if ( ! is_user_logged_in() ) {
-			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper', 42);
-			remove_action( 'storefront_header', 'storefront_primary_navigation', 50);
-			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper_close', 68);
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper', 42 );
+			remove_action( 'storefront_header', 'storefront_primary_navigation', 50 );
+			remove_action( 'storefront_header', 'storefront_primary_navigation_wrapper_close', 68 );
 
 		}
+
+		add_filter( 'show_admin_bar', array( $this, 'hide_admin_bar' ) );
 	}
 
+	/**
+	 * Hide menu with customer
+	 *
+	 * */
+	function hide_admin_bar() {
 
-	public
-	function remove_save_account_detail(
+
+		$user = wp_get_current_user();
+
+		if ( ! is_user_logged_in() || in_array( 'customer', (array) $user->roles ) ) {
+			return false;
+			//The user has the "author" role
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Remove first name last name validate
+	 * */
+	public function remove_save_account_detail(
 		$arr
 	) {
 		if ( isset( $arr['account_first_name'] ) ) {
@@ -362,8 +383,8 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $arr;
 	}
 
-	public
-	function redirectLoginUrl(
+
+	public function redirectLoginUrl(
 		$login_url, $redirect, $force_reauth
 	) {
 		if ( $myaccount_page = credglv_get_woo_myaccount() && ! is_ajax() ) {
@@ -378,7 +399,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		return $login_url;
 	}
 
-	function credglv_assets_enqueue() {
+	public function credglv_assets_enqueue() {
 
 		wp_register_script( 'd3', plugin_dir_url( __DIR__ ) . '/assets/libs/d3/d3.js', [
 			'jquery',
@@ -401,7 +422,17 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
-		if ( isset( $wp_query->query_vars['cash_redeem'] ) || isset( $wp_query->query_vars['local_redeem'] ) ) {
+
+
+		if ( isset( $wp_query->query_vars['profile'] ) ) {
+			global $post;
+			if ( isset( $post->ID ) ) {
+				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
+					wp_enqueue_script( 'credglv-profile-js', plugin_dir_url( __DIR__ ) . '/assets/js/profile.js' );
+				}
+			}
+		}
+		if ( isset( $wp_query->query_vars['cashredeem'] ) || isset( $wp_query->query_vars['localredeem'] ) ) {
 			global $post;
 			if ( isset( $post->ID ) ) {
 				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
@@ -410,15 +441,40 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
+		if ( is_user_logged_in() ) {
+			wp_enqueue_script( 'credglv-loadingbutton-js', plugin_dir_url( __DIR__ ) . '/assets/js/loadingbutton.js' );
+		}
 	}
 
 	public function remove_action_header_woocommerce() {
 
 	}
 
+	public function uploadAvatar() {
+		if ( isset( $_FILES['file'] ) ) {
+			if ( $_FILES['file']['error'] <= 0 ) {
+				$type_avatar = $_FILES['file']['type'];
+				$user_id = get_current_user_id();
+				$explode   = explode( '/', $type_avatar );
+				if ( $explode[0] == 'image' ) {
+					$from_avatar = $_FILES['file']['tmp_name'];
+					$to        = wp_upload_dir()['basedir'];
+					$timezone  = + 7;
+					$time      = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
+					$name_avatar = $user_id . '_ava_' . $time . '_' . $_FILES['file']['name'];
+					$url       = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
+					$src       = $to . '/credglv/img/' . $name_avatar;
+					if ( ! is_file( $src ) ) {
+						move_uploaded_file( $from_avatar, $src );
+						update_user_meta( $user_id, 'avatar', $url );
+					}
+				}
+			}
+		}
+		$this->responseJson( array( 'code' => 200, $name_avatar ) );
+	}
 
-	public
-	static function registerAction() {
+	public static function registerAction() {
 		return [
 			'actions' => [
 				'woocommerce_save_account_details_errors' => [
@@ -439,6 +495,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			],
 			'ajax'    => [
 				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
+				'upload_avatar'		  => [ self::getInstance(), 'uploadAvatar' ],
 			]
 		];
 	}

@@ -1,6 +1,16 @@
 <?php
 $flag = 0;
 function render_profile_html() {
+	function get_img_ava() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'avatar' ) ) == 0 ) {
+			$get_img_ava = [ '' ];
+		} else {
+			$get_img_ava = get_user_meta( $user_id, 'avatar' );
+		}
+
+		return $get_img_ava[0];
+	}
 	function get_img_pp() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'passports' ) ) == 0 ) {
@@ -78,6 +88,7 @@ function render_profile_html() {
 		return $get_country[0];
 	}
 
+	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
 	$get_img_iden = get_img_iden();
 	$get_gender   = get_gender();
@@ -87,7 +98,13 @@ function render_profile_html() {
 	$get_country  = get_country();
 
 	$html = '';
-	$html .= '<form method="post" enctype="multipart/form-data">';
+	$html .= '<form class="profile-update" method="post" enctype="multipart/form-data">';
+	$html .= '<input type="file" name="user_avatar" class="hide">';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="user_avatar">Avatar';
+	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
 	$html .= '<select id="user_gender" name="user_gender">';
@@ -148,8 +165,8 @@ function render_profile_html() {
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
-	$html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
-	$html .= '</from>';
+	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
+	$html .= '</form>';
 	echo $html;
 }
 
@@ -160,6 +177,16 @@ function render_profile_error_html() {
 	$user_address  = $_POST['user_address'];
 	$user_country  = $_POST['user_country'];
 	$user_fullname = $_POST['user_fullname'];
+	function get_img_ava() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'avatar' ) ) == 0 ) {
+			$get_img_ava = [ '' ];
+		} else {
+			$get_img_ava = get_user_meta( $user_id, 'avatar' );
+		}
+
+		return $get_img_ava[0];
+	}
 	function get_img_pp() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'passports' ) ) == 0 ) {
@@ -204,6 +231,7 @@ function render_profile_error_html() {
 		return $get_address[0];
 	}
 
+	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
 	$get_img_iden = get_img_iden();
 	$get_fullname = get_fullname();
@@ -211,7 +239,14 @@ function render_profile_error_html() {
 
 
 	$html = '';
-	$html .= '<form method="post" enctype="multipart/form-data">';
+
+	$html .= '<form class="profile-update"  method="post" enctype="multipart/form-data">';
+	$html .= '<input type="file" name="user_avatar" class="hide">';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="user_avatar">Avatar';
+	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_gender">Genders';
 	$html .= '<select id="user_gender" name="user_gender">';
@@ -280,8 +315,8 @@ function render_profile_error_html() {
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
-	$html .= '<input type="submit" name="uploadclick" value="Update Profile"/>';
-	$html .= '</from>';
+	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
+	$html .= '</form>';
 	echo $html;
 }
 
@@ -327,6 +362,25 @@ if ( isset( $_POST['uploadclick'] ) ) {
 				if ( ! is_file( $src ) ) {
 					move_uploaded_file( $from_iden, $src );
 					update_user_meta( $user_id, 'iden', $url );
+				}
+			}
+		}
+	}
+	if ( isset( $_FILES['user_avatar'] ) ) {
+		if ( $_FILES['user_avatar']['error'] <= 0 ) {
+			$type_avatar = $_FILES['user_avatar']['type'];
+			$explode   = explode( '/', $type_avatar );
+			if ( $explode[0] == 'image' ) {
+				$from_avatar = $_FILES['user_avatar']['tmp_name'];
+				$to        = wp_upload_dir()['basedir'];
+				$timezone  = + 7;
+				$time      = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
+				$name_avatar = $user_id . '_ava_' . $time . '_' . $_FILES['user_avatar']['name'];
+				$url       = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
+				$src       = $to . '/credglv/img/' . $name_avatar;
+				if ( ! is_file( $src ) ) {
+					move_uploaded_file( $from_avatar, $src );
+					update_user_meta( $user_id, 'avatar', $url );
 				}
 			}
 		}

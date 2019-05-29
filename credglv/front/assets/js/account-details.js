@@ -56,9 +56,30 @@ jQuery(function ($) {
 
     }
 
+    credglv.loadingbutton_login= function (form) {
+        var form_register = $(form);
+
+        console.log(form_register);
+
+        form_register.validate(
+            {
+                submitHandler: function (form) {
+                    form_register.find('button[type="submit"]').toggleClass('running');
+                    form.submit();
+
+                }
+            }
+        )
+
+
+    };
+
+
 
     $(document).ready(function () {
         credglv.account_details_toggle_otp('form.edit-account');
         credglv.onchange_otp('form.edit-account');
+        credglv.loadingbutton_login('form.edit-account');
+
     });
 });

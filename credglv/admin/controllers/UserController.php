@@ -116,8 +116,26 @@ class UserController extends AdminController implements AdminControllerInterface
 
 	public function ajax_active_user() {
 		if ( isset( $_POST['user_id'] ) ) {
+			$user_id = $_POST['user_id'];
+
 			$user = UserModel::getInstance();
-			$user->update_active_status( $_POST['user_id'], $_POST['active'] );
+			$user->update_active_status( $user_id, $_POST['active'] );
+			$settings = mycred_part_woo_settings();
+			$mycred   = mycred( $settings['point_type'] );
+
+			// Excluded from usage
+			if ( $mycred->exclude_user( $user_id ) ) {
+				$this->responseJson( array( 'code' => 403, 'User excluded' ) );
+			}
+			if ( $user->check_actived_referral( $user_id, 0 ) && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+				$mycred->add_creds( 'register_fee',
+					$user_id,
+					0,
+					__( 'Joining fee active by admin', 'credglv' ),
+					1,
+					'',
+					$settings['point_type'] );
+			}
 			$this->responseJson( array( 'code' => 200, 'Updated user' ) );
 		} else {
 			$this->responseJson( array( 'code' => 404, 'message' => 'No user_id' ) );
