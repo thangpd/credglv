@@ -25,7 +25,27 @@ class FooterController extends FrontController implements FrontControllerInterfa
             mainElement: \'body\',
             onRefresh: function(){ window.location.reload(); }
         });
-        </script>';
+        </script>
+        
+        <script>
+            function showAndroidShare() {
+                try {
+                    webkit.messageHandlers.callbackHandler.postMessage("<?php  echo $share_link ?>");
+                } catch (err) {
+                    console.log(\'The native context does not exist yet\');
+                }
+                try {
+                    android.showShareNative("<?php  echo $share_link?>")
+                } catch (err) {
+                    console.log(\'The android native context does not exist yet\');
+                }
+                try {
+                    myOwnJSHandler.receiveMessageFromJS("<?php  echo $share_link?>");
+                } catch (err) {
+                    console.log(\'The myOwnJSHandler context does not exist yet\');
+                }
+            }</script>
+        ';
 	}
 
 

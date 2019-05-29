@@ -39,7 +39,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
     <!-- The button used to copy the text -->
     <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
-    <button onclick="share_link()"><?php echo __( 'Share', 'credglv' ); ?></button>
+    <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script>
         function myFunction() {
@@ -52,12 +52,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
             /* Copy the text inside the text field */
             document.execCommand("copy");
         }
-
-        function share_link() {
-            alert('share');
-        }
-
-
     </script>
 	<?php
 } else {
