@@ -123,7 +123,10 @@ jQuery(function ($) {
                 submitHandler: function (form) {
 
                     credglv.toggle_loading_button(form);
-                    form.submit();
+                    var text_toggle = $('.login-with-what');
+                    if (text_toggle.data('phone') !== 'yes') {
+                        form.submit();
+                    }
                 }
             }
         )
