@@ -149,7 +149,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				array(
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
-					'referral'      => __( 'Network', 'credglv' ),
+					'referral'      => __( 'Teamwork', 'credglv' ),
 					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
 					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
@@ -296,6 +296,9 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	function wpb_woo_endpoint_title( $title, $id ) {
+	    echo '<pre>';
+	    print_r($title);
+	    echo '</pre>';
 		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
 			$title = ""; // change your entry-title
 		}
@@ -311,7 +314,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$items['point_history'] = __( 'History Log', 'credglv' );
 		foreach ( $items as $key => $val ) {
 			if ( is_wc_endpoint_url( $key ) ) {
-				return $val;
+				$title
 			}
 		}
 
