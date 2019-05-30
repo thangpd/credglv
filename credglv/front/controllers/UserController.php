@@ -474,6 +474,30 @@ class UserController extends FrontController implements FrontControllerInterface
 					$src         = $to . '/credglv/img/' . $name_avatar;
 					if ( ! is_file( $src ) ) {
 						move_uploaded_file( $from_avatar, $src );
+						$exif = exif_read_data($src);
+					    if($exif && isset($exif['Orientation'])) {
+					      $orientation = $exif['Orientation'];
+					      if($orientation != 1){
+					        $img = imagecreatefromjpeg($src);
+					        $deg = 0;
+					        switch ($orientation) {
+					          case 3:
+					            $deg = 180;
+					            break;
+					          case 6:
+					            $deg = 270;
+					            break;
+					          case 8:
+					            $deg = 90;
+					            break;
+					        }
+					        if ($deg) {
+					          $img = imagerotate($img, $deg, 0);        
+					        }
+					        // then rewrite the rotated image back to the disk as $filename 
+					        imagejpeg($img, $src, 95);
+					      } // if there is some rotation necessary
+					    }
 						update_user_meta( $user_id, 'avatar', $url );
 					}
 				}

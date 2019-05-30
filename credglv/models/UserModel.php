@@ -341,7 +341,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public function recursive_tree_referral_user( $id, $level = 0 ) {
 		$user   = get_user_by( 'ID', $id );
 		$user_fullname = get_user_meta($id,'user_fullname',true);
-		$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+		$avatar = get_user_meta($id,'avatar');
 
 		$subarr = array(
 			'ID'           		=> $id,
@@ -375,7 +375,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 			$subarr = array();
 			foreach ( $result as $k => $v ) {
-				$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+				$avatar = get_user_meta($v['ID'],'avatar') ? get_user_meta($v['ID'],'avatar') : get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
 				$user_fullname = get_user_meta($v['ID'],'user_fullname',true);
 				if ( $this->count_referral_user( $v['ID'] ) ) {
 					$subarr[] = (object) array(
