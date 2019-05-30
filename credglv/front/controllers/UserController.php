@@ -310,11 +310,28 @@ class UserController extends FrontController implements FrontControllerInterface
 		$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
 		$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
 		$items['point_history'] = __( 'History Log', 'credglv' );
-		foreach ( $items as $key => $val ) {
-			if ( is_wc_endpoint_url( $key ) ) {
-				$title = $val;
-			}
+
+		switch ( $title ) {
+			case 'payment':
+				$title = __( 'Payment', 'credglv' );
+				break;
+			case 'profile':
+				$title = __( 'Profile', 'credglv' );
+				break;
+			case 'referral':
+				$title = __( 'Teamwork', 'credglv' );
+				break;
+			case 'cash_redeem':
+
+				break;
+			case 'local_redeem':
+
+				break;
+			case 'point_history':
+
+				break;
 		}
+
 
 		return $title;
 	}
