@@ -102,7 +102,7 @@ function render_profile_html() {
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_avatar">Avatar';
-	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<p><img style="width:125px;height:auto" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
 	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
@@ -244,7 +244,7 @@ function render_profile_error_html() {
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_avatar">Avatar';
-	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<p><img style="width:125px;height:auto" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
 	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
