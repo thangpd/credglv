@@ -39,7 +39,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         <input type="text" class="input-text" name="cred_billing_phone" id="cred_billing_phone"
                value="<?php
 		       echo esc_attr( get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ); ?>"
-               maxlength="10"/>
+               maxlength="16"/>
     </p>
     <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
         <label for="account_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span
