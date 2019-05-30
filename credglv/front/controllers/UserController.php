@@ -153,7 +153,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
-		} 
+		}
 
 		return $items;
 	}
@@ -335,7 +335,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		//add endpoint title
 
 		/* Hooks for myaccount referral endpoint */
-		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
+//		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
 		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 
 //		delete require first name and last name
