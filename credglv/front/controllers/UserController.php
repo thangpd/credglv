@@ -336,7 +336,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		/* Hooks for myaccount referral endpoint */
 //		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
-		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
+//		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 
 //		delete require first name and last name
 		add_filter( 'woocommerce_save_account_details_required_fields', array( $this, 'remove_save_account_detail' ) );
