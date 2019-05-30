@@ -170,6 +170,20 @@ jQuery(function ($) {
 
         })
     };
+
+
+    credglv.validate_submitform_register = function (form) {
+
+        $(form).on('submit', function (e) {
+            var otp_div = $(document).find('.otp-code');
+            if ($(this).valid() && otp_div.is(':hidden')) {
+                console.log('login 1');
+                credglv.sendmessage_otp(form);
+                e.preventDefault();
+            }
+
+        })
+    };
     credglv.ajax_login = function (form) {
         credglv.toggle_loading_button();
         var data = {
@@ -237,6 +251,9 @@ jQuery(function ($) {
         var phone_num = phone_div.find('input[name="cred_billing_phone"]');
         if (phone_num.length) {
             phone_num = phone_num.val();
+        }
+        while (phone_num.charAt(0) === '0') {
+            phone_num = phone_num.substr(1);
         }
         return country_code + phone_num;
 
@@ -333,15 +350,30 @@ jQuery(function ($) {
             minimumInputLength: 3 // the minimum of symbols to input before perform a search
         });
     };
+    credglv.onchange_otp = function (form) {
+        $(form).find('input[name="cred_otp_code"]').on('keyup', function () {
+            limitText(this, 4)
+        });
 
+        function limitText(field, maxChar) {
+            var ref = $(field),
+                val = ref.val();
+            if (val.length >= maxChar) {
+                $(form).submit();
+                ref.attr('disabled', 'disabled');
+            }
+        }
+
+    }
 
     $(document).ready(function () {
         credglv.preventinputtext_mobilefield('form.register');
-        credglv.validate_submitform('form.register');
+        credglv.validate_submitform_register('form.register');
         credglv.checkrequirement('form.register');
         credglv.select2login();
 
-
+        credglv.onchange_otp('form.login');
+        credglv.onchange_otp('form.register');
         credglv.preventinputtext_mobilefield('form.login');
         credglv.login_toggle_login('form.login');
         credglv.validate_submitform('form.login');

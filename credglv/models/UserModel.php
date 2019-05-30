@@ -15,6 +15,7 @@ use credglv\core\components\RoleManager;
 use credglv\core\CustomModel;
 use credglv\core\interfaces\MigrableInterface;
 use credglv\core\interfaces\ModelInterface;
+use credglv\front\controllers\UserController;
 use credglv\helpers\GeneralHelper;
 
 class UserModel extends CustomModel implements ModelInterface, MigrableInterface {
@@ -267,7 +268,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
 		}*/
 		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
-			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ).'?ru=' . $code;
+			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
 		} else {
 			$link_share = home_url() . '?ru=' . $code;
 		}
@@ -319,6 +320,66 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
+
+	/**
+	 * Get phone by userid
+	 * @return mixed
+	 */
+	public static function getPhoneByUserID( $userID ) {
+
+		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
+
+		return $phone;
+	}
+
+	/**
+	 * Get user id by phone
+	 * @return mixed
+	 */
+	public static function getUserIDByPhone( $phone ) {
+		global $wpdb;
+
+		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+
+		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+
+
+		if ( ! empty( $mobile_num_result ) ) {
+
+			$res['userID'] = $mobile_num_result;
+
+			return $res;
+
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'Phone is not registered', 'credglv' );
+
+		}
+
+		return $res;
+
+	}
+
+	/**
+	 * Get referral parent
+	 */
+/*	public function checkPhoneIsRegistered( $phone ) {
+		$res = array( 'code' => 200, 'message' => 'Phone is available to register' );
+		global $wpdb;
+		$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
+
+		$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
+
+		$result = $wpdb->get_results( $prepare );
+		if ( ! empty( $result ) ) {
+			$res['code']    = 404;
+			$res['message'] = __( 'Phone is registered. Please use another phone number', 'credglv' );
+		}
+
+		return $res;
+	}*/
+
+
 	/**
 	 * Get referral parent user_login
 	 * return ID,user_login object
@@ -339,25 +400,25 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	 * */
 	// write [when active = 1] and to function mysql to turn of debug
 	public function recursive_tree_referral_user( $id, $level = 0 ) {
-		$user   = get_user_by( 'ID', $id );
-		$user_fullname = get_user_meta($id,'user_fullname',true);
-		$avatar = get_user_meta($id,'avatar');
+		$user          = get_user_by( 'ID', $id );
+		$user_fullname = get_user_meta( $id, 'user_fullname', true );
+		$avatar        = get_user_meta( $id, 'avatar' );
 
 		$subarr = array(
-			'ID'           		=> $id,
-			'display_name' 		=> $user->data->user_login,
-			'display_fullname' 	=> $user_fullname,
-			'photo'        		=> $avatar,
-			'level'        		=> $level,
+			'ID'               => $id,
+			'display_name'     => $user->data->user_login,
+			'display_fullname' => $user_fullname,
+			'photo'            => $avatar,
+			'level'            => $level,
 		);
 		if ( $this->count_referral_user( $id ) ) {
 			$subarr['children'] = $this->get_children_referral_user( $id, $level );
 		} else {
 			$subarr['children'][] = (object) array(
-				'ID'           		=> '0',
-				'display_name' 		=> __( 'Undefined', 'credglv' ),
-				'display_fullname' 	=> __( 'Undefined', 'credglv' ),
-				'photo'        		=> get_avatar_url( '', [ 'default' => 'mysteryman' ] )
+				'ID'               => '0',
+				'display_name'     => __( 'Undefined', 'credglv' ),
+				'display_fullname' => __( 'Undefined', 'credglv' ),
+				'photo'            => get_avatar_url( '', [ 'default' => 'mysteryman' ] )
 			);
 		}
 
@@ -375,24 +436,24 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 			$subarr = array();
 			foreach ( $result as $k => $v ) {
-				$avatar = get_user_meta($v['ID'],'avatar') ? get_user_meta($v['ID'],'avatar') : get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
-				$user_fullname = get_user_meta($v['ID'],'user_fullname',true);
+				$avatar        = get_user_meta( $v['ID'], 'avatar' ) ? get_user_meta( $v['ID'], 'avatar' ) : get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+				$user_fullname = get_user_meta( $v['ID'], 'user_fullname', true );
 				if ( $this->count_referral_user( $v['ID'] ) ) {
 					$subarr[] = (object) array(
-						'ID'          		=> $v['ID'],
-						'display_name' 		=> $v['user_login'],
-						'display_fullname' 	=> $user_fullname,
-						'photo'        		=> $avatar,
-						'level'        		=> $level,
-						'children'     		=> $this->get_children_referral_user( $v['ID'], $level )
+						'ID'               => $v['ID'],
+						'display_name'     => $v['user_login'],
+						'display_fullname' => $user_fullname,
+						'photo'            => $avatar,
+						'level'            => $level,
+						'children'         => $this->get_children_referral_user( $v['ID'], $level )
 					);
 				} else {
 					$subarr[] = (object) array(
-						'ID'           		=> $v['ID'],
-						'display_name' 		=> $v['user_login'],
-						'display_fullname' 	=> $user_fullname,
-						'photo'        		=> $avatar,
-						'level'        		=> $level,
+						'ID'               => $v['ID'],
+						'display_name'     => $v['user_login'],
+						'display_fullname' => $user_fullname,
+						'photo'            => $avatar,
+						'level'            => $level,
 					);
 				}
 			}

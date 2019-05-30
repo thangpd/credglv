@@ -28,44 +28,36 @@ class UserController extends FrontController implements FrontControllerInterface
 	const METAKEY_PIN = 'cred_user_pin';
 	const METAKEY_COOKIE = 'CREDGLV_REFERRAL_CODE';
 
+
+
 	/**
-	 * Get user id by phone
+	 * Check phone is empty
 	 * @return mixed
 	 */
-	public static function getUserIDByPhone( $phone ) {
+	/*public static function checkPhoneIsRegistered( $phone ) {
 		global $wpdb;
 
-		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+		$res = array( 'code' => 200, 'message' => 'Phone number is not registered' );
 
-		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+		$query             = "select * from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' ";
+		$mobile_num_result = $wpdb->get_var( $query );
 
+		echo '<pre>';
+		print_r( $query);
+		echo '</pre>';
 
 		if ( ! empty( $mobile_num_result ) ) {
-
-			$res['userID'] = $mobile_num_result;
-
-			return $res;
-
-		} else {
 			$res['code']    = 404;
-			$res['message'] = __( 'Phone is not registered', 'credglv' );
+			$res['message'] = __( 'Phone number is registered', 'credglv' );
 
-			return $res;
 		}
 
+		return $res;
 
-	}
 
-	/**
-	 * Get phone by userid
-	 * @return mixed
-	 */
-	public static function getPhoneByUserID( $userID ) {
+	}*/
 
-		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
 
-		return $phone;
-	}
 
 	/**
 	 * Register new endpoints to use inside My Account page.
@@ -81,9 +73,9 @@ class UserController extends FrontController implements FrontControllerInterface
 			return $_POST;
 		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && ! empty( $_POST[ self::METAKEY_PHONE ] ) ) {
-			$current_phone = UserController::getPhoneByUserID( $user_id );
+			$current_phone = UserModel::getPhoneByUserID( $user_id );
 			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
-				$mobile_num_result = self::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
+				$mobile_num_result = UserModel::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
 				if ( isset( $mobile_num_result['code'] ) && $mobile_num_result['code'] == 200 ) {
 					if ( $user_id != $mobile_num_result ) {
 						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );

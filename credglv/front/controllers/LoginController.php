@@ -139,7 +139,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 	public function credglv_login() {
 		$data = $_POST;
 
-		$userid = UserController::getUserIDByPhone( $data['phone'] );
+		$userid = UserModel::getUserIDByPhone( $data['phone'] );
 		if ( $userid['code'] == 200 ) {
 
 			$third_party = ThirdpartyController::getInstance();
