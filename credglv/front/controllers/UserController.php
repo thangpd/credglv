@@ -29,7 +29,6 @@ class UserController extends FrontController implements FrontControllerInterface
 	const METAKEY_COOKIE = 'CREDGLV_REFERRAL_CODE';
 
 
-
 	/**
 	 * Check phone is empty
 	 * @return mixed
@@ -56,7 +55,6 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	}*/
-
 
 
 	/**
@@ -296,16 +294,16 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	function wpb_woo_endpoint_title( $title, $id ) {
-	    echo '<pre>';
-	    print_r($title);
-	    echo '</pre>';
+		echo '<pre>';
+		print_r( $title );
+		echo '</pre>';
 		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
 			$title = ""; // change your entry-title
 		}
 		if ( is_wc_endpoint_url( 'edit-account' ) ) { // add your endpoint urls
 			$title = __( "PIN", "credglv" ); // change your entry-title
 		}
-		$items = [];
+		$items                  = [];
 		$items['payment']       = __( 'Payment', 'credglv' );
 		$items['profile']       = __( 'Profile', 'credglv' );
 		$items['referral']      = __( 'Teamwork', 'credglv' );
@@ -314,7 +312,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$items['point_history'] = __( 'History Log', 'credglv' );
 		foreach ( $items as $key => $val ) {
 			if ( is_wc_endpoint_url( $key ) ) {
-				$title
+				$title = $val;
 			}
 		}
 
