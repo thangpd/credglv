@@ -302,10 +302,14 @@ class UserController extends FrontController implements FrontControllerInterface
 		if ( is_wc_endpoint_url( 'edit-account' ) ) { // add your endpoint urls
 			$title = __( "PIN", "credglv" ); // change your entry-title
 		}
-		$arr = [];
-		$arr = $this->add_my_account_menu( $arr );
-
-		foreach ( $arr as $key => $val ) {
+		$items = [];
+		$items['payment']       = __( 'Payment', 'credglv' );
+		$items['profile']       = __( 'Profile', 'credglv' );
+		$items['referral']      = __( 'Teamwork', 'credglv' );
+		$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
+		$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
+		$items['point_history'] = __( 'History Log', 'credglv' );
+		foreach ( $items as $key => $val ) {
 			if ( is_wc_endpoint_url( $key ) ) {
 				return $val;
 			}
