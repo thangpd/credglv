@@ -294,41 +294,30 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	function wpb_woo_endpoint_title( $title, $id ) {
-		echo '<pre>';
-		print_r( $title );
-		echo '</pre>';
-		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
-			$title = ""; // change your entry-title
-		}
-		if ( is_wc_endpoint_url( 'edit-account' ) ) { // add your endpoint urls
-			$title = __( "PIN", "credglv" ); // change your entry-title
-		}
-		$items                  = [];
-		$items['payment']       = __( 'Payment', 'credglv' );
-		$items['profile']       = __( 'Profile', 'credglv' );
-		$items['referral']      = __( 'Teamwork', 'credglv' );
-		$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
-		$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
-		$items['point_history'] = __( 'History Log', 'credglv' );
-
 		switch ( $title ) {
-			case 'payment':
+			case is_wc_endpoint_url( 'payment' ):
 				$title = __( 'Payment', 'credglv' );
 				break;
-			case 'profile':
+			case is_wc_endpoint_url( 'profile' ):
 				$title = __( 'Profile', 'credglv' );
 				break;
-			case 'referral':
+			case is_wc_endpoint_url( 'referral' ):
 				$title = __( 'Teamwork', 'credglv' );
 				break;
-			case 'cash_redeem':
-
+			case is_wc_endpoint_url( 'cash_redeem' ):
+				$title = __( 'Cash Redeem', 'credglv' );
 				break;
-			case 'local_redeem':
-
+			case is_wc_endpoint_url( 'local_redeem' ):
+				$title = __( 'Local Redeem', 'credglv' );
 				break;
-			case 'point_history':
-
+			case is_wc_endpoint_url( 'point_history' ):
+				$title = __( 'History Log', 'credglv' );
+				break;
+			case is_wc_endpoint_url( 'edit-account' ):
+				$title = __( 'PIN', 'credglv' );
+				break;
+			case is_wc_endpoint_url( 'register' ):
+				$title = '';
 				break;
 		}
 
