@@ -153,14 +153,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
-		} else {
-			$items['payment']       = __( 'Payment', 'credglv' );
-			$items['profile']       = __( 'Profile', 'credglv' );
-			$items['referral']      = __( 'Referral', 'credglv' );
-			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
-			$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
-			$items['point_history'] = __( 'History Log', 'credglv' );
-		}
+		} 
 
 		return $items;
 	}
