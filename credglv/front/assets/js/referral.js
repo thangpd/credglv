@@ -233,14 +233,16 @@ jQuery(function ($) {
         }
 
         function username_click(d) {
-            $('form#mycred-transfer-form-transfer').animate({
-                scrollTop: $("#transfer-form-transfer").offset().top
-            }, 2000);
-            console.log(d);
-            var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
-            input_username.val(d.display_name);
-            $('input[name="mycred_new_transfer[amount]"]').focus();
-            console.log(input_username);
+            if(d.level != 0){
+                $('form#mycred-transfer-form-transfer').animate({
+                    scrollTop: $("#transfer-form-transfer").offset().top
+                }, 2000);
+                console.log(d);
+                var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
+                input_username.val(d.display_name);
+                $('input[name="mycred_new_transfer[amount]"]').focus();
+                console.log(input_username);
+            }
         }
     }
 

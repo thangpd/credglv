@@ -439,7 +439,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 		update_user_meta( $user_id, 'user_date', $user_date );
 		update_user_meta( $user_id, 'user_country', $user_country );
 		$layout = '';
-		$layout .= '<div style="background-color: green;text-align: center;color: white">Update Success</div>';
+		$layout .= '<div style="text-align: center;" class="alert alert-success">Update Success</div>';
 		echo $layout;
 		global $flag;
 		$flag = 0;
