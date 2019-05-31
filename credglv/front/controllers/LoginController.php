@@ -22,18 +22,6 @@ use credglv\core\interfaces\FrontControllerInterface;
 class LoginController extends FrontController implements FrontControllerInterface {
 
 
-	public function redirectUserLoggedIn() {
-		/*$page_name = get_query_var( 'name' );
-		if ( credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_login' ) ) {
-			if ( current_user_can( 'administrator' ) ) {
-				wp_redirect( admin_url() );
-				exit;
-			} else {
-				wp_redirect( home_url() );
-				exit;
-			}
-		}*/
-	}
 
 	public function loginPage() {
 		if ( ! credglv()->wp->is_user_logged_in() ) {
