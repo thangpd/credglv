@@ -65,6 +65,23 @@ class UserController extends FrontController implements FrontControllerInterface
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
 
+
+		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
+//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
+			$data = array(
+				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
+				'otp'   => $_POST['cred_otp_code']
+			);
+
+			$third_party = ThirdpartyController::getInstance();
+
+			$res = $third_party->verify_otp( $data );
+			if ( $res['code'] != 200 ) {
+				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
+			}
+		} else {
+			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
+		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
 
@@ -99,22 +116,6 @@ class UserController extends FrontController implements FrontControllerInterface
 			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
 		}
 
-		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
-//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
-			$data = array(
-				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
-				'otp'   => $_POST['cred_otp_code']
-			);
-
-			$third_party = ThirdpartyController::getInstance();
-
-			$res = $third_party->verify_otp( $data );
-			if ( $res['code'] != 200 ) {
-				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
-			}
-		} else {
-			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
-		}
 
 
 	}
