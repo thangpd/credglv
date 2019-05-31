@@ -1,9 +1,12 @@
 <?php
 if ( ! empty( $data ) ) {
-	$total_cash = isset( $data['total_cash']->total ) ? number_format( $data['total_cash']->total, 2, '.', '' ) : 0;
+	$total_cash    = isset( $data['total_cash']->total ) ? number_format( $data['total_cash']->total, 2, '.', '' ) : 0;
+    $gold_balance  = isset( $data['gold_balance']) ? number_format( $data['gold_balance'] , 1, '.', '') : 0;
 	?>
     <h2>Cash Balance:
         USD <?php echo $total_cash ?></h2>
+    <h2>Gold Wallet Balance:
+        USD <?php echo $gold_balance ?></h2>
 
     <form action="" class="form-control form-redeem cash-redeem" method="POST">
 
