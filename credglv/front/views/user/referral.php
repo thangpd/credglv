@@ -13,8 +13,8 @@ if ( is_user_logged_in() ) {
 //	print_r( $user->check_actived_referral( $user_id ) );
 
 	?>
-    <div class="total-referal">
-        <div class="title"><?php echo __( 'Total referral: ', 'credglv' ); ?><?php echo $user->count_referral_user( $user_id ) ?></div>
+    <div class="total-referal" style="margin-bottom: 8px">
+        <div class="title"><?php echo __( 'Total member of your team (downlines): ', 'credglv' ); ?><?php echo $user->count_referral_user( $user_id ) ?></div>
 
     </div>
     <div id="collapsable-example" data-data='<?php echo json_encode( $list ) ?>'

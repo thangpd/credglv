@@ -41,8 +41,8 @@ jQuery(function ($) {
                 d.children = null;
             }
         }
-
-        root.children.forEach(collapse);
+        if(root.children != undefined)
+            root.children.forEach(collapse);
         update(root);
 
         function update(source) {
