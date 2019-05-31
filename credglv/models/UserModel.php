@@ -270,7 +270,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
 			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
 		} else {
-			$link_share = home_url() . '?ru=' . $code;
+			$link_share = __( 'Be a GLV Member and enjoy many benefits ', 'credglv' ) . home_url() . '?ru=' . $code;
 		}
 
 		return $link_share;
@@ -363,21 +363,21 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	/**
 	 * Get referral parent
 	 */
-/*	public function checkPhoneIsRegistered( $phone ) {
-		$res = array( 'code' => 200, 'message' => 'Phone is available to register' );
-		global $wpdb;
-		$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
+	/*	public function checkPhoneIsRegistered( $phone ) {
+			$res = array( 'code' => 200, 'message' => 'Phone is available to register' );
+			global $wpdb;
+			$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
 
-		$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
+			$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
 
-		$result = $wpdb->get_results( $prepare );
-		if ( ! empty( $result ) ) {
-			$res['code']    = 404;
-			$res['message'] = __( 'Phone is registered. Please use another phone number', 'credglv' );
-		}
+			$result = $wpdb->get_results( $prepare );
+			if ( ! empty( $result ) ) {
+				$res['code']    = 404;
+				$res['message'] = __( 'Phone is registered. Please use another phone number', 'credglv' );
+			}
 
-		return $res;
-	}*/
+			return $res;
+		}*/
 
 
 	/**
