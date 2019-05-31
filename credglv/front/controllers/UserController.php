@@ -282,9 +282,13 @@ class UserController extends FrontController implements FrontControllerInterface
 ';
 
 		$order              = new OrderModel();
+		$settings 			= mycred_part_woo_settings();
+		$user_id 			= get_current_user_id();
 		$data               = [];
 		$data['html']       = '';
 		$data['total_cash'] = $order->getTotalUserCash( get_current_user_id() );
+		$mycred 				= mycred( $settings['mycred_default'] );
+		$data['gold_balance'] 	= $mycred->get_users_balance( $user_id );
 		$records            = $order->findAllrecordsUser( get_current_user_id() );
 		if ( ! empty( $records ) ) {
 			foreach ( $records as $val ) {
