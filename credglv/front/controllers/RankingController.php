@@ -49,7 +49,7 @@ class RankingController extends FrontController implements FrontControllerInterf
 			],
 			'pages'   => [
 				'front' => [
-					'ranking' =>
+					'rank' =>
 						[
 							'registerPage',
 							[
