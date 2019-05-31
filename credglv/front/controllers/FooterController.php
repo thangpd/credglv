@@ -23,7 +23,7 @@ class FooterController extends FrontController implements FrontControllerInterfa
 		$user_model = UserModel::getInstance();
 
 
-		$share_link = $user_model->get_url_share_link();
+		$share_link = __( 'Be a GLV Member and enjoy many benefits ', 'credglv' ) . $user_model->get_url_share_link();
 		echo '<script type="text/javascript">
             
         PullToRefresh.init({
