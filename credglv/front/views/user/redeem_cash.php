@@ -12,7 +12,7 @@ if ( ! empty( $data ) ) {
 
         <label for="redeem_cash">
 			<?php echo __( 'Gold Amount to convert to Cashs', 'credglv' ) ?>
-            <input type="text" name="amount" id="amount">
+            <input type="text" name="amount" id="amount" style="width: 100%">
         </label>
         <p>
 			<?php echo __( 'Conversion fee: $60 or 10% total Gold which is higher. Minimum conversion Gold: 100 Gold.', 'credglv' ); ?>

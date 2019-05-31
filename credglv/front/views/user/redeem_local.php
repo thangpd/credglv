@@ -13,7 +13,7 @@ $total_local = isset( $data['total_local']->total ) ? number_format( $data['tota
 		<?php echo __( 'Local Bank Redeem', 'credglv' ) ?>
         <input type="text" name="amount" id="amount">
     </label>
-    <input type="hidden" name="type" value="local" id="type">
+    <input type="hidden" name="type" value="local" id="type" style="width: 100%">
 
     <p>
     <?php echo __('Withdrawal fee is 20,000 VND per request.','credglv'); ?>
