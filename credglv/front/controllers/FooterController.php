@@ -24,9 +24,6 @@ class FooterController extends FrontController implements FrontControllerInterfa
 
 
 		$share_link = $user_model->get_url_share_link();
-		echo '<pre>';
-		print_r( $share_link );
-		echo '</pre>';
 		echo '<script type="text/javascript">
             
         PullToRefresh.init({
