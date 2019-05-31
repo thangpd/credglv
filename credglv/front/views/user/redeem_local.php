@@ -5,7 +5,7 @@ $total_local = isset( $data['total_local']->total ) ? number_format( $data['tota
 ?>
 <h2>Cash Balance: <?php
 	if ( ! empty( $data ) ) {
-		echo $total_cash . __( 'USD', 'credglv' );
+		echo $total_cash.' '. __( 'USD', 'credglv' );
 	} ?></h2>
 <form method="POST" action="" class="form-control form-redeem local-redeem">
 
