@@ -153,6 +153,13 @@ class UserController extends FrontController implements FrontControllerInterface
 					'point_history' => __( 'History Log', 'credglv' ),
 				),
 				$items ) );
+		} else {
+			$items['payment']       = __( 'Payment', 'credglv' );
+			$items['profile']       = __( 'Profile', 'credglv' );
+			$items['referral']      = __( 'Referral', 'credglv' );
+			$items['cash_redeem']   = __( 'Cash Redeem', 'credglv' );
+			$items['local_redeem']  = __( 'Local Redeem', 'credglv' );
+			$items['point_history'] = __( 'History Log', 'credglv' );
 		}
 
 		return $items;
@@ -287,33 +294,36 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	function wpb_woo_endpoint_title( $title, $id ) {
-		switch ( $title ) {
-			case is_wc_endpoint_url( 'payment' ):
-				$title = __( 'Payment', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'profile' ):
-				$title = __( 'Profile', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'referral' ):
-				$title = __( 'Teamwork', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'cash_redeem' ):
-				$title = __( 'Cash Redeem', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'local_redeem' ):
-				$title = __( 'Local Redeem', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'point_history' ):
-				$title = __( 'History Log', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'edit-account' ):
-				$title = __( 'PIN', 'credglv' );
-				break;
-			case is_wc_endpoint_url( 'register' ):
-				$title = '';
-				break;
-		}
 
+		if ( is_page( $id ) ) {
+			switch ( $title ) {
+				case is_wc_endpoint_url( 'payment' ):
+					$title = __( 'Payment', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'profile' ):
+					$title = __( 'Profile', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'referral' ):
+
+					$title = __( 'Teamwork', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'cash_redeem' ):
+					$title = __( 'Cash Redeem', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'local_redeem' ):
+					$title = __( 'Local Redeem', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'point_history' ):
+					$title = __( 'History Log', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'edit-account' ):
+					$title = __( 'PIN', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'register' ):
+					$title = '';
+					break;
+			}
+		}
 
 		return $title;
 	}
@@ -336,7 +346,7 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		/* Hooks for myaccount referral endpoint */
 //		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
-//		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
+		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 
 //		delete require first name and last name
 		add_filter( 'woocommerce_save_account_details_required_fields', array( $this, 'remove_save_account_detail' ) );
