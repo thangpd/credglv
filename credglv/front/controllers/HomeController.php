@@ -55,6 +55,7 @@ class HomeController extends FrontController implements FrontControllerInterface
 						'credglvHome',
 						[
 							'title'  => 'Gold Leaf Ventures',
+							'single'=>true,
 						]
 					]
 				]

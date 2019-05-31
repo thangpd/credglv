@@ -225,9 +225,6 @@ class Page extends BaseObject implements ComponentInterface
 	        if ( $object->post_name == 'credglv-home' ) {
 		        $template = $this->credglvRootPageSingle;
 	        }
-			echo '<pre>';
-			print_r($template);
-			echo '</pre>';
         }
         return $template;
     }
