@@ -270,6 +270,11 @@ jQuery(function ($) {
             if (user.is(':visible')) {
                 user.toggle('hide');
             }
+            var autofocus = setInterval( function(){ 
+                $('#reg_phone').trigger('focus');
+                console.log('focus'); 
+                clearInterval(autofocus);
+            }, 1000);
         });
         $(form).find('#login-with-user').on('click', function (e) {
             var otp = $(form).find('.otp-code');
@@ -284,6 +289,11 @@ jQuery(function ($) {
             if (user.is(':hidden')) {
                 user.toggle('show');
             }
+            var autofocus = setInterval( function(){ 
+                $('#username').trigger('focus');
+                console.log('focus'); 
+                clearInterval(autofocus);
+            }, 1000);
             $(form).find('.error_log').text('');
         });
         /*$(form).find('a.login-with-what').on('click', function (e) {
