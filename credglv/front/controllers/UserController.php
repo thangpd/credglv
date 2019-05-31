@@ -81,6 +81,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 		} else {
 			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
+			return $_POST;
 		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
