@@ -315,7 +315,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 						[
 							'registerPage',
 							[
-								'title' => __( 'Cred GLV - Register', 'credglv' ),
+								'title' => __( 'Be a GLV Member and enjoy many benefits', 'credglv' ),
 //                                'single' => true
 							]
 						],
