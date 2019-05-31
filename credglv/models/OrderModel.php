@@ -176,9 +176,9 @@ class OrderModel extends CustomModel implements ModelInterface, MigrableInterfac
 		$tablename = self::getTableName();
 		if ( ! empty( $user_id ) ) {
 
-			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where user_id=%s  and type=%s", $user_id, $type );
+			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where user_id=%s  and type=%s order by created_date DESC", $user_id, $type );
 		} else {
-			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where type=%s", $type );
+			$prepare = $wpdb->prepare( "SELECT * FROM {$tablename} where type=%s order by created_date DESC", $type );
 		}
 		$result = $wpdb->get_results( $prepare );
 
