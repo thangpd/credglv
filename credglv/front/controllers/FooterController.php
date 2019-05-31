@@ -23,9 +23,9 @@ class FooterController extends FrontController implements FrontControllerInterfa
 		$user_model = UserModel::getInstance();
 
 
-		$share_link=$user_model->get_url_share_link();
+		$share_link = $user_model->get_url_share_link();
 		echo '<pre>';
-		print_r($share_link);
+		print_r( $share_link );
 		echo '</pre>';
 		echo '<script type="text/javascript">
             
@@ -38,7 +38,7 @@ class FooterController extends FrontController implements FrontControllerInterfa
         <script>
             function showAndroidShare() {
                 try {
-                    webkit.messageHandlers.callbackHandler.postMessage("<?php  echo $share_link ?>");
+                    webkit.messageHandlers.callbackHandler.postMessage("' . $share_link . '");
                 } catch (err) {
                     console.log(\'The native context does not exist yet\');
                 }
