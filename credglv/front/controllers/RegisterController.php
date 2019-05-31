@@ -265,7 +265,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 				wp_redirect( admin_url() );
 				exit;
 			} else {
-				wp_redirect( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) );
+				wp_redirect( home_url() );
 				exit;
 			}
 		} else {
