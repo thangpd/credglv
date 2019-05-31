@@ -268,7 +268,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
 		}*/
 		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
-			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
+			$link_share = __( 'Be a GLV Member and enjoy many benefits ', 'credglv' ) . get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
 		} else {
 			$link_share = __( 'Be a GLV Member and enjoy many benefits ', 'credglv' ) . home_url() . '?ru=' . $code;
 		}
