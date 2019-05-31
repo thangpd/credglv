@@ -112,6 +112,8 @@ class UserController extends FrontController implements FrontControllerInterface
 			if ( $res['code'] != 200 ) {
 				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
 			}
+		} else {
+			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
 		}
 
 
