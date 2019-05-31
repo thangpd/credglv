@@ -33,7 +33,12 @@ class HomeController extends FrontController implements FrontControllerInterface
 	public function redirectUserLoggedIn() {
 		$page_name = get_query_var( 'name' );
 		if ( ! is_user_logged_in() && $page_name != 'credglv-home' ) {
-			wp_redirect( home_url( '/credglv-home' ) );
+//			wp_redirect( home_url( '/credglv-home' ) );
+//			exit;
+		}
+
+		if ( is_user_logged_in() && $page_name == 'register' ) {
+			wp_redirect( home_url() );
 			exit;
 		}
 	}
@@ -47,7 +52,7 @@ class HomeController extends FrontController implements FrontControllerInterface
 		// TODO: Implement registerAction() method.
 		return [
 			'actions' => [
-//				'template_redirect' => [ self::getInstance(), 'redirectUserLoggedIn' ],
+				'template_redirect' => [ self::getInstance(), 'redirectUserLoggedIn' ],
 			],
 			'pages'   => [
 				'front' => [
@@ -55,7 +60,7 @@ class HomeController extends FrontController implements FrontControllerInterface
 						'credglvHome',
 						[
 							'title'  => 'Gold Leaf Ventures',
-							'single'=>true,
+							'single' => true,
 						]
 					]
 				]

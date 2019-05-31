@@ -260,19 +260,16 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		$data      = [];
 		$page_name = get_query_var( 'name' );
+
 		if ( credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_register' ) ) {
 			if ( current_user_can( 'administrator' ) ) {
 				wp_redirect( admin_url() );
 				exit;
 			} else {
-				wp_redirect( home_url() );
-				exit;
+
 			}
 		} else {
-
-
 			return $this->render( 'register', [ 'data' => $data ] );
-
 		}
 	}
 
@@ -311,7 +308,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			],
 			'pages'   => [
 				'front' => [
-					credglv()->config->getUrlConfigs( 'credglv_register' ) =>
+					'register' =>
 						[
 							'registerPage',
 							[
