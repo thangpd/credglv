@@ -87,25 +87,33 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 		if ( WP_DEBUG == false ) {
 			if ( ! empty( $phone_number ) ) {
-				$send_otp_number = mt_rand( 1000, 9999 );
-				set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
-				try {
-					$client = new Client( $account_sid, $auth_token );
+//				if ( ! empty( get_transient( $phone_number ) ) ) {
+					$send_otp_number = mt_rand( 1000, 9999 );
+					set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
+					try {
+						$client = new Client( $account_sid, $auth_token );
 
-					$client->messages->create(
-					// Where to send a text message (your cell phone?)
-						$phone_number,
-						array(
-							'from' => $twilio_number,
-							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
-						)
-					);
-				} catch ( TwilioException $e ) {
+						$client->messages->create(
+						// Where to send a text message (your cell phone?)
+							$phone_number,
+							array(
+								'from' => $twilio_number,
+								'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
+							)
+						);
+					} catch ( TwilioException $e ) {
+						return array(
+							'code'    => 403,
+							'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
+						);
+					}
+					/*
+				} else {
 					return array(
-						'code'    => 403,
-						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
+						'code'    => 200,
+						'message' => __( 'We sent code verify to your phone.', 'credglv' ),
 					);
-				}
+				}*/
 			} else {
 				return array( 'code' => 404, 'message' => 'Missing phone number' );
 			}
@@ -123,14 +131,16 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 	public function sendphone_message() {
 		$res = array( 'status' => 'success', 'message' => __( 'No phone number', 'credglv' ) );
 
-		$user_front = UserController::getInstance();
+
+		$user_front = UserModel::getInstance();
 		if ( isset( $_POST['phone'] ) && ! empty( $_POST['phone'] ) ) {
 			$data = array( 'phone' => $_POST['phone'] );
 			$res  = $this->sendphone_otp( $data );
 			$this->responseJson( $res );
 		} elseif ( ! empty( $phone_num = $user_front->getPhoneByUserID( get_current_user_id() ) ) ) {
 			$data = array( 'phone' => $phone_num );
-			$res  = $this->sendphone_otp( $data );
+
+			$res = $this->sendphone_otp( $data );
 			$this->responseJson( $res );
 		} else {
 			echo json_encode( $res );

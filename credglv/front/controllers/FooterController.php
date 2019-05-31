@@ -11,6 +11,7 @@ namespace credglv\front\controllers;
 
 use credglv\core\components\Script;
 use credglv\core\interfaces\FrontControllerInterface;
+use credglv\models\UserModel;
 
 class FooterController extends FrontController implements FrontControllerInterface {
 
@@ -19,6 +20,10 @@ class FooterController extends FrontController implements FrontControllerInterfa
 	 * @return string
 	 */
 	public function credglv_add_script_to_footer() {
+		$user_model = UserModel::getInstance();
+
+
+		$share_link = $user_model->get_url_share_link();
 		echo '<script type="text/javascript">
             
         PullToRefresh.init({
@@ -30,17 +35,17 @@ class FooterController extends FrontController implements FrontControllerInterfa
         <script>
             function showAndroidShare() {
                 try {
-                    webkit.messageHandlers.callbackHandler.postMessage("<?php  echo $share_link ?>");
+                    webkit.messageHandlers.callbackHandler.postMessage("' . $share_link . '");
                 } catch (err) {
                     console.log(\'The native context does not exist yet\');
                 }
                 try {
-                    android.showShareNative("<?php  echo $share_link?>")
+                    android.showShareNative( "' . $share_link . '" );
                 } catch (err) {
                     console.log(\'The android native context does not exist yet\');
                 }
                 try {
-                    myOwnJSHandler.receiveMessageFromJS("<?php  echo $share_link?>");
+                    myOwnJSHandler.receiveMessageFromJS("' . $share_link . '");
                 } catch (err) {
                     console.log(\'The myOwnJSHandler context does not exist yet\');
                 }
