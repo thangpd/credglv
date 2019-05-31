@@ -47,7 +47,7 @@ class HomeController extends FrontController implements FrontControllerInterface
 		// TODO: Implement registerAction() method.
 		return [
 			'actions' => [
-				'template_redirect' => [ self::getInstance(), 'redirectUserLoggedIn' ],
+//				'template_redirect' => [ self::getInstance(), 'redirectUserLoggedIn' ],
 			],
 			'pages'   => [
 				'front' => [
