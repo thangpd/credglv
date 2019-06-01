@@ -339,45 +339,45 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public static function getUserIDByPhone( $phone ) {
 		global $wpdb;
 
-		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
-
 		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
 
 
 		if ( ! empty( $mobile_num_result ) ) {
 
-			$res['userID'] = $mobile_num_result;
+			$res = $mobile_num_result;
 
 			return $res;
 
 		} else {
+			return '';
+		}
+		/*else {
 			$res['code']    = 404;
 			$res['message'] = __( 'Phone is not registered', 'credglv' );
 
-		}
-
-		return $res;
+		}*/
 
 	}
 
 	/**
 	 * Get referral parent
 	 */
-	/*	public function checkPhoneIsRegistered( $phone ) {
-			$res = array( 'code' => 200, 'message' => 'Phone is available to register' );
-			global $wpdb;
-			$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
+	public function checkPhoneIsRegistered( $phone ) {
+		global $wpdb;
+		$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
 
-			$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
+		$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
 
-			$result = $wpdb->get_results( $prepare );
-			if ( ! empty( $result ) ) {
-				$res['code']    = 404;
-				$res['message'] = __( 'Phone is registered. Please use another phone number', 'credglv' );
-			}
+		$result = $wpdb->get_results( $prepare );
+		$result = reset( $result );
 
-			return $res;
-		}*/
+		if ( ! empty( $result ) ) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 
 
 	/**
@@ -413,7 +413,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		);
 		if ( $this->count_referral_user( $id ) ) {
 			$subarr['children'] = $this->get_children_referral_user( $id, $level );
-		} 
+		}
 		// else {
 		// 	$subarr['children'][] = (object) array(
 		// 		'ID'               => '0',

@@ -217,26 +217,18 @@ class RegisterController extends FrontController implements FrontControllerInter
 		<?php
 	}
 
-	public function add_custom_js() {
-//		echo '<script src="https://www.google.com/recaptcha/api.js?render=6Lc38psUAAAAAJuh9FtinaKCMZPGnTIYk2VFSrlA" async defer >';
-		echo '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
-	}
-
 	function credglv_assets_enqueue() {
 		global $post, $wp_query;
 
 
 		wp_register_script( 'cred-my-account-detail', plugin_dir_url( __DIR__ ) . '/assets/js/account-details.js' );
-		wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login-register.js' );
+		wp_register_script( 'cred-my-account-register-page', plugin_dir_url( __DIR__ ) . '/assets/js/register.js' );
 
 
 		if ( isset( $post->ID ) ) {
 			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
 
-				if ( ! is_user_logged_in() ) {
-					wp_enqueue_script( 'cred-my-account-login-page' );
-				}
-				if ( isset( $wp_query->query_vars['edit-account'] ) || isset( $wp_query->query_vars['edit-account'] ) ) {
+				if ( isset( $wp_query->query_vars['edit-account'] ) ) {
 					wp_enqueue_script( 'cred-my-account-detail' );
 				}
 				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
@@ -245,9 +237,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		}
 		$page_name = get_query_var( 'name' );
-		if ( ! credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_register' ) ) {
+		if ( ! credglv()->wp->is_user_logged_in() && $page_name == 'register' ) {
 			wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
-			wp_enqueue_script( 'cred-my-account-login-page' );
+			wp_enqueue_script( 'cred-my-account-register-page' );
 
 		}
 
@@ -261,7 +253,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 		$data      = [];
 		$page_name = get_query_var( 'name' );
 
-		if ( credglv()->wp->is_user_logged_in() && $page_name == credglv()->config->getUrlConfigs( 'credglv_register' ) ) {
+		if ( credglv()->wp->is_user_logged_in() && $page_name == 'register' ) {
 			if ( current_user_can( 'administrator' ) ) {
 				wp_redirect( admin_url() );
 				exit;
@@ -273,6 +265,72 @@ class RegisterController extends FrontController implements FrontControllerInter
 		}
 	}
 
+
+	public function credglv_ajax_register() {
+
+		$data = $_POST;
+
+		$userid = UserModel::getUserIDByPhone( $data['phone'] );
+
+		if ( $userid['code'] !== 200 ) {
+
+			$third_party = ThirdpartyController::getInstance();
+			$res_mes     = $third_party->verify_otp( $data );
+
+			if ( $res_mes['code'] == 403 ) {
+				$third_party->sendphone_otp( $data );
+			}
+
+			if ( $res_mes['code'] == 200 ) {
+				$userdata = array(
+					'ID'         => 0,    //(int) User ID. If supplied, the user will be updated.
+					'user_pass'  => '',   //(string) The plain-text user password.
+					'user_login' => $data['username'],   //(string) The user's login username.
+					'user_email' => $data['user_email'],   //(string) The user email address.
+				);
+				$userId   = wp_insert_user( $userdata );
+				//On success
+				if ( ! is_wp_error( $userId ) ) {
+					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
+					update_user_meta( $userId, 'user_email', $data['email'] );
+					wp_set_auth_cookie( $userId, true );
+					$this->responseJson( array( 'code' => 200, 'message' => "User created : " . $userId ) );
+				} else {
+					$this->responseJson( array( 'code' => 404, 'message' => 'Cant create user' ) );
+				}
+			} else {
+				$this->responseJson( $res_mes );
+			}
+		} else {
+			$this->responseJson( $userid );
+		}
+	}
+
+	public function credglv_ajax_sendphone_message_register() {
+		$res = array( 'code' => 404, 'message' => __( 'Phone is registed', 'credglv' ) );
+
+
+		$user_front = UserModel::getInstance();
+		$thirdparty = ThirdpartyController::getInstance();
+		$phone      = $_POST['phone'];
+		if ( isset( $phone ) && ! empty( $phone ) ) {
+			if ( ! $user_front->checkPhoneIsRegistered( $phone ) ) {
+				$data = array( 'phone' => $_POST['phone'] );
+				$res  = $thirdparty->sendphone_otp( $data );
+				$this->responseJson( $res );
+			} else {
+				$res['code']    = 404;
+				$res['message'] = __( 'Phone is registered', 'credglv' );
+				$this->responseJson( $res );
+			}
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'No phone number', 'credglv' );
+			$this->responseJson( $res );
+		}
+		wp_die();
+	}
+
 	/**
 	 * Register all actions that controller want to hook
 	 * @return mixed
@@ -282,7 +340,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		return [
 			'actions' => [
-				'wp_head' => [ self::getInstance(), 'add_custom_js' ],
 
 				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
 				'woocommerce_register_form'       => [
@@ -303,7 +360,12 @@ class RegisterController extends FrontController implements FrontControllerInter
 				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
-				'referrer_ajax_search' => [ self::getInstance(), 'referrer_ajax_search' ],
+				'referrer_ajax_search'                    => [ self::getInstance(), 'referrer_ajax_search' ],
+				'credglv_ajax_register'                   => [ self::getInstance(), 'credglv_ajax_register' ],
+				'credglv_ajax_sendphone_message_register' => [
+					self::getInstance(),
+					'credglv_ajax_sendphone_message_register'
+				],
 
 			],
 			'pages'   => [

@@ -22,7 +22,6 @@ use credglv\core\interfaces\FrontControllerInterface;
 class LoginController extends FrontController implements FrontControllerInterface {
 
 
-
 	public function loginPage() {
 		if ( ! credglv()->wp->is_user_logged_in() ) {
 			if ( isset( $_GET['redirect_to'] ) && ! empty( $_GET['redirect_to'] ) ) {
@@ -124,10 +123,11 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		<?php
 	}
 
-	public function credglv_login() {
+	public function credglv_ajax_login() {
 		$data = $_POST;
 
 		$userid = UserModel::getUserIDByPhone( $data['phone'] );
+
 		if ( $userid['code'] == 200 ) {
 
 			$third_party = ThirdpartyController::getInstance();
@@ -140,12 +140,50 @@ class LoginController extends FrontController implements FrontControllerInterfac
 			} else {
 				$this->responseJson( $res_mes );
 			}
-
-
 		} else {
 			$this->responseJson( $userid );
 		}
 	}
+
+	public function credglv_ajax_sendphone_message_login() {
+		$res = array( 'code' => 403, 'message' => __( 'No phone number', 'credglv' ) );
+
+
+		$user_front = UserModel::getInstance();
+		$thirdparty = ThirdpartyController::getInstance();
+		$phone      = $_POST['phone'];
+		if ( isset( $phone ) && ! empty( $phone ) ) {
+			if ( $user_front->checkPhoneIsRegistered( $phone ) ) {
+				$data = array( 'phone' => $_POST['phone'] );
+				$res  = $thirdparty->sendphone_otp( $data );
+				$this->responseJson( $res );
+			} else {
+				$res['code']    = 404;
+				$res['message'] = __( 'Phone is not registered', 'credglv' );
+				$this->responseJson( $res );
+			}
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'No phone number', 'credglv' );
+			$this->responseJson( $res );
+		}
+		wp_die();
+	}
+
+	function credglv_assets_enqueue() {
+		global $post, $wp_query;
+
+		wp_register_script( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/js/login.js' );
+
+		if ( isset( $post->ID ) ) {
+			if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) && ! is_user_logged_in() ) {
+				wp_enqueue_style( 'cred-my-account-login-page', plugin_dir_url( __DIR__ ) . '/assets/css/cred-reg-log.css' );
+				wp_enqueue_script( 'cred-my-account-login-page' );
+
+			}
+		}
+	}
+
 
 	/**
 	 * Register all actions that controller want to hook
@@ -159,9 +197,11 @@ class LoginController extends FrontController implements FrontControllerInterfac
 //				'wp_head'                      => [ self::getInstance(), 'add_custom_js' ],
 				'woocommerce_login_form_start' => [ self::getInstance(), 'credglv_extra_login_fields' ],
 				'woocommerce_login_form'       => [ self::getInstance(), 'credglv_extra_otp_login_fields' ],
+				'wp_enqueue_scripts'           => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
-				'credglv_login' => [ self::getInstance(), 'credglv_login' ],
+				'credglv_ajax_login'              => [ self::getInstance(), 'credglv_ajax_login' ],
+				'credglv_sendphone_message_login' => [ self::getInstance(), 'credglv_ajax_sendphone_message_login' ],
 
 			],
 
@@ -175,11 +215,6 @@ class LoginController extends FrontController implements FrontControllerInterfac
 					],
 				],
 				'js'  => [
-					[
-						'id'       => 'credglv-login-page-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/login.js',
-					],
 					[
 						'id'       => 'credglv-main-js',
 						'isInline' => false,
