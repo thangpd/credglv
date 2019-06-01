@@ -68,7 +68,7 @@ class OrderController extends FrontController implements FrontControllerInterfac
 				if ( $type == OrderModel::ORDER_TYPE_CASH ) {
 					$user_id = get_current_user_id();
 					$fee     = $amount * $data_validate['max_tax_percent'] / 100;
-					if ( $fee > $data_validate['max_tax'] ) {
+					if ( $fee <= $data_validate['max_tax'] ) {
 						$fee = $data_validate['max_tax'];
 					}
 					$settings = mycred_part_woo_settings();
