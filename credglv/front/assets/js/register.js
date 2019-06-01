@@ -140,6 +140,7 @@ jQuery(function ($) {
             email: $(form).find('#reg_email').val(),
             username: $(form).find('#reg_username').val(),
             otp: $(form).find('#cred_otp_code').val(),
+            input_referral: $(form).find('#input_referral').val(),
             action: 'credglv_ajax_register'
         };
         $.ajax({

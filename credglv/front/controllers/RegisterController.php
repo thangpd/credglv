@@ -308,6 +308,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
 					wp_update_user( array( 'ID' => $userId, 'user_email' => $data['email'] ) );
 					wp_set_auth_cookie( $userId, true );
+
+
+					$this->credglv_validate_extra_register_fields_update($userId);
 					$this->responseJson( array( 'code' => 200, 'message' => "User created : " . $userId ) );
 				} else {
 					$this->responseJson( array( 'code' => 404, 'message' => 'Cant create user' ) );

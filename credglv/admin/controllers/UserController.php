@@ -68,8 +68,10 @@ class UserController extends AdminController implements AdminControllerInterface
 					1,
 					'',
 					$settings['point_type'] );
+				$this->responseJson( array( 'code' => 200, 'Updated user' ) );
+
 			}
-			$this->responseJson( array( 'code' => 200, 'Updated user' ) );
+
 		} else {
 			$this->responseJson( array( 'code' => 404, 'message' => 'No user_id' ) );
 		}

@@ -61,8 +61,10 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 				return;
 			}
+
 			$balance = $mycred->get_users_balance( $user_id );
-			if ( $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+			if ( empty( $user->check_actived_referral( $user_id, 0 ) ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+
 				$mycred->add_creds( 'register_fee',
 					$user_id,
 					- $this->joining_fee,
@@ -154,7 +156,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			</div>
 		</div>
 		<br>
-		<p>'.__('Transaction fee (will be debited to recipent’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold. The amount is a multiple of 10.','credglv').'</p>
+		<p>' . __( 'Transaction fee (will be debited to recipent’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold. The amount is a multiple of 10.', 'credglv' ) . '</p>
 ';
 		$fields .= $fields_temp;
 
