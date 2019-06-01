@@ -300,7 +300,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 						'code'    => 200,
 						'message' => __( 'Please provide a valid email address.', 'woocommerce' )
 					) );
-				} elseif ( email_exists( $account_email ) && $account_email !== $current_email) {
+				} elseif ( email_exists( $account_email ) && $account_email !== $current_email ) {
 					$this->responseJson( array(
 						'code'    => 200,
 						'message' => __( 'This email address is already registered.', 'woocommerce' )
@@ -310,7 +310,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 				//On success
 				if ( ! is_wp_error( $userId ) ) {
 					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
-					update_user_meta( $userId, 'user_email', $data['email'] );
+					wp_update_user( array( 'ID' => $userId, 'user_email' => $data['email'] ) );
 					wp_set_auth_cookie( $userId, true );
 					$this->responseJson( array( 'code' => 200, 'message' => "User created : " . $userId ) );
 				} else {
