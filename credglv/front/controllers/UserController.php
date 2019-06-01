@@ -386,6 +386,10 @@ class UserController extends FrontController implements FrontControllerInterface
 			return false;
 			//The user has the "author" role
 		}
+		if ( ! is_user_logged_in()  || in_array( 'subscriber', (array) $user->roles ) ) {
+			return false;
+			//The user has the "author" role
+		}
 
 		return true;
 
