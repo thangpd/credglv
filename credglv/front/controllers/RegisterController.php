@@ -289,6 +289,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 					'user_pass'  => '',   //(string) The plain-text user password.
 					'user_login' => $data['username'],   //(string) The user's login username.
 					'user_email' => $data['user_email'],   //(string) The user email address.
+					'show_admin_bar_front' => false,   //(string) The user email address.
 				);
 				$userId        = wp_insert_user( $userdata );
 				$current_user  = get_user_by( 'id', $userId );

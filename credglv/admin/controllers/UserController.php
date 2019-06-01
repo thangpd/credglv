@@ -51,6 +51,7 @@ class UserController extends AdminController implements AdminControllerInterface
 			$user_id = $_POST['user_id'];
 
 			$user = UserModel::getInstance();
+
 			$user->update_active_status( $user_id, $_POST['active'] );
 			$settings = mycred_part_woo_settings();
 			$mycred   = mycred( $settings['point_type'] );
