@@ -295,12 +295,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 				$current_email = $current_user->user_email;
 
 				$account_email = sanitize_email( $data['user_email'] );
-				if ( ! is_email( $account_email ) ) {
-					$this->responseJson( array(
-						'code'    => 200,
-						'message' => __( 'Please provide a valid email address.', 'woocommerce' )
-					) );
-				} elseif ( email_exists( $account_email ) && $account_email !== $current_email ) {
+				if ( email_exists( $account_email ) && $account_email !== $current_email ) {
 					$this->responseJson( array(
 						'code'    => 200,
 						'message' => __( 'This email address is already registered.', 'woocommerce' )
