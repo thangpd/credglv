@@ -339,23 +339,23 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public static function getUserIDByPhone( $phone ) {
 		global $wpdb;
 
+		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+
 		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
 
 
 		if ( ! empty( $mobile_num_result ) ) {
 
-			$res = $mobile_num_result;
+			$res['userID'] = $mobile_num_result;
 
 			return $res;
 
-		} else {
-			return '';
 		}
-		/*else {
+		else {
 			$res['code']    = 404;
 			$res['message'] = __( 'Phone is not registered', 'credglv' );
 
-		}*/
+		}
 
 	}
 

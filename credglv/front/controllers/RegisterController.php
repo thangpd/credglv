@@ -272,6 +272,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		$userid = UserModel::getUserIDByPhone( $data['phone'] );
 
+
 		if ( $userid['code'] !== 200 ) {
 
 			$third_party = ThirdpartyController::getInstance();
@@ -282,13 +283,30 @@ class RegisterController extends FrontController implements FrontControllerInter
 			}
 
 			if ( $res_mes['code'] == 200 ) {
-				$userdata = array(
+
+				$userdata      = array(
 					'ID'         => 0,    //(int) User ID. If supplied, the user will be updated.
 					'user_pass'  => '',   //(string) The plain-text user password.
 					'user_login' => $data['username'],   //(string) The user's login username.
 					'user_email' => $data['user_email'],   //(string) The user email address.
 				);
-				$userId   = wp_insert_user( $userdata );
+				$userId        = wp_insert_user( $userdata );
+				$current_user  = get_user_by( 'id', $userId );
+				$current_email = $current_user->user_email;
+
+				$account_email = sanitize_email( $data['user_email'] );
+				if ( ! is_email( $account_email ) ) {
+					$this->responseJson( array(
+						'code'    => 200,
+						'message' => __( 'Please provide a valid email address.', 'woocommerce' )
+					) );
+				} elseif ( email_exists( $account_email ) && $account_email !== $current_email) {
+					$this->responseJson( array(
+						'code'    => 200,
+						'message' => __( 'This email address is already registered.', 'woocommerce' )
+					) );
+				}
+
 				//On success
 				if ( ! is_wp_error( $userId ) ) {
 					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
