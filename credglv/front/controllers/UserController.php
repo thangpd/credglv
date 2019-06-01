@@ -319,7 +319,7 @@ class UserController extends FrontController implements FrontControllerInterface
 					$title = __( 'Cash Redeem', 'credglv' );
 					break;
 				case is_wc_endpoint_url( 'local_redeem' ):
-					$title = __( 'Local Redeem', 'credglv' );
+					$title = __( 'Withdrawal', 'credglv' );
 					break;
 				case is_wc_endpoint_url( 'point_history' ):
 					$title = __( 'History Log', 'credglv' );
