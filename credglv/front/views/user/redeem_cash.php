@@ -5,14 +5,14 @@ if ( ! empty( $data ) ) {
 	?>
     <h2>Cash Balance:
         USD <?php echo $total_cash ?></h2>
-    <h2>Gold Wallet Balance:
+    <h2>Gold Balance:
         <?php echo $gold_balance ?> Gold</h2>
 
     <form action="" class="form-control form-redeem cash-redeem" method="POST">
 
         <label for="redeem_cash">
 			<?php echo __( 'Gold Amount to convert to Cashs', 'credglv' ) ?>
-            <input type="text" name="amount" id="amount">
+            <input type="text" name="amount" id="amount" style="width: 100%">
         </label>
         <p>
 			<?php echo __( 'Conversion fee: $60 or 10% total Gold which is higher. Minimum conversion Gold: 100 Gold.', 'credglv' ); ?>
