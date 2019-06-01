@@ -152,23 +152,30 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 				$phone_number = $data['phone'];
 				$otp          = $data['otp'];
 				$trainsient   = get_transient( $phone_number );
-				if ( $trainsient == $data['otp'] ) {
-					if ( $otp == $trainsient ) {
-						return array(
-							'code'    => 200,
-							'message' => __( 'OTP is matched ', 'credglv' )
-						);
+				if ( ! empty( $trainsient ) ) {
+					if ( $trainsient == $data['otp'] ) {
+						if ( $otp == $trainsient ) {
+							return array(
+								'code'    => 200,
+								'message' => __( 'OTP is matched ', 'credglv' )
+							);
+						} else {
+							return array(
+								'code'    => 400,
+								'message' => __( 'OTP is not matched ', 'credglv' )
+							);
+						}
 					} else {
+						//no trasient
 						return array(
-							'code'    => 400,
-							'message' => __( 'OTP is not matched ', 'credglv' )
+							'code'    => 403,
+							'message' => __( 'OTP expired. Another code sent to your phone. ' . $phone_number, 'credglv' )
 						);
 					}
-				} else {
-					//no trasient
+				}else{
 					return array(
 						'code'    => 403,
-						'message' => __( 'OTP expired. Another code sent to your phone. ' . $phone_number, 'credglv' )
+						'message' => __( 'Wrong pin', 'credglv' )
 					);
 				}
 			} else {
