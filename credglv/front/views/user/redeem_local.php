@@ -10,7 +10,7 @@ $total_local = isset( $data['total_local']->total ) ? number_format( $data['tota
 <form method="POST" action="" class="form-control form-redeem local-redeem">
 
     <label for="redeem_cash">
-		<?php echo __( 'Local Bank Redeem', 'credglv' ) ?>
+		<?php echo __( 'Withdrawal amount', 'credglv' ) ?>
         <input type="text" name="amount" id="amount" style="width: 100%">
     </label>
     <input type="hidden" name="type" value="local" id="type">
