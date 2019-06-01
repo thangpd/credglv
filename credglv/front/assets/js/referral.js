@@ -85,9 +85,9 @@ jQuery(function ($) {
                 .attr('xlink:href', function (d, i) {
                     return d.photo;
                 })
-                .attr('height', 60)
-                .attr('width', 60)
-                .attr('x', 0)
+                .attr('height', 80)
+                .attr('width', 80)
+                .attr('x', -10)
                 .attr('y', 0);
 
             nodeEnter.append("circle")

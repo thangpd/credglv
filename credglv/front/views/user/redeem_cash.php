@@ -11,7 +11,7 @@ if ( ! empty( $data ) ) {
     <form action="" class="form-control form-redeem cash-redeem" method="POST">
 
         <label for="redeem_cash">
-			<?php echo __( 'Gold Amount to convert to Cashs', 'credglv' ) ?>
+			<?php echo __( 'Gold Amount to convert to Cash', 'credglv' ) ?>
             <input type="text" name="amount" id="amount" style="width: 100%">
         </label>
         <p>
