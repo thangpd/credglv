@@ -141,3 +141,33 @@ if ( ! function_exists( 'credglv_woocommerce_locate_template' ) ) {
 
 	add_filter( 'woocommerce_locate_template', 'credglv_woocommerce_locate_template', 1, 3 );
 }
+
+add_filter( 'get_avatar' , 'my_custom_avatar' , 1 , 5 );
+
+function my_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
+    $user = false;
+
+    if ( is_numeric( $id_or_email ) ) {
+
+        $id = (int) $id_or_email;
+        $user = get_user_by( 'id' , $id );
+
+    } elseif ( is_object( $id_or_email ) ) {
+
+        if ( ! empty( $id_or_email->user_id ) ) {
+            $id = (int) $id_or_email->user_id;
+            $user = get_user_by( 'id' , $id );
+        }
+
+    } else {
+        $user = get_user_by( 'email', $id_or_email );	
+    }
+
+    if ( $user && is_object( $user ) ) {
+    	$custom_avatar = get_user_meta($user->data->ID,'avatar',true) ? get_user_meta($user->data->ID,'avatar',true) : get_avatar_url($user->data->ID);
+        $avatar = "<img alt='{$alt}' src='{$custom_avatar}' class='avatar avatar-{$size} photo' height='{$size}' width='{$size}' />";
+
+    }
+
+    return $avatar;
+}
