@@ -141,3 +141,5 @@ if ( ! function_exists( 'credglv_woocommerce_locate_template' ) ) {
 
 	add_filter( 'woocommerce_locate_template', 'credglv_woocommerce_locate_template', 1, 3 );
 }
+
+

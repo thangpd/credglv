@@ -9,6 +9,7 @@
 
 namespace Twilio\Rest\Video\V1\Room\Participant;
 
+use Twilio\Exceptions\TwilioException;
 use Twilio\ListResource;
 use Twilio\Options;
 use Twilio\Serialize;
@@ -21,12 +22,12 @@ use Twilio\Version;
 class SubscribeRulesList extends ListResource {
     /**
      * Construct the SubscribeRulesList
-     * 
+     *
      * @param Version $version Version that contains the resource
      * @param string $roomSid The unique Room identifier for the Subscribe Rules
      * @param string $participantSid The unique Participant identifier for the
      *                               Subscribe Rules.
-     * @return \Twilio\Rest\Video\V1\Room\Participant\SubscribeRulesList 
+     * @return \Twilio\Rest\Video\V1\Room\Participant\SubscribeRulesList
      */
     public function __construct(Version $version, $roomSid, $participantSid) {
         parent::__construct($version);
@@ -39,7 +40,7 @@ class SubscribeRulesList extends ListResource {
 
     /**
      * Fetch a SubscribeRulesInstance
-     * 
+     *
      * @return SubscribeRulesInstance Fetched SubscribeRulesInstance
      * @throws TwilioException When an HTTP error occurs.
      */
@@ -62,7 +63,7 @@ class SubscribeRulesList extends ListResource {
 
     /**
      * Update the SubscribeRulesInstance
-     * 
+     *
      * @param array|Options $options Optional Arguments
      * @return SubscribeRulesInstance Updated SubscribeRulesInstance
      * @throws TwilioException When an HTTP error occurs.
@@ -89,7 +90,7 @@ class SubscribeRulesList extends ListResource {
 
     /**
      * Provide a friendly representation
-     * 
+     *
      * @return string Machine friendly representation
      */
     public function __toString() {

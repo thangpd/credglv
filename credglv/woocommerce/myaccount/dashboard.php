@@ -55,7 +55,18 @@ if ( $user->check_actived_referral( $user_id ) ) {
     </script>
 	<?php
 } else {
-	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
+
+// fong 
+?>
+
+<p>Your account is not fully activated. Some functions may not work properly. Beside, you may not enjoy some privilege that only Officially GLV Member has. </p>
+
+<p>For automatic activation, please ask your introducer to give you the Activation Fee. In case you don't know who your inrtoducer is, please contact us for further support. </p>
+
+<p>Learn more about <a href="https://member.goldleaf-ventures.com/member-activation-fee/">Activation Fee</a>.</p>
+
+<?php 
+
 };
 
 
