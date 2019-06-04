@@ -120,7 +120,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
                 END WHILE;
 
                 IF(return_value = 'count') THEN
-                SELECT count(*) into no_of_followers  FROM " . $tableName . " WHERE active = 1 AND FIND_IN_SET(referral_parent, rv );
+                SELECT count(*) into no_of_followers  FROM " . $tableName . " WHERE  FIND_IN_SET(referral_parent, rv );
 
                 RETURN no_of_followers;
                 ELSE
@@ -237,16 +237,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 
-	/*
-		 * Retrieve total number of followers
-		 */
-	function count_referral_user( $user_id ) {
-		global $wpdb;
-		//return 0;
-		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
-
-		return $followers;
-	}
 
 
 	public function referral_user( $user_field, $where, $user_id ) {
@@ -479,12 +469,24 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 
+	/*
+		 * Retrieve total number of followers
+		 */
+	function count_referral_user( $user_id ) {
+		global $wpdb;
+		//return 0;
+		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
+
+		return $followers;
+	}
+
 	public function get_children_referral_user( $id, $level = 0 ) {
 		global $wpdb;
 		$level ++;
 		if ( $this->count_referral_user( $id ) ) {
 			$tablename = self::getTableName();
 			$prepare   = $wpdb->prepare( "select ID,display_name,user_login from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
+
 			$result    = $wpdb->get_results( $prepare, ARRAY_A );
 
 			$subarr = array();
