@@ -259,18 +259,20 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 
 	public function get_url_share_link() {
+		$link_share = '';
+		if ( is_user_logged_in() ) {
+			$code = wp_get_current_user();
+			$code = $code->data->user_login;
+			/*$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
 
-		$code = wp_get_current_user();
-		$code = $code->data->user_login;
-		/*$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
-
-		if ( $current_user_id ) {
-			$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
-		}*/
-		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
-			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
-		} else {
-			$link_share = home_url() . '?ru=' . $code;
+			if ( $current_user_id ) {
+				$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
+			}*/
+			if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
+				$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
+			} else {
+				$link_share = home_url() . '?ru=' . $code;
+			}
 		}
 
 		return $link_share;
@@ -350,8 +352,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 			return $res;
 
-		}
-		else {
+		} else {
 			$res['code']    = 404;
 			$res['message'] = __( 'Phone is not registered', 'credglv' );
 
