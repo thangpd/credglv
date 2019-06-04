@@ -63,25 +63,43 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			}
 
 			$balance = $mycred->get_users_balance( $user_id );
+//			echo '<pre>';
+//			print_r( 'init if else active referal' );
+//			echo '</pre>';
+//			echo '<pre>';
+//			print_r($user_id);
+//			echo '</pre>';
 			//			if ( empty( $user->check_actived_referral( $user_id, 0 ) ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
-			if ( empty( $user->check_actived_referral( $user_id, 0 ) ) && $balance >= $this->joining_fee  ) {
-				$mycred->add_creds( 'register_fee',
-					$user_id,
-					- $this->joining_fee,
-					__( 'Joining fee', 'credglv' ),
-					1,
-					'',
-					$settings['point_type'] );
-				$benefit_of_joining_fee = $this->mycred_share_commision( $user_id, $mycred, $this->joining_fee );
-				$mycred->add_creds( 'benefit_register_fee',
-					1,
-					$benefit_of_joining_fee,
-					__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
-					'',
-					'',
-					$settings['point_type'] );
-				$user->update_active_status( $user_id );
-
+			if ( ! empty( $user->check_actived_referral( $user_id, 0 ) ) ) {
+//				echo '<pre>';
+//				print_r( 'empty( $user->check_actived_referral( $user_id, 0 )' );
+//				echo '</pre>';
+				if ( $balance >= $this->joining_fee ) {
+//					echo '<pre>';
+//					print_r( '$balance >= $this->joining_fee' );
+//					echo '</pre>';
+					if ( ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+//						echo '<pre>';
+//						print_r( 'Has not joining fee' );
+//						echo '</pre>';
+						$mycred->add_creds( 'register_fee',
+							$user_id,
+							- $this->joining_fee,
+							__( 'Joining fee', 'credglv' ),
+							1,
+							'',
+							$settings['point_type'] );
+						$benefit_of_joining_fee = $this->mycred_share_commision( $user_id, $mycred, $this->joining_fee );
+						$mycred->add_creds( 'benefit_register_fee',
+							1,
+							$benefit_of_joining_fee,
+							__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
+							'',
+							'',
+							$settings['point_type'] );
+						$user->update_active_status( $user_id );
+					}
+				}
 			}
 		}
 	}
