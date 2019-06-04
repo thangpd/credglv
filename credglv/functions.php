@@ -141,3 +141,17 @@ if ( ! function_exists( 'credglv_woocommerce_locate_template' ) ) {
 
 	add_filter( 'woocommerce_locate_template', 'credglv_woocommerce_locate_template', 1, 3 );
 }
+
+/**
+ * Add Custom References
+ * @mycred
+ * @version 1.0
+ */
+add_filter( 'mycred_all_references', 'mycredpro_add_custom_references' );
+function mycredpro_add_custom_references( $list ) {
+
+	$list['register_fee'] = 'Register Fee';
+
+	return $list;
+
+}

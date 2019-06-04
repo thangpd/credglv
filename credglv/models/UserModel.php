@@ -278,12 +278,63 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $link_share;
 	}
 
+
 	/* check actived referral
 	 *
 	 *
 	 *
 	*/
+	public function add_user_to_referral( $user_id ) {
+		global $wpdb;
+		$table  = self::getTableName();
+		$data   = array( 'user_id' => $user_id, 'active' => 0, 'referral_code' => $this->get_referralcode(), );
+		$format = array( '%d', '%d', '%s', );
+		$wpdb->insert( $table, $data, $format );
+		$my_id = $wpdb->insert_id;
+
+		return $my_id;
+	}
+
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
+	public function has_user( $user_id ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d ", $user_id );
+		$result    = $wpdb->get_results( $prepare );
+		if ( ! empty( $result ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/* check actived referral
+		 *
+		 *
+		 *
+		*/
 	public function check_actived_referral( $user_id, $status = 1 ) {
+		global $wpdb;
+		if ( ! $this->has_user( $user_id ) ) {
+			$result = $this->add_user_to_referral( $user_id, $status );
+		}
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d and active=%d", $user_id, $status );
+		$result = $wpdb->get_results( $prepare );
+
+		return $result;
+	}
+
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
+	public function add_userId( $user_id, $status = 0 ) {
 		global $wpdb;
 		$tablename = self::getTableName();
 		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%s and active=%s", $user_id, $status );
