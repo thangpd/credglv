@@ -127,8 +127,9 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 
 	public function credglv_pro_custom_transfer_messages( $message ) {
-		$message['low_amount']  = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
-		$message['invalid_pin'] = __( 'Your pin is wrong', 'credglv' );
+		$message['low_amount']    = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
+		$message['invalid_pin']   = __( 'Your pin is wrong', 'credglv' );
+		$message['amount_higher'] = __( 'Your amount is higher than balance', 'credglv' );
 
 		return $message;
 	}
@@ -141,6 +142,9 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		// Example: Minimum 30 points
 		if ( $context->request['amount'] < $this->minimum_transer ) {
 			return 'low_amount';
+		}
+		if ( $context->request['amount'] + $this->transfer_fee > $context->balances['mycred_default'] ) {
+			return 'amount_higher';
 		}
 		$pin = get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
 		if ( empty( $pin ) ) {
