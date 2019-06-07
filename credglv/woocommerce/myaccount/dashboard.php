@@ -32,7 +32,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
 	$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
 
-	$wmc_html .= '</div>';
     $wmc_html .= '<div style="">
                     <video width="300" height="170" controls>
                       <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
@@ -40,6 +39,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
                       Your browser does not support HTML5 video.
                     </video>
                  </div>';
+    $wmc_html .= '</div>';
 
 	echo $wmc_html;
 	?>
