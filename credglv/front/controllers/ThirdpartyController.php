@@ -113,7 +113,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 			return array(
 				'code'    => 200,
-				'message' => __( "We sent code verify to your phone. " . $phone_number . ". Expire in 60s", 'credglv' )
+				'message' => __( "An OTP was sent to  ***" . substr($phone_number, -3, 3) . ".", 'credglv' )
 			);
 		} else {
 
