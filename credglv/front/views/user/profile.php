@@ -22,6 +22,18 @@ function render_profile_html() {
 		return $get_img_pp[0];
 	}
 
+	function get_pp_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports_number' ) ) == 0 ) {
+			$get_pp_num = [ '' ];
+		} else {
+			$get_pp_num = get_user_meta( $user_id, 'passports_number' );
+		}
+
+		return $get_pp_num[0];
+
+	}
+
 	function get_img_iden() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
@@ -31,6 +43,18 @@ function render_profile_html() {
 		}
 
 		return $get_img_iden[0];
+	}
+
+	function get_iden_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden_number' ) ) == 0 ) {
+			$get_iden_num = [ '' ];
+		} else {
+			$get_iden_num = get_user_meta( $user_id, 'iden_number' );
+		}
+
+		return $get_iden_num[0];
+
 	}
 
 	function get_gender() {
@@ -90,7 +114,9 @@ function render_profile_html() {
 
 	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
+	$get_pp_num   = get_pp_num();
 	$get_img_iden = get_img_iden();
+	$get_iden_num = get_iden_num();
 	$get_gender   = get_gender();
 	$get_address  = get_address();
 	$get_fullname = get_fullname();
@@ -161,9 +187,17 @@ function render_profile_html() {
 	$html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="iden_num">Identification Number';
+	$html .= '<input type="number" id="iden_num" name="iden_num" value="' . $get_iden_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_passports">Passport';
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="pp_num">Passport Number';
+	$html .= '<input type="number" id="pp_num" name="pp_num" value="' . $get_pp_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
 	$html .= '</form>';
@@ -198,6 +232,18 @@ function render_profile_error_html() {
 		return $get_img_pp[0];
 	}
 
+	function get_pp_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports_number' ) ) == 0 ) {
+			$get_pp_num = [ '' ];
+		} else {
+			$get_pp_num = get_user_meta( $user_id, 'passports_number' );
+		}
+
+		return $get_pp_num[0];
+
+	}
+
 	function get_img_iden() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
@@ -207,6 +253,18 @@ function render_profile_error_html() {
 		}
 
 		return $get_img_iden[0];
+	}
+
+	function get_iden_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden_number' ) ) == 0 ) {
+			$get_iden_num = [ '' ];
+		} else {
+			$get_iden_num = get_user_meta( $user_id, 'iden_number' );
+		}
+
+		return $get_iden_num[0];
+
 	}
 
 	function get_fullname() {
@@ -233,7 +291,9 @@ function render_profile_error_html() {
 
 	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
+	$get_pp_num   = get_pp_num();
 	$get_img_iden = get_img_iden();
+	$get_iden_num = get_iden_num();
 	$get_fullname = get_fullname();
 	$get_address  = get_address();
 
@@ -311,9 +371,17 @@ function render_profile_error_html() {
 	$html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="iden_num">Identification Number';
+	$html .= '<input type="number" id="iden_num" name="iden_num" value="' . $get_iden_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_passports">Passport';
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="pp_num">Passport Number';
+	$html .= '<input type="number" id="pp_num" name="pp_num" value="' . $get_pp_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
 	$html .= '</form>';
@@ -422,6 +490,8 @@ if ( isset( $_POST['uploadclick'] ) ) {
 	$user_date     = $_POST['user_date'];
 	$user_address  = $_POST['user_address'];
 	$user_country  = $_POST['user_country'];
+	$iden_num      = $_POST['iden_num'];
+	$pp_num 	   = $_POST['pp_num'];
 	if ( empty( $user_fullname )  || empty( $user_address ) ) {
 		if ( empty( $user_fullname ) ) {
 			echo '<div style="background-color: red;text-align: center; color: white">Invalid Full Name</div>';
@@ -438,6 +508,8 @@ if ( isset( $_POST['uploadclick'] ) ) {
 		update_user_meta( $user_id, 'user_gender', $user_gender );
 		update_user_meta( $user_id, 'user_date', $user_date );
 		update_user_meta( $user_id, 'user_country', $user_country );
+		update_user_meta( $user_id, 'iden_number', $iden_num);
+		update_user_meta( $user_id, 'passports_number', $pp_num);
 		$layout = '';
 		$layout .= '<div style="text-align: center;" class="alert alert-success">Update Success</div>';
 		echo $layout;

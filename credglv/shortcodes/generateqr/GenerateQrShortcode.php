@@ -37,7 +37,8 @@ class GenerateQrShortcode extends Shortcode {
 	public function getAttributes() {
 		return [
 			'layout' => '',
-			'width'  => '200'
+			'width'  => '140',
+			'height' => '140'
 		];
 	}
 
