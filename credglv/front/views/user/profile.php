@@ -525,4 +525,6 @@ if ( $flag == 0 ) {
 	render_profile_error_html();
 }
 
+echo '<button class="btn btn-default ld-ext-right" type="button" onclick="window.location.href=\''.esc_html(home_url('/')).'customer-logout'.'\'">'.__('Logout','credglv').'</button>';
+
 
