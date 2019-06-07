@@ -328,32 +328,32 @@ if(isset($_POST['paymentclick'])){
 $bankpin_data=get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
     if(empty($bankname) || empty($bankbranch) || empty($bankcountry) || empty($bankowner) || empty($banknumber) || empty($bankpin) || $bankpin != $bankpin_data ) {
             if (empty($bankname)) {
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Name</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Name</div>';
                 global $flag ;
                 $flag = 1;
             }
             else if (empty($bankbranch)) {
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Branch</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Branch</div>';
                 global $flag ;
                 $flag = 2;
             }
             else if (empty($bankcountry)) {
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Country</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Country</div>';
                 global $flag ;
                 $flag = 3;
             }
             else if (empty($bankowner)) {
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Owner</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Owner</div>';
                 global $flag ;
                 $flag = 4;
             }
             else if (empty($banknumber)) {
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Number</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Number</div>';
                 global $flag ;
                 $flag = 5;
             }
             else if(empty($bankpin) || $bankpin != $bankpin_data){
-                echo '<div style="text-align: center;" class="alert alert-danger">Invalid Bank Pin</div>';
+                echo '<div style="" class="alert alert-danger">Invalid Bank Pin</div>';
                 global $flag ;
                 $flag = 6;
             }

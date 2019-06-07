@@ -28,7 +28,7 @@ if ( ! empty( $data ) ) {
 
 
     <h3>Recent History</h3>
-
+    <?php if($data['html']) { ?>
     <section class="the-css-at-table">
         <header style="display: none;">
             <p class="tr">
@@ -46,7 +46,9 @@ if ( ! empty( $data ) ) {
 
         </div>
     </section>
-	<?php
+	<?php } else {
+        echo '<label>No transaction was made yet</label>';
+    }
 }
 
 ?>
