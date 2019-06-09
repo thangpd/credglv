@@ -22,6 +22,6 @@ jQuery(function ($) {
     
 
     $(document).ready(function () {
-        credglv.preventinputtext_usernamefield('form.mycred-transfer');
+        // credglv.preventinputtext_usernamefield('form.mycred-transfer');
     });
 });

@@ -289,7 +289,7 @@ jQuery(function ($) {
         credglv.preventinputtext_mobilefield('form.register');
         credglv.validate_submitform_register('form.register');
         credglv.checkrequirement('form.register');
-        credglv.preventinputtext_usernamefield('form.register');
+        //credglv.preventinputtext_usernamefield('form.register');
         credglv.select2login();
 
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
