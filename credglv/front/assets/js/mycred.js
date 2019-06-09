@@ -4,7 +4,7 @@ jQuery(function ($) {
 
     credglv.preventinputtext_usernamefield_transfer = function (form) {
         form = $(form);
-        form.find('#reg_username').bind({
+        form.find('input=[name="mycred_new_transfer[recipient_id]"]').bind({
             keypress: function (e) {
                 //alert(e.charCode)
                 if (e.charCode > 47 && e.charCode < 58) {
