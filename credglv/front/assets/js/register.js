@@ -270,25 +270,16 @@ jQuery(function ($) {
         form = $(form);
         form.find('#reg_username').bind({
             keydown: function (e) {
-                if (e.shiftKey === true) {
-                    if (e.which === 9) {
-                        return true;
-                    }
-                    return false;
+                if (e.which > 47 && e.which < 58) {
+                    return true;
                 }
-                if (e.which > 57 && e.which < 65) {
-                    return false;
+                if (e.which > 64 && e.which < 91) {
+                    return true;
                 }
-                if (e.which > 90 && e.which < 97) {
-                    return false;
+                if (e.which > 96 && e.which < 123) {
+                    return true;
                 }
-                if (e.which > 122) {
-                    return false;
-                }
-                if (e.which === 32) {
-                    return false;
-                }
-                return true;
+                return false;
             }
         });
     }
