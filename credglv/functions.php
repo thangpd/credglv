@@ -155,8 +155,8 @@ function mycredpro_add_custom_references( $list ) {
 	return $list;
 
 }
-add_filter( 'get_avatar' , 'my_custom_avatar' , 1 , 5 );
 
+add_filter( 'get_avatar' , 'my_custom_avatar' , 1 , 5 );
 function my_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
     $user = false;
 
@@ -183,4 +183,29 @@ function my_custom_avatar( $avatar, $id_or_email, $size, $default, $alt ) {
     }
 
     return $avatar;
+}
+
+add_filter('the_password_form','get_the_password_custom_form');
+function get_the_password_custom_form() {
+	//$post   = get_post( $post );
+	global $post;
+	$label  = 'pwbox-' . ( empty( $post->ID ) ? rand() : $post->ID );
+	$output = '<form action="' . esc_url( site_url( 'wp-login.php?action=postpass', 'login_post' ) ) . '" class="post-password-form" method="post">
+	<p>' . __( 'This content is password protected. To view it please enter your password below:' ) . '</p>
+	<p><label for="' . $label . '">' . __( 'Password:' ) . ' <br><input name="post_password" id="' . $label . '" type="password" style="width: 100%" /></label></p><p><input type="submit" name="Submit" value="' . esc_attr_x( 'Enter', 'post password form' ) . '" /></p></form>
+	';
+
+	/**
+	 * Filters the HTML output for the protected post password form.
+	 *
+	 * If modifying the password field, please note that the core database schema
+	 * limits the password field to 20 characters regardless of the value of the
+	 * size attribute in the form input.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param string $output The password form HTML output.
+	 */
+
+	return $output;
 }
