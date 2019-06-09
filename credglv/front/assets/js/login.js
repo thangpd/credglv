@@ -72,7 +72,7 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "",
+                        required: "A one time password (OTP) was sent to your phone.",
                         minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 },
@@ -179,6 +179,7 @@ jQuery(function ($) {
                 if (res.code === 200) {
                     var otp_div = $(form).find('.otp-code');
                     otp_div.toggle('hide');
+                    $('button[type="submit"]').toggle('hide');
                 } else {
                     $(form).find('.error_log').text(res.message);
                 }
@@ -245,6 +246,7 @@ jQuery(function ($) {
                 console.log('focus');
                 clearInterval(autofocus);
             }, 1000);
+            $('button[type="submit"]').css('display','block');
             $(form).find('.error_log').text('');
         });
         /*$(form).find('a.login-with-what').on('click', function (e) {
