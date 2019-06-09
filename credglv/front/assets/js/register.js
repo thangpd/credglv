@@ -87,7 +87,7 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "An One Time PIN was sent to your phone.",
+                        required: "A one time password (OTP) was sent to your phone.",
                         minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 }, submitHandler: function (form) {
