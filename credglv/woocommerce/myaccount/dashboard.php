@@ -43,7 +43,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
 	echo $wmc_html;
 	?>
-    <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
+    <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
     <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
