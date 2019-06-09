@@ -26,7 +26,8 @@ $user_id = get_current_user_id();
 
 if ( $user->check_actived_referral( $user_id ) ) {
 
-	$wmc_html = '<div id="credglv-qr-code">
+	$wmc_html = '<div id="success_noti"></div>
+                <div id="credglv-qr-code">
                 
                 <div class="wmc-banners" style="display: flex">';
 
