@@ -266,11 +266,39 @@ jQuery(function ($) {
 
     }
 
+    credglv.preventinputtext_usernamefield = function (form) {
+        form = $(form);
+        form.find('#reg_username').bind({
+            keydown: function (e) {
+                if (e.shiftKey === true) {
+                    if (e.which === 9) {
+                        return true;
+                    }
+                    return false;
+                }
+                if (e.which > 57 && e.which < 65) {
+                    return false;
+                }
+                if (e.which > 90 && e.which < 97) {
+                    return false;
+                }
+                if (e.which > 122) {
+                    return false;
+                }
+                if (e.which === 32) {
+                    return false;
+                }
+                return true;
+            }
+        });
+    }
+
     $(document).ready(function () {
         credglv.onchange_otp('form.register');
         credglv.preventinputtext_mobilefield('form.register');
         credglv.validate_submitform_register('form.register');
         credglv.checkrequirement('form.register');
+        credglv.preventinputtext_usernamefield('form.register');
         credglv.select2login();
 
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
