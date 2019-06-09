@@ -45,10 +45,18 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
-    <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
+    <button data-clipboard-target="#myInput"><?php echo __( 'Copy text', 'credglv' ); ?></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
-    <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <script type="text/javascript">
+        var clipboard = new ClipboardJS('button');
+        clipboard.on('success', function (){
+            var abc = setInterval(function () {
+                jQuery('#success_noti').html('<lable style="color:red">The Share URL was coppied to your clipboard. Now go and share it!</label>')
+                clearInterval(abc);
+            },1000);
+        })
         function myFunction() {
             var el = document.getElementById("myInput");
             el.select();
@@ -69,9 +77,12 @@ if ( $user->check_actived_referral( $user_id ) ) {
             el.contentEditable = oldContentEditable;
             el.readOnly = oldReadOnly;
 
+
             document.execCommand('copy');
+            el.blur();
+
             var abc = setInterval(function () {
-                alert('The Share URL was coppied to your clipboard. Now go and share it!');
+                jQuery('#success_noti').html('<lable style="color:red">The Share URL was coppied to your clipboard. Now go and share it!</label>')
                 clearInterval(abc);
             },1000);
         }
