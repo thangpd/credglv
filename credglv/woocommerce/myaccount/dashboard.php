@@ -26,7 +26,7 @@ $user_id = get_current_user_id();
 
 if ( $user->check_actived_referral( $user_id ) ) {
 
-	$wmc_html = '<div id="success_noti"></div>
+	$wmc_html = '<div id="success_noti" style="display: none"><lable style="color:red;">The Share URL was coppied to your clipboard. Now go and share it!</label></div>
                 <div id="credglv-qr-code">
                 
                 <div class="wmc-banners" style="display: flex">';
@@ -46,19 +46,30 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
-    <button data-clipboard-target="#myInput"><?php echo __( 'Copy text', 'credglv' ); ?></button>
+    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld ld-spinner ld-spin" style="top: 50%; left: auto"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <script type="text/javascript">
         var clipboard = new ClipboardJS('button');
         clipboard.on('success', function (){
-            var abc = setInterval(function () {
-                jQuery('#success_noti').html('<lable style="color:red">The Share URL was coppied to your clipboard. Now go and share it!</label>')
-                clearInterval(abc);
-            },1000);
+            jQuery('#btn_copy').toggleClass('running');
+            var toggle = setInterval(function(){
+                jQuery('#btn_copy').toggleClass('running');
+                clearInterval(toggle);
+            },2000)
+            jQuery('#success_noti').fadeOut()
+            jQuery('#success_noti').fadeIn(2500);
         })
         function myFunction() {
+            jQuery('#btn_copy').toggleClass('running');
+            var toggle = setInterval(function(){
+                jQuery('#btn_copy').toggleClass('running');
+                clearInterval(toggle);
+            },2000)
+            jQuery('#success_noti').fadeOut()
+            jQuery('#success_noti').fadeIn(2500);
+
             var el = document.getElementById("myInput");
             el.select();
             var oldContentEditable = el.contentEditable,
@@ -82,10 +93,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
             document.execCommand('copy');
             el.blur();
 
-            var abc = setInterval(function () {
-                jQuery('#success_noti').html('<lable style="color:red">The Share URL was coppied to your clipboard. Now go and share it!</label>')
-                clearInterval(abc);
-            },1000);
         }
     </script>
 	<?php
