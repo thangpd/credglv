@@ -485,6 +485,28 @@ if ( isset( $_POST['uploadclick'] ) ) {
 			}
 		}
 	}
+
+	function check_img_pp() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports' ) ) == 0 ) {
+			$get_img_pp = [ '' ];
+		} else {
+			$get_img_pp = get_user_meta( $user_id, 'passports' );
+		}
+
+		return $get_img_pp[0];
+	}
+	function check_img_iden() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
+			$get_img_iden = [ '' ];
+		} else {
+			$get_img_iden = get_user_meta( $user_id, 'iden' );
+		}
+
+		return $get_img_iden[0];
+	}
+
 	$user_gender   = $_POST['user_gender'];
 	$user_fullname = $_POST['user_fullname'];
 	$user_date     = $_POST['user_date'];
@@ -492,16 +514,34 @@ if ( isset( $_POST['uploadclick'] ) ) {
 	$user_country  = $_POST['user_country'];
 	$iden_num      = $_POST['iden_num'];
 	$pp_num 	   = $_POST['pp_num'];
-	if ( empty( $user_fullname )  || empty( $user_address ) ) {
+	$img_iden      = check_img_iden();
+	$img_pp        = check_img_pp();
+	if ( empty( $user_fullname )  || empty( $user_address ) || empty( $iden_num ) || empty( $pp_num ) || empty( $img_iden ) || empty( $img_pp )) {
 		if ( empty( $user_fullname ) ) {
-			echo '<div style="background-color: red;text-align: center; color: white">Invalid Full Name</div>';
+			echo '<div class="alert alert-danger">Invalid Full Name</div>';
 			global $flag;
 			$flag = 1;
 		} else if ( empty( $user_address ) ) {
-			echo '<div style="background-color: red;text-align: center; color: white">Invalid Address</div>';
+			echo '<div class="alert alert-danger">Invalid Address</div>';
 			global $flag;
 			$flag = 3;
-		}
+		} else if ( empty( $iden_num ) ) {
+			echo '<div class="alert alert-danger">Invalid Identification Number</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $pp_num ) ) {
+			echo '<div class="alert alert-danger">Invalid Passport Number</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $img_iden ) ) {
+			echo '<div class="alert alert-danger">Invalid Identification Card</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $img_pp ) ) {
+			echo '<div class="alert alert-danger">Invalid Passport Card</div>';
+			global $flag;
+			$flag = 5;
+		} 
 	} else if ( ! empty( $user_fullname )  && ! empty( $user_address ) ) {
 		update_user_meta( $user_id, 'user_fullname', $user_fullname );
 		update_user_meta( $user_id, 'user_address', $user_address );
