@@ -46,11 +46,36 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
-    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld ld-spinner ld-spin" style="top: 50%; left: auto"></div></button>
+    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld" id="spinning" style="top: 58%; right: 0"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://spin.js.org/spin.css">
     <script type="text/javascript">
+        var opts = {
+          lines: 13, // The number of lines to draw
+          length: 38, // The length of each line
+          width: 17, // The line thickness
+          radius: 45, // The radius of the inner circle
+          scale: 0.1, // Scales overall size of the spinner
+          corners: 1, // Corner roundness (0..1)
+          color: '#ffffff', // CSS color or array of colors
+          fadeColor: 'transparent', // CSS color or array of colors
+          speed: 1, // Rounds per second
+          rotate: 0, // The rotation offset
+          animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+          direction: 1, // 1: clockwise, -1: counterclockwise
+          zIndex: 2e9, // The z-index (defaults to 2000000000)
+          className: 'spinner', // The CSS class to assign to the spinner
+          top: '50%', // Top position relative to parent
+          left: '50%', // Left position relative to parent
+          shadow: '0 0 1px transparent', // Box-shadow for the lines
+          position: 'absolute' // Element positioning
+        };
+        var target = document.getElementById('spinning');
+        var spinner = new Spinner(opts).spin(target);
+        
         var clipboard = new ClipboardJS('button');
         clipboard.on('success', function (){
             jQuery('#btn_copy').toggleClass('running');
@@ -58,8 +83,12 @@ if ( $user->check_actived_referral( $user_id ) ) {
                 jQuery('#btn_copy').toggleClass('running');
                 clearInterval(toggle);
             },2000)
-            jQuery('#success_noti').fadeOut()
-            jQuery('#success_noti').fadeIn(2500);
+            jQuery('#success_noti').stop();
+            jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+                jQuery('#success_noti').fadeIn({duration: 2500, complete: function(){
+                    jQuery('#success_noti').fadeOut(7500);
+                }});
+            }});
         })
         function myFunction() {
             jQuery('#btn_copy').toggleClass('running');
@@ -67,8 +96,12 @@ if ( $user->check_actived_referral( $user_id ) ) {
                 jQuery('#btn_copy').toggleClass('running');
                 clearInterval(toggle);
             },2000)
-            jQuery('#success_noti').fadeOut()
-            jQuery('#success_noti').fadeIn(2500);
+            jQuery('#success_noti').stop();
+            jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+                jQuery('#success_noti').fadeIn({duration: 2500, complete: function(){
+                    jQuery('#success_noti').fadeOut(7500);
+                }});
+            }});
 
             var el = document.getElementById("myInput");
             el.select();
