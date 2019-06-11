@@ -26,7 +26,7 @@ $user_id = get_current_user_id();
 
 if ( $user->check_actived_referral( $user_id ) ) {
 
-	$wmc_html = '<div id="success_noti" style="display: none"><lable style="color:red;">The Share URL was coppied to your clipboard. Now go and share it!</label></div>
+	$wmc_html = '<div id="success_noti" style="display: none" class="alert alert-success">The Share URL was coppied to your clipboard. Now go and share it!</div>
                 <div id="credglv-qr-code">
                 
                 <div class="wmc-banners" style="display: flex">';
