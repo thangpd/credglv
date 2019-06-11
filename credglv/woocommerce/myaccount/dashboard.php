@@ -85,8 +85,8 @@ if ( $user->check_actived_referral( $user_id ) ) {
             },2000)
             jQuery('#success_noti').stop();
             jQuery('#success_noti').fadeOut({queue:false,complete: function(){
-                jQuery('#success_noti').fadeIn({duration: 2500, complete: function(){
-                    jQuery('#success_noti').fadeOut(7500);
+                jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+                    jQuery('#success_noti').fadeOut(3000);
                 }});
             }});
         })
@@ -98,8 +98,8 @@ if ( $user->check_actived_referral( $user_id ) ) {
             },2000)
             jQuery('#success_noti').stop();
             jQuery('#success_noti').fadeOut({queue:false,complete: function(){
-                jQuery('#success_noti').fadeIn({duration: 2500, complete: function(){
-                    jQuery('#success_noti').fadeOut(7500);
+                jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+                    jQuery('#success_noti').fadeOut(3000);
                 }});
             }});
 
