@@ -70,7 +70,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
           className: 'spinner', // The CSS class to assign to the spinner
           top: '50%', // Top position relative to parent
           left: '50%', // Left position relative to parent
-          shadow: '0 0 1px transparent', // Box-shadow for the lines
+          shadow: '', // Box-shadow for the lines
           position: 'absolute' // Element positioning
         };
         var target = document.getElementById('spinning');
