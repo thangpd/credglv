@@ -25,7 +25,7 @@ var _defaults = {
   ptrElement: '.ptr',
   classPrefix: 'ptr--',
   cssProp: 'min-height',
-  iconArrow: '<img src="62406345_2258111130923135_377758436860887040_n.png" />',
+  iconArrow: '',
   iconRefreshing: '',
   instructionsPullToRefresh: '',
   instructionsReleaseToRefresh: '',
