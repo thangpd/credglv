@@ -43,7 +43,8 @@ jQuery( function( $ ) {
 				overlayCSS: {
 					background: '#fff',
 					opacity: 0.6
-				}
+                }
+                alert('test');
 			} );
 		}
 	};
