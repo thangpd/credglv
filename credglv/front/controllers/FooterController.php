@@ -33,6 +33,8 @@ class FooterController extends FrontController implements FrontControllerInterfa
         </script>
         
         <script>
+        	var target = document.getElementById("spinning");
+        	var spinner = new Spinner().spin(target);
             function showAndroidShare() {
                 try {
                     webkit.messageHandlers.callbackHandler.postMessage("' . $share_link . '");
