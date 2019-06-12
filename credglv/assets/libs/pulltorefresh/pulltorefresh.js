@@ -58,7 +58,8 @@ function _update() {
   var instructionsReleaseToRefresh = _SETTINGS.instructionsReleaseToRefresh;
 
   var iconEl = ptrElement.querySelector(("." + classPrefix + "icon"));
-  var textEl = ptrElement.querySelector(("." + classPrefix + "spin"));
+  var textEl = ptrElement.querySelector(("." + classPrefix + "text"));
+  var spinEl = ptrElement.querySelector(("." + classPrefix + "spin"));
 
   if (_state === 'refreshing') {
     iconEl.innerHTML = iconRefreshing;
@@ -68,6 +69,7 @@ function _update() {
 
   if (_state === 'releasing') {
     textEl.innerHTML = instructionsReleaseToRefresh;
+    spinEl.innerHTML = instructionsReleaseToRefresh;
   }
 
   if (_state === 'pulling' || _state === 'pending') {
