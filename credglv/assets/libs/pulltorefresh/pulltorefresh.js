@@ -25,7 +25,7 @@ var _defaults = {
   ptrElement: '.ptr',
   classPrefix: 'ptr--',
   cssProp: 'min-height',
-  iconArrow: '&#8675;',
+  iconArrow: '<img src="../../../images/spining.gif">',
   // iconRefreshing: '&hellip;',
   instructionsPullToRefresh: '',
   instructionsReleaseToRefresh: '',
