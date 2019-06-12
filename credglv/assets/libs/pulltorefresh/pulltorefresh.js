@@ -58,7 +58,7 @@ function _update() {
   var instructionsReleaseToRefresh = _SETTINGS.instructionsReleaseToRefresh;
 
   var iconEl = ptrElement.querySelector(("." + classPrefix + "icon"));
-  var textEl = ptrElement.querySelector(("." + classPrefix + "text"));
+  var textEl = ptrElement.querySelector(("." + classPrefix + "spin"));
 
   if (_state === 'refreshing') {
     iconEl.innerHTML = iconRefreshing;
