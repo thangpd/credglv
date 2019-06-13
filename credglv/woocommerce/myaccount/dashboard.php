@@ -46,11 +46,15 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
-    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld" id="spinning" style="top: 65%; right: 0"></div></button>
+    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld" id="spinning1" style="top: 65%; right: 0"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <script type="text/javascript">
+        var target = document.getElementById("spinning1");
+        console.log(target);
+        var spinner = new Spinner().spin(target);
+
         var clipboard = new ClipboardJS('button');
         clipboard.on('success', function (){
             jQuery('#btn_copy').toggleClass('running');
