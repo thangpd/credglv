@@ -309,8 +309,8 @@ var pulltorefresh = {
 
         // null object references
         handlers = null;
-        styleNode = null;
-        ptrElement = null;
+        // styleNode = null;
+        // ptrElement = null;
         _SETTINGS = {};
       },
     };
