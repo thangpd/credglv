@@ -31,7 +31,10 @@ class FooterController extends FrontController implements FrontControllerInterfa
             onRefresh: function(){ window.location.reload(); }
         });
         </script>
-        
+        <script type="text/javascript">
+			var target = document.getElementById("spinning");
+			var spinner = new Spinner().spin(target);
+		</script>
         <script>
         	var target = document.getElementById("spinning");
         	var spinner = new Spinner().spin(target);

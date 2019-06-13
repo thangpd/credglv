@@ -51,8 +51,6 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
     <script type="text/javascript">
-        var target = document.getElementById("spinning");
-        var spinner = new Spinner().spin(target);
         var clipboard = new ClipboardJS('button');
         clipboard.on('success', function (){
             jQuery('#btn_copy').toggleClass('running');
