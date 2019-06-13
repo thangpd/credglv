@@ -33,6 +33,7 @@ class FooterController extends FrontController implements FrontControllerInterfa
         </script>
         <script type="text/javascript">
 			var target = document.getElementById("spinning");
+			console.log(target);
 			var spinner = new Spinner().spin(target);
 		</script>
         <script>
