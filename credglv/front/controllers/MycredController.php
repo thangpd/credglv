@@ -137,6 +137,8 @@ class MycredController extends FrontController implements FrontControllerInterfa
 	function credglv_assets_enqueue() {
 		wp_register_script( 'cred-mycred-detail', plugin_dir_url( __DIR__ ) . '/assets/js/mycred.js' );
 		wp_enqueue_script( 'cred-mycred-detail' );
+		wp_register_script( 'mycred-notifications' , plugins_url('credglv/assets/scripts/credglv-mycred-notify.js') );
+		wp_enqueue_script( 'mycred-notifications' );
 
 	}
 
