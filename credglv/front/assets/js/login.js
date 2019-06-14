@@ -72,13 +72,13 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "A one time password (OTP) was sent to your phone.",
+                        required: "",
                         minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 },
                 submitHandler: function (form) {
 
-                    credglv.toggle_loading_button(form);
+                    //credglv.toggle_loading_button(form);
                     var login_user = $('#login-with-user');
                     if (login_user.prop('checked')) {
                         form.submit();
@@ -94,7 +94,12 @@ jQuery(function ($) {
 
         var button = $(form).find('button[type="submit"]');
         var i = 0;
-        button.toggleClass('running');
+        //button.toggleClass('running');
+        $('#spinning2').toggle('hide');
+        var spinning = setInterval(function(){
+            $('#spinning2').toggle('hide');
+            clearInterval(spinning);
+        },500);
         credglv.checkstatus_button(1);
     }
 
@@ -167,24 +172,28 @@ jQuery(function ($) {
 
 
     credglv.sendmessage_otp = function (form) {
-
-        var data = {phone: credglv.get_phone_data(form), action: 'credglv_sendphone_message_login'};
-        console.log(data);
-        $.ajax({
-            type: 'POST',
-            url: credglvConfig.ajaxurl,
-            data: data,
-            async: false,
-            success: function (res) {
-                if (res.code === 200) {
-                    var otp_div = $(form).find('.otp-code');
-                    otp_div.toggle('hide');
-                    $('button[type="submit"]').toggle('hide');
-                } else {
-                    $(form).find('.error_log').text(res.message);
+        credglv.toggle_loading_button();
+        var delay = setInterval(function(){
+            var data = {phone: credglv.get_phone_data(form), action: 'credglv_sendphone_message_login'};
+            console.log(data);
+            $.ajax({
+                type: 'POST',
+                url: credglvConfig.ajaxurl,
+                data: data,
+                async: false,
+                success: function (res) {
+                    if (res.code === 200) {
+                        $('.error').text('An OTP was sent to your phone.');
+                        var otp_div = $(form).find('.otp-code');
+                        otp_div.toggle('hide');
+                        $('button[type="submit"]').toggle('hide');
+                    } else {
+                        $(form).find('.error_log').text(res.message);
+                    }
                 }
-            }
-        });
+            });
+            clearInterval(delay);
+        },500);
 
     };
     credglv.get_phone_data = function (form) {
@@ -213,7 +222,8 @@ jQuery(function ($) {
     credglv.login_toggle_login = function (form) {
 
         $(form).find('#login-with-phone').on('click', function (e) {
-
+            $(form).find('#label-login-with-phone').css('display','none');
+            $(form).find('#label-login-with-user').css('display','block');
             var phone_login = $(form).find('.phone_login');
             if (phone_login.is(':hidden')) {
                 phone_login.toggle('show');
@@ -229,6 +239,8 @@ jQuery(function ($) {
             }, 1000);
         });
         $(form).find('#login-with-user').on('click', function (e) {
+            $(form).find('#label-login-with-phone').css('display','block');
+            $(form).find('#label-login-with-user').css('display','none');
             var otp = $(form).find('.otp-code');
             if (otp.is(':visible')) {
                 otp.toggle('hide');
@@ -323,7 +335,13 @@ jQuery(function ($) {
                 val = ref.val();
             if (val.length >= maxChar) {
                 console.log('otp reach 4 key');
-                $(form).submit();
+                $('#spinning1').toggleClass('hide');
+                var submit = setInterval(function () {
+                    $('#spinning1').toggleClass('hide');
+                    $(form).submit();
+                    clearInterval(submit);
+                }, 500);
+                //$(form).submit();
 
                 // ref.attr('disabled', 'disabled');
             }
@@ -350,6 +368,17 @@ jQuery(function ($) {
             $('#hide_button').trigger('click');
             clearInterval(autofocus_ready);
         }, 1000)
+
+        var opts={
+            left: '65%',
+            top: '45%'
+        };
+
+        var target2 = document.getElementById("spinning2");
+        var spinner2 = new Spinner(opts).spin(target2);
+
+        var target1 = document.getElementById("spinning1");
+        var spinner1 = new Spinner().spin(target1);
 
     });
 });
