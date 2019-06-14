@@ -26,8 +26,7 @@ $user_id = get_current_user_id();
 
 if ( $user->check_actived_referral( $user_id ) ) {
 
-	$wmc_html = '<div id="success_noti" style="display: none" class="alert alert-success">The Share URL was coppied to your clipboard. Now go and share it!</div>
-                <div id="credglv-qr-code">
+	$wmc_html = '<div id="credglv-qr-code">
                 
                 <div class="wmc-banners" style="display: flex">';
 
@@ -46,7 +45,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	?>
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput" readonly onclick="myFunction()">
     <!-- The button used to copy the text -->
-    <button data-clipboard-target="#myInput" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy text', 'credglv' ); ?><div class="ld" id="spinning1" style="top: 65%; right: 0"></div></button>
+    <button data-clipboard-text="<?php echo $user->get_url_share_link() ?>" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy link', 'credglv' ); ?><div class="ld" id="spinning" style="top: 65%; right: 0"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
@@ -61,26 +60,34 @@ if ( $user->check_actived_referral( $user_id ) ) {
             var toggle = setInterval(function(){
                 jQuery('#btn_copy').toggleClass('running');
                 clearInterval(toggle);
-            },2000)
-            jQuery('#success_noti').stop();
-            jQuery('#success_noti').fadeOut({queue:false,complete: function(){
-                jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
-                    jQuery('#success_noti').fadeOut(3000);
-                }});
-            }});
+            },1000)
+            var load_toaster = setInterval(function(){
+                toaster('success','','The Share URL was coppied to your clipboard. Now go and share it!');
+                clearInterval(load_toaster);
+            },1000);
+            // jQuery('#success_noti').stop();
+            // jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+            //     jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+            //         jQuery('#success_noti').fadeOut(3000);
+            //     }});
+            // }});
         })
         function myFunction() {
             jQuery('#btn_copy').toggleClass('running');
             var toggle = setInterval(function(){
                 jQuery('#btn_copy').toggleClass('running');
                 clearInterval(toggle);
-            },2000)
-            jQuery('#success_noti').stop();
-            jQuery('#success_noti').fadeOut({queue:false,complete: function(){
-                jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
-                    jQuery('#success_noti').fadeOut(3000);
-                }});
-            }});
+            },1000)
+            var load_toaster = setInterval(function(){
+                toaster('success','','The Share URL was coppied to your clipboard. Now go and share it!');
+                clearInterval(load_toaster);
+            },1000);
+            // jQuery('#success_noti').stop();
+            // jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+            //     jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+            //         jQuery('#success_noti').fadeOut(3000);
+            //     }});
+            // }});
 
             var el = document.getElementById("myInput");
             el.select();
