@@ -44,7 +44,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
 	echo $wmc_html;
 	?>
     <!-- The button used to copy the text -->
-    <button data-clipboard-text="<?php echo $user->get_url_share_link() ?>" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy link', 'credglv' ); ?><div class="ld" id="spinning" style="top: 65%; right: 0"></div></button>
+    <button data-clipboard-text="<?php echo $user->get_url_share_link() ?>" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy link', 'credglv' ); ?><div class="ld" id="spinning1" style="top: 65%; right: 0"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
