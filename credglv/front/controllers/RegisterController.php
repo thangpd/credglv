@@ -138,7 +138,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 		?>
         <p class="form-row form-row-wide">
             <label for="reg_referral">
-				<?php _e( 'Referral', 'credglv' ); ?>
+				<?php _e( 'Introducer', 'credglv' ); ?>
             </label>
 
             <select id="input_referral" name="input_referral" class="input-referral" style="width:100%">
