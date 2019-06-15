@@ -61,15 +61,15 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 		?>
         <p class="form-row form-row-wide">
-            <label for="login-with-phone"> <input type="radio" id="login-with-phone" name="selector" checked>
+            <label for="login-with-phone" id="label-login-with-phone" style="display: none"> <input type="radio" id="login-with-phone" name="selector" checked>
                 <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
-            <label for="login-with-user"> <input type="radio" id="login-with-user" name="selector">
-                <span><?php echo __( 'With username/ email', 'credglv' ); ?></span></label>
+            <label for="login-with-user" id="label-login-with-user"> <input type="radio" id="login-with-user" name="selector">
+                <span><?php echo __( 'With username/email', 'credglv' ); ?></span></label>
         </p>
-        <div class="phone_login">
+        <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
                 <label for="reg_phone">
-					<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
+					<?php _e( 'Mobile number', 'credglv' ); ?>
                 </label>
 
                 <div class="login_countrycode">
@@ -79,8 +79,8 @@ class LoginController extends FrontController implements FrontControllerInterfac
 					?>">
                         <input type="tel" pattern="[0-9]*" class="woocommerce-phone-countrycode" placeholder="+84"
                                value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
-                               name="number_countrycode" size="4">
-                        <ul class="digit_cs-list">
+                               name="number_countrycode" size="4" readonly>
+                        <ul class="digit_cs-list" style="margin: 2% 0">
                             <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
@@ -111,7 +111,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
         <p class="form-row form-row-wide otp-code" data-phone="yes" style="display:none">
             <label for="cred_otp_code_login">
-				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
+				<?php _e( 'OTP', 'credglv' ); ?>
+				<i class="ld-ext-right hide" style="margin-left: 15px;" id="spinning1">
+	        	</i>
             </label>
             <input type="tel" class="input-otp-code" pattern="[0-9]*"
                    name="cred_otp_code"

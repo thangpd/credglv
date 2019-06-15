@@ -18,5 +18,5 @@ if ( is_user_logged_in() ) {
 
     </div>
     <div id="collapsable-example" data-data='<?php echo json_encode( $list ) ?>'
-         style="width:100%; height: 460px"></div>
+         style="width:100%; height: 460px; border: none; background-color: #2f4058"></div>
 <?php } ?>

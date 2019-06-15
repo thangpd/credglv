@@ -194,6 +194,11 @@ return [
 					'url'          => 'https://spin.js.org/spin.css',
 					'dependencies' => []
 				],
+				[
+					'id'           => 'boostrap-notify',
+					'url'          => plugins_url( 'credglv/assets/styles/animate.css' ),
+					'dependencies' => []
+				],
 			]
 
 		]
