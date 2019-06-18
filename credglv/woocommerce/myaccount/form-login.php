@@ -29,21 +29,20 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 		<?php endif; ?>
 
-        <div align="center"><h2><?php esc_html_e( 'Login', 'woocommerce' ); ?></h2></div>
+        <!-- <div align="center"><h2><?php //esc_html_e( 'Login', 'woocommerce' ); ?></h2></div> -->
 
         <form class="woocommerce-form woocommerce-form-login login" method="post">
 
 			<?php do_action( 'woocommerce_login_form_start' ); ?>
             <div class="myaccount-login-page hide">
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                    <label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;<span
-                                class="required">*</span></label>
+                    <label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;</label>
                     <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" autocapitalize="none" pattern="[a-z]*"
                            id="username" autocomplete="username"
                            value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
                 </p>
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                    <label for="password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;<span class="required">*</span></label>
+                    <label for="password"><?php esc_html_e( 'Password', 'woocommerce' ); ?>&nbsp;</label>
                     <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password"
                            id="password" autocomplete="current-password"/>
                 </p>
