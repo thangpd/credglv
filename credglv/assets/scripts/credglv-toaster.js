@@ -42,8 +42,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -94,8 +94,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -146,8 +146,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -159,7 +159,7 @@
 
     var dangerClick = function (title, message, url, target) {
         if (title === '') {
-            title = 'Danger';
+            title = 'Error';
         }
         if (message === '') {
             message = 'Default Message';
@@ -198,8 +198,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -256,8 +256,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -308,8 +308,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -360,8 +360,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
