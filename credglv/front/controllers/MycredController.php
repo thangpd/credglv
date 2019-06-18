@@ -127,7 +127,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 
 	public function credglv_pro_custom_transfer_messages( $message ) {
-		$message['low_amount']    = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
+		$message['low_amount']    = __( 'Minimum amount is ', 'credglv' ) . $this->minimum_transer . '.' . __(' Gold', 'credglv');
 		$message['invalid_pin']   = __( 'Your pin is wrong', 'credglv' );
 		$message['amount_higher'] = __( 'Your amount is higher than balance', 'credglv' );
 
