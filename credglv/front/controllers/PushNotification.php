@@ -23,7 +23,6 @@ use PHPUnit\Runner\Exception;
 
 
 class PushNotifyController extends FrontController implements FrontControllerInterface {
-	const API_ACCESS_KEY = 'AAAAkjudY3w:APA91bG-xcfpDASkXSQX_QUIA6x95MUxbueQ_6z6yeAzh9ttb283eAoaI_iRYFAuP9YEKg5ZkrOHxWscE6dsEbcz5pA1jHe_B0hJv1NFoHb2NYZF9dFUdbNMbGtW6QVT1J_SVdjdsJXw';
 
 	public function send_notify($data) {
 		$singleID = $data['device_token'];
@@ -57,7 +56,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return json_decode($result);
 	}
 
-	function register ($data) {
+	public function register ($data) {
 		$deviceToken = $data['device_token'];
 		$user = get_user_by('login', $data['username']);
 		$user_id = $user->ID;
@@ -97,13 +96,14 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 
 	function init_hook(){
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( 'send_notify/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( '/send_notify/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
 		  ) );
 		} );
+
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( 'register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( '/register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
 		  ) );
@@ -121,7 +121,6 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return [
 			'actions' => [
 				'init'				=> [ self::getInstance(), 'init_hook' ],
-				'wp_login'			=> [ self::getInstance(), 'get_user_id' ],
 			],
 			'ajax'    => [
 
