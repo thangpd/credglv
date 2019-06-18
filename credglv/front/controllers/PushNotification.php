@@ -25,6 +25,24 @@ use PHPUnit\Runner\Exception;
 class PushNotifyController extends FrontController implements FrontControllerInterface {
 
 	public function send_notify($data) {
+		// $serviceAccount = ServiceAccount::fromJsonFile('/Applications/XAMPP/xamppfiles/htdocs/Outsource/GLV/wp-content/plugins/credglv/glv-test-firebase-adminsdk-swohm-ad70b50da3.json');
+		// $firebase = (new Factory)
+		//     ->withServiceAccount($serviceAccount)
+		//     ->withDatabaseUri('https://glv-test.firebaseio.com/')
+		//     ->create();
+		// print_r($firebase);
+		// $database = $firebase->getDatabase();
+		// $auth = $firebase->getAuth();
+
+		// $messaging = $firebase->getMessaging();
+		// $deviceToken = $data['device_token'] ? $data['device_token'] : '';
+		// $message = CloudMessage::fromArray([
+		// 	'token'			=> $deviceToken,
+		//     'notification' 	=> ['title' => 'GLV', 'body' => 'Welcome'], // optional
+		//     'data' 			=> [], // optional
+		// ]);
+
+		//$messaging->send($message);
 		$singleID = $data['device_token'];
 		$fcmMsg = array(
 			'body' => 'here is a message. message',
@@ -56,7 +74,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return json_decode($result);
 	}
 
-	public function register ($data) {
+	function register ($data) {
 		$deviceToken = $data['device_token'];
 		$user = get_user_by('login', $data['username']);
 		$user_id = $user->ID;
@@ -100,13 +118,20 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
 		  ) );
+			// register_rest_route( 'send_notify/v1', '/test', array(
+		 //    'methods' => 'GET',
+		 //    'callback' => __CLASS__.'::send_notify',
+		 //  ) );
 		} );
-
 		add_action( 'rest_api_init', function () {
 		  register_rest_route( '/register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
 		  ) );
+			// register_rest_route( 'send_notify/v1', '/test', array(
+		 //    'methods' => 'GET',
+		 //    'callback' => __CLASS__.'::send_notify',
+		 //  ) );
 		} );
 
 	}
@@ -125,8 +150,30 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 			'ajax'    => [
 
 			],
+			// 'pages'   => [
+			// 	'front' => [
+			// 		'push_notify' =>
+			// 			[
+			// 				'sendNotify',
+			// 				[
+			// 					'title' => __( 'Push', 'credglv' ),
+	  //                           'single' => true
+			// 				]
+			// 			],
+			// 	]
+			// ],
 			'assets'  => [
 				'js'  => [
+					/*[
+						'id'       => 'credglv-register-page-js',
+						'isInline' => false,
+						'url'      => '/front/assets/js/register.js',
+					],*/
+					// [
+					// 	'id'       => 'credglv-main-js',
+					// 	'isInline' => false,
+					// 	'url'      => '/front/assets/js/main.js',
+					// ]
 				]
 			]
 		];
