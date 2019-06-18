@@ -1,6 +1,6 @@
     /*
     Flaticon icon font: Flaticon
-    Creation date: 30/05/2019 13:55
+    Creation date: 18/06/2019 18:08
     */
 
     @font-face {
@@ -37,12 +37,14 @@
   font-smoothing: antialiased;
     }
 
-    .flaticon-transfer:before { content: "\f100"; }
-.flaticon-document:before { content: "\f101"; }
-.flaticon-shop:before { content: "\f102"; }
-.flaticon-network:before { content: "\f103"; }
+    .flaticon-error:before { content: "\f100"; }
+.flaticon-share:before { content: "\f101"; }
+.flaticon-document:before { content: "\f102"; }
+.flaticon-transfer:before { content: "\f103"; }
+.flaticon-shop:before { content: "\f104"; }
     
-    $font-Flaticon-transfer: "\f100";
-    $font-Flaticon-document: "\f101";
-    $font-Flaticon-shop: "\f102";
-    $font-Flaticon-network: "\f103";
+    $font-Flaticon-error: "\f100";
+    $font-Flaticon-share: "\f101";
+    $font-Flaticon-document: "\f102";
+    $font-Flaticon-transfer: "\f103";
+    $font-Flaticon-shop: "\f104";
