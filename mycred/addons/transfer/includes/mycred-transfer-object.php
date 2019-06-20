@@ -832,8 +832,6 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 ?>
 
-<span class="transer-title">Transfer gold</span>
-
 <div class="mycred-transfer-cred-wrapper"<?php if ( $this->reference != '' ) echo ' id="transfer-form-' . esc_attr( $this->reference ) . '"'; ?>>
 	<form class="form mycred-transfer mycred-transfer-form" id="mycred-transfer-form-<?php echo esc_attr( $this->reference ); ?>" method="post" data-ref="<?php echo esc_attr( $this->reference ); ?>" action="">
 
