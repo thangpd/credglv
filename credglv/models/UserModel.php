@@ -15,6 +15,7 @@ use credglv\core\components\RoleManager;
 use credglv\core\CustomModel;
 use credglv\core\interfaces\MigrableInterface;
 use credglv\core\interfaces\ModelInterface;
+use credglv\front\controllers\UserController;
 use credglv\helpers\GeneralHelper;
 
 class UserModel extends CustomModel implements ModelInterface, MigrableInterface {
@@ -119,7 +120,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
                 END WHILE;
 
                 IF(return_value = 'count') THEN
-                SELECT count(*) into no_of_followers  FROM " . $tableName . " WHERE active = 1 AND FIND_IN_SET(referral_parent, rv );
+                SELECT count(*) into no_of_followers  FROM " . $tableName . " WHERE  FIND_IN_SET(referral_parent, rv );
 
                 RETURN no_of_followers;
                 ELSE
@@ -236,16 +237,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 
-	/*
-		 * Retrieve total number of followers
-		 */
-	function count_referral_user( $user_id ) {
-		global $wpdb;
-		//return 0;
-		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
-
-		return $followers;
-	}
 
 
 	public function referral_user( $user_field, $where, $user_id ) {
@@ -258,21 +249,40 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 
 	public function get_url_share_link() {
+		$link_share = '';
+		if ( is_user_logged_in() ) {
+			$code = wp_get_current_user();
+			$code = $code->data->user_login;
+			/*$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
 
-		$code = wp_get_current_user();
-		$code = $code->data->user_login;
-		/*$current_user_id = $this->referral_user( 'user_id', 'user_id', get_current_user_id() );
-
-		if ( $current_user_id ) {
-			$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
-		}*/
-		if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
-			$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ).'?ru=' . $code;
-		} else {
-			$link_share = home_url() . '?ru=' . $code;
+			if ( $current_user_id ) {
+				$code = $this->referral_user( 'referral_code', 'user_id', $current_user_id );
+			}*/
+			if ( get_option( 'woocommerce_myaccount_page_id', false ) ) {
+				$link_share = get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) . '?ru=' . $code;
+			} else {
+				$link_share = home_url() . '?ru=' . $code;
+			}
 		}
 
 		return $link_share;
+	}
+
+
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
+	public function add_user_to_referral( $user_id ) {
+		global $wpdb;
+		$table  = self::getTableName();
+		$data   = array( 'user_id' => $user_id, 'active' => 0, 'referral_code' => $this->get_referralcode(), );
+		$format = array( '%d', '%d', '%s', );
+		$wpdb->insert( $table, $data, $format );
+		$my_id = $wpdb->insert_id;
+
+		return $my_id;
 	}
 
 	/* check actived referral
@@ -280,7 +290,41 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	 *
 	 *
 	*/
+	public function has_user( $user_id ) {
+		global $wpdb;
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d ", $user_id );
+		$result    = $wpdb->get_results( $prepare );
+		if ( ! empty( $result ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/* check actived referral
+		 *
+		 *
+		 *
+		*/
 	public function check_actived_referral( $user_id, $status = 1 ) {
+		global $wpdb;
+		if ( ! $this->has_user( $user_id ) ) {
+			$result = $this->add_user_to_referral( $user_id, $status );
+		}
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d and active=%d", $user_id, $status );
+		$result = $wpdb->get_results( $prepare );
+
+		return $result;
+	}
+
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
+	public function add_userId( $user_id, $status = 0 ) {
 		global $wpdb;
 		$tablename = self::getTableName();
 		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%s and active=%s", $user_id, $status );
@@ -319,6 +363,65 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
+
+	/**
+	 * Get phone by userid
+	 * @return mixed
+	 */
+	public static function getPhoneByUserID( $userID ) {
+
+		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
+
+		return $phone;
+	}
+
+	/**
+	 * Get user id by phone
+	 * @return mixed
+	 */
+	public static function getUserIDByPhone( $phone ) {
+		global $wpdb;
+
+		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+
+		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+
+
+		if ( ! empty( $mobile_num_result ) ) {
+
+			$res['userID'] = $mobile_num_result;
+
+			return $res;
+
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'Phone is not registered', 'credglv' );
+
+		}
+
+	}
+
+	/**
+	 * Get referral parent
+	 */
+	public function checkPhoneIsRegistered( $phone ) {
+		global $wpdb;
+		$query = "select * from " . $wpdb->prefix . "usermeta  where meta_key=%s and meta_value=%s";
+
+		$prepare = $wpdb->prepare( $query, UserController::METAKEY_PHONE, $phone );
+
+		$result = $wpdb->get_results( $prepare );
+		$result = reset( $result );
+
+		if ( ! empty( $result ) ) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+
 	/**
 	 * Get referral parent user_login
 	 * return ID,user_login object
@@ -339,31 +442,43 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	 * */
 	// write [when active = 1] and to function mysql to turn of debug
 	public function recursive_tree_referral_user( $id, $level = 0 ) {
-		$user   = get_user_by( 'ID', $id );
-		$user_fullname = get_user_meta($id,'user_fullname',true);
-		$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+		$user          = get_user_by( 'ID', $id );
+		$user_fullname = get_user_meta( $id, 'user_fullname', true );
+		$avatar        = get_user_meta( $id, 'avatar' );
 
 		$subarr = array(
-			'ID'           		=> $id,
-			'display_name' 		=> $user->data->user_login,
-			'display_fullname' 	=> $user_fullname,
-			'photo'        		=> $avatar,
-			'level'        		=> $level,
+			'ID'               => $id,
+			'display_name'     => $user->data->user_login,
+			'display_fullname' => $user_fullname,
+			'photo'            => $avatar,
+			'level'            => $level,
 		);
 		if ( $this->count_referral_user( $id ) ) {
 			$subarr['children'] = $this->get_children_referral_user( $id, $level );
-		} else {
-			$subarr['children'][] = (object) array(
-				'ID'           		=> '0',
-				'display_name' 		=> __( 'Undefined', 'credglv' ),
-				'display_fullname' 	=> __( 'Undefined', 'credglv' ),
-				'photo'        		=> get_avatar_url( '', [ 'default' => 'mysteryman' ] )
-			);
 		}
+		// else {
+		// 	$subarr['children'][] = (object) array(
+		// 		'ID'               => '0',
+		// 		'display_name'     => __( 'Undefined', 'credglv' ),
+		// 		'display_fullname' => __( 'Undefined', 'credglv' ),
+		// 		'photo'            => get_avatar_url( '', [ 'default' => 'mysteryman' ] )
+		// 	);
+		// }
 
 		return (object) $subarr;
 	}
 
+
+	/*
+		 * Retrieve total number of followers
+		 */
+	function count_referral_user( $user_id ) {
+		global $wpdb;
+		//return 0;
+		$followers = $wpdb->get_var( 'SELECT followers_count(' . $user_id . ', \'count\' )' );
+
+		return $followers;
+	}
 
 	public function get_children_referral_user( $id, $level = 0 ) {
 		global $wpdb;
@@ -371,28 +486,29 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		if ( $this->count_referral_user( $id ) ) {
 			$tablename = self::getTableName();
 			$prepare   = $wpdb->prepare( "select ID,display_name,user_login from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
+
 			$result    = $wpdb->get_results( $prepare, ARRAY_A );
 
 			$subarr = array();
 			foreach ( $result as $k => $v ) {
-				$avatar = get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
-				$user_fullname = get_user_meta($v['ID'],'user_fullname',true);
+				$avatar        = get_user_meta( $v['ID'], 'avatar' ) ? get_user_meta( $v['ID'], 'avatar' ) : get_avatar_url( $id, array( 'default' => 'mysteryman' ) );
+				$user_fullname = get_user_meta( $v['ID'], 'user_fullname', true );
 				if ( $this->count_referral_user( $v['ID'] ) ) {
 					$subarr[] = (object) array(
-						'ID'          		=> $v['ID'],
-						'display_name' 		=> $v['user_login'],
-						'display_fullname' 	=> $user_fullname,
-						'photo'        		=> $avatar,
-						'level'        		=> $level,
-						'children'     		=> $this->get_children_referral_user( $v['ID'], $level )
+						'ID'               => $v['ID'],
+						'display_name'     => $v['user_login'],
+						'display_fullname' => $user_fullname,
+						'photo'            => $avatar,
+						'level'            => $level,
+						'children'         => $this->get_children_referral_user( $v['ID'], $level )
 					);
 				} else {
 					$subarr[] = (object) array(
-						'ID'           		=> $v['ID'],
-						'display_name' 		=> $v['user_login'],
-						'display_fullname' 	=> $user_fullname,
-						'photo'        		=> $avatar,
-						'level'        		=> $level,
+						'ID'               => $v['ID'],
+						'display_name'     => $v['user_login'],
+						'display_fullname' => $user_fullname,
+						'photo'            => $avatar,
+						'level'            => $level,
 					);
 				}
 			}

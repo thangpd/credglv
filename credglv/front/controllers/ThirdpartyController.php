@@ -84,13 +84,18 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 // In production, these should be environment variables. E.g.:
 // $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
 
-
 		$phone_number = $data['phone'];
 
 		if ( WP_DEBUG == false ) {
+//			$account_sid = 'ACbe3df4e270fa38fa4b4db4a3a53c26fc';//test
+//			$auth_token  = '5b00046a9b8b90b8278d3152f4e7521e';//test
+// A Twilio number you own with SMS capabilities
+//			$twilio_number = "+15672264603";//test
 			if ( ! empty( $phone_number ) ) {
+//				if ( ! empty( get_transient( $phone_number ) ) ) {
 				$send_otp_number = mt_rand( 1000, 9999 );
 				set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
+
 				try {
 
 					$basic = new Basic( $key, $secret_key );
@@ -115,6 +120,13 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
 					);
 				}
+				/*
+			} else {
+				return array(
+					'code'    => 200,
+					'message' => __( 'We sent code verify to your phone.', 'credglv' ),
+				);
+			}*/
 			} else {
 				return array( 'code' => 404, 'message' => 'Missing phone number' );
 			}
@@ -132,14 +144,16 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 	public function sendphone_message() {
 		$res = array( 'status' => 'success', 'message' => __( 'No phone number', 'credglv' ) );
 
-		$user_front = UserController::getInstance();
+
+		$user_front = UserModel::getInstance();
 		if ( isset( $_POST['phone'] ) && ! empty( $_POST['phone'] ) ) {
 			$data = array( 'phone' => $_POST['phone'] );
 			$res  = $this->sendphone_otp( $data );
 			$this->responseJson( $res );
 		} elseif ( ! empty( $phone_num = $user_front->getPhoneByUserID( get_current_user_id() ) ) ) {
 			$data = array( 'phone' => $phone_num );
-			$res  = $this->sendphone_otp( $data );
+
+			$res = $this->sendphone_otp( $data );
 			$this->responseJson( $res );
 		} else {
 			echo json_encode( $res );
@@ -157,28 +171,31 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 			if ( ! empty( $data['phone'] && ! empty( $data['otp'] ) ) ) {
 				$phone_number = $data['phone'];
 				$otp          = $data['otp'];
-				if ( $trainsient = get_transient( $phone_number ) ) {
-					if ( $otp == $trainsient ) {
-						return array(
-							'code'    => 200,
-							'message' => __( 'OTP is matched ', 'credglv' )
-						);
+				$trainsient   = get_transient( $phone_number );
+				if ( ! empty( $trainsient ) ) {
+					if ( $trainsient == $data['otp'] ) {
+						if ( $otp == $trainsient ) {
+							return array(
+								'code'    => 200,
+								'message' => __( 'OTP is matched ', 'credglv' )
+							);
+						} else {
+							return array(
+								'code'    => 400,
+								'message' => __( 'OTP is not matched ', 'credglv' )
+							);
+						}
 					} else {
+						//no trasient
 						return array(
-							'code'    => 400,
-							'message' => __( 'OTP is not matched ', 'credglv' )
+							'code'    => 403,
+							'message' => __( 'OTP expired. Another code sent to your phone. ' . $phone_number, 'credglv' )
 						);
 					}
-				} else {
-					//no trasient
-					$res = $this->sendphone_otp( array( 'phone' => $phone_number ) );
-					if ( $res != 200 ) {
-						return $res;
-					}
-
+				}else{
 					return array(
 						'code'    => 403,
-						'message' => __( 'OTP expired. We sent another otp to your phone.' . $phone_number, 'credglv' )
+						'message' => __( 'Wrong pin', 'credglv' )
 					);
 				}
 			} else {

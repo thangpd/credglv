@@ -3,19 +3,15 @@
 $total_cash  = isset( $data['total_cash']->total ) ? number_format( $data['total_cash']->total, 2, '.', '' ) : 0;
 $total_local = isset( $data['total_local']->total ) ? number_format( $data['total_local']->total, 2, '.', '' ) : 0;
 ?>
-<h2>Balance Cash: <?php
+<h2>Cash Balance: <?php
 	if ( ! empty( $data ) ) {
-		echo $total_cash . __( 'USD', 'credglv' );
-	} ?></h2>
-<h2>Balance Local: <?php
-	if ( ! empty( $data ) ) {
-		echo $total_local . __( 'USD', 'credglv' );
+		echo $total_cash.' '. __( 'USD', 'credglv' );
 	} ?></h2>
 <form method="POST" action="" class="form-control form-redeem local-redeem">
 
     <label for="redeem_cash">
-		<?php echo __( 'Local Bank Redeem', 'credglv' ) ?>
-        <input type="text" name="amount" id="amount">
+		<?php echo __( 'Withdrawal amount', 'credglv' ) ?>
+        <input type="text" name="amount" id="amount" style="width: 100%">
     </label>
     <input type="hidden" name="type" value="local" id="type">
 

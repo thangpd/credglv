@@ -41,8 +41,8 @@ jQuery(function ($) {
                 d.children = null;
             }
         }
-
-        root.children.forEach(collapse);
+        if(root.children != undefined)
+            root.children.forEach(collapse);
         update(root);
 
         function update(source) {
@@ -85,9 +85,9 @@ jQuery(function ($) {
                 .attr('xlink:href', function (d, i) {
                     return d.photo;
                 })
-                .attr('height', 60)
-                .attr('width', 60)
-                .attr('x', 0)
+                .attr('height', 80)
+                .attr('width', 80)
+                .attr('x', -10)
                 .attr('y', 0);
 
             nodeEnter.append("circle")
@@ -233,14 +233,16 @@ jQuery(function ($) {
         }
 
         function username_click(d) {
-            $('form#mycred-transfer-form-transfer').animate({
-                scrollTop: $("#transfer-form-transfer").offset().top
-            }, 2000);
-            console.log(d);
-            var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
-            input_username.val(d.display_name);
-            $('input[name="mycred_new_transfer[amount]"]').focus();
-            console.log(input_username);
+            if(d.level != 0){
+                $('form#mycred-transfer-form-transfer').animate({
+                    scrollTop: $("#transfer-form-transfer").offset().top
+                }, 2000);
+                console.log(d);
+                var input_username = $('input[name="mycred_new_transfer[recipient_id]"]');
+                input_username.val(d.display_name);
+                $('input[name="mycred_new_transfer[amount]"]').focus();
+                console.log(input_username);
+            }
         }
     }
 

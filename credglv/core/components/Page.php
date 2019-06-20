@@ -209,29 +209,9 @@ class Page extends BaseObject implements ComponentInterface
             }
 
         } else {
-            if ($object instanceof \WP_Post && $object->post_type == 'course') {
-                if (is_single()) {
-                    do_action('credglv_course_view_detail', $object->ID);
-                }
-                $this->pageHandler = apply_filters('credglv_course_detail_handler', ['credglv\front\controllers\CourseController', 'courseDetail']);
-                return apply_filters('credglv_course_detail_layout', $this->credglvRootPage);
-            }
-            if ($object instanceof \WP_Post && $object->post_type == 'credglv_bundle') {
-                if (is_single()) {
-                    do_action('credglv_bundle_view_detail', $object->ID);
-                }
-                $this->pageHandler = apply_filters('credglv_bundle_detail_handler', ['credglv\front\controllers\BundleController', 'bundleDetail']);
-                return apply_filters('credglv_course_detail_layout', $this->credglvRootPage);
-            }
-            if ($object instanceof \WP_Term && $object->taxonomy == 'cat_course') {
-                $this->pageHandler = ['credglv\front\controllers\CourseCatController', 'renderCategoryDetail'];
-                return $this->credglvRootPage;
-            }
-            if ($object instanceof \WP_Term && $object->taxonomy == 'cat_bundle') {
-                $this->pageHandler = ['credglv\front\controllers\BundleCatController', 'renderCategoryDetail'];
-                return $this->credglvRootPage;
-            }
-            $_template = ($object instanceof \WP_Post) ? get_post_meta($object->ID, 'credglv_page_template', true) : '';
+
+
+	        $_template = ($object instanceof \WP_Post) ? get_post_meta($object->ID, 'credglv_page_template', true) : '';
             if (!empty($_template)) {
                 if (!is_array($_template)) {
                     $_template = json_decode(urldecode($_template), true);
@@ -242,6 +222,9 @@ class Page extends BaseObject implements ComponentInterface
             } else {
                 $this->pageHandler  = [];
             }
+	        if ( $object->post_name == 'credglv-home' ) {
+		        $template = $this->credglvRootPageSingle;
+	        }
         }
         return $template;
     }

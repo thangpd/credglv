@@ -61,25 +61,45 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 				return;
 			}
-			$balance = $mycred->get_users_balance( $user_id );
-			if ( $user->check_actived_referral( $user_id, 0 ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
-				$mycred->add_creds( 'register_fee',
-					$user_id,
-					- $this->joining_fee,
-					__( 'Joining fee', 'credglv' ),
-					1,
-					'',
-					$settings['point_type'] );
-				$benefit_of_joining_fee = $this->mycred_share_commision( $user_id, $mycred, $this->joining_fee );
-				$mycred->add_creds( 'benefit_register_fee',
-					1,
-					$benefit_of_joining_fee,
-					__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
-					'',
-					'',
-					$settings['point_type'] );
-				$user->update_active_status( $user_id );
 
+			$balance = $mycred->get_users_balance( $user_id );
+//			echo '<pre>';
+//			print_r( 'init if else active referal' );
+//			echo '</pre>';
+//			echo '<pre>';
+//			print_r($user_id);
+//			echo '</pre>';
+			//			if ( empty( $user->check_actived_referral( $user_id, 0 ) ) && $balance >= $this->joining_fee && ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+			if ( ! empty( $user->check_actived_referral( $user_id, 0 ) ) ) {
+//				echo '<pre>';
+//				print_r( 'empty( $user->check_actived_referral( $user_id, 0 )' );
+//				echo '</pre>';
+				if ( $balance >= $this->joining_fee ) {
+//					echo '<pre>';
+//					print_r( '$balance >= $this->joining_fee' );
+//					echo '</pre>';
+					if ( ! $mycred->has_entry( 'register_fee', 1, $user_id ) ) {
+//						echo '<pre>';
+//						print_r( 'Has not joining fee' );
+//						echo '</pre>';
+						$mycred->add_creds( 'register_fee',
+							$user_id,
+							- $this->joining_fee,
+							__( 'Joining fee', 'credglv' ),
+							1,
+							'',
+							$settings['point_type'] );
+						$benefit_of_joining_fee = $this->mycred_share_commision( $user_id, $mycred, $this->joining_fee );
+						$mycred->add_creds( 'benefit_register_fee',
+							1,
+							$benefit_of_joining_fee,
+							__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
+							'',
+							'',
+							$settings['point_type'] );
+						$user->update_active_status( $user_id );
+					}
+				}
 			}
 		}
 	}
@@ -107,8 +127,9 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 
 	public function credglv_pro_custom_transfer_messages( $message ) {
-		$message['low_amount']  = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
-		$message['invalid_pin'] = __( 'Your pin is wrong', 'credglv' );
+		$message['low_amount']    = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
+		$message['invalid_pin']   = __( 'Your pin is wrong', 'credglv' );
+		$message['amount_higher'] = __( 'Your amount is higher than balance', 'credglv' );
 
 		return $message;
 	}
@@ -121,6 +142,9 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		// Example: Minimum 30 points
 		if ( $context->request['amount'] < $this->minimum_transer ) {
 			return 'low_amount';
+		}
+		if ( $context->request['amount'] + $this->transfer_fee > $context->balances['mycred_default'] ) {
+			return 'amount_higher';
 		}
 		$pin = get_user_meta( get_current_user_id(), \credglv\front\controllers\UserController::METAKEY_PIN, true );
 		if ( empty( $pin ) ) {
@@ -154,7 +178,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 			</div>
 		</div>
 		<br>
-		<p>'.__('Transaction fee (will be debited to sender’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold.','credglv').'</p>
+		<p>' . __( 'Transaction fee (will be debited to recipent’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold. The amount is a multiple of 10.', 'credglv' ) . '</p>
 ';
 		$fields .= $fields_temp;
 

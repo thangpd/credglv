@@ -28,44 +28,34 @@ class UserController extends FrontController implements FrontControllerInterface
 	const METAKEY_PIN = 'cred_user_pin';
 	const METAKEY_COOKIE = 'CREDGLV_REFERRAL_CODE';
 
+
 	/**
-	 * Get user id by phone
+	 * Check phone is empty
 	 * @return mixed
 	 */
-	public static function getUserIDByPhone( $phone ) {
+	/*public static function checkPhoneIsRegistered( $phone ) {
 		global $wpdb;
 
-		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+		$res = array( 'code' => 200, 'message' => 'Phone number is not registered' );
 
-		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+		$query             = "select * from " . $wpdb->prefix . "usermeta  where meta_key='" . self::METAKEY_PHONE . "' and meta_value='" . $phone . "' ";
+		$mobile_num_result = $wpdb->get_var( $query );
 
+		echo '<pre>';
+		print_r( $query);
+		echo '</pre>';
 
 		if ( ! empty( $mobile_num_result ) ) {
-
-			$res['userID'] = $mobile_num_result;
-
-			return $res;
-
-		} else {
 			$res['code']    = 404;
-			$res['message'] = __( 'Phone is not registered', 'credglv' );
+			$res['message'] = __( 'Phone number is registered', 'credglv' );
 
-			return $res;
 		}
 
+		return $res;
 
-	}
 
-	/**
-	 * Get phone by userid
-	 * @return mixed
-	 */
-	public static function getPhoneByUserID( $userID ) {
+	}*/
 
-		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
-
-		return $phone;
-	}
 
 	/**
 	 * Register new endpoints to use inside My Account page.
@@ -75,15 +65,33 @@ class UserController extends FrontController implements FrontControllerInterface
 	function credglv_wooc_edit_profile_save_fields( $args ) {
 		$user_id = get_current_user_ID();
 
+
+		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
+//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
+			$data = array(
+				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
+				'otp'   => $_POST['cred_otp_code']
+			);
+
+			$third_party = ThirdpartyController::getInstance();
+
+			$res = $third_party->verify_otp( $data );
+			if ( $res['code'] != 200 ) {
+				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
+			}
+		} else {
+			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
+			return $_POST;
+		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
 			$args->add( 'billing_phone_name_error', __( 'Mobile number is required.', 'woocommerce' ) );
 
 			return $_POST;
 		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && ! empty( $_POST[ self::METAKEY_PHONE ] ) ) {
-			$current_phone = UserController::getPhoneByUserID( $user_id );
+			$current_phone = UserModel::getPhoneByUserID( $user_id );
 			if ( $_POST['cred_billing_phone'] !== $current_phone ) {
-				$mobile_num_result = self::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
+				$mobile_num_result = UserModel::getUserIDByPhone( $_POST[ self::METAKEY_PHONE ] );
 				if ( isset( $mobile_num_result['code'] ) && $mobile_num_result['code'] == 200 ) {
 					if ( $user_id != $mobile_num_result ) {
 						wc_add_notice( __( 'Mobile Number is already used.', 'woocommerce' ), 'error' );
@@ -109,20 +117,6 @@ class UserController extends FrontController implements FrontControllerInterface
 			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
 		}
 
-		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
-//			$_POST['number_countrycode'].$_POST['cred_billing_phone']
-			$data = array(
-				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
-				'otp'   => $_POST['cred_otp_code']
-			);
-
-			$third_party = ThirdpartyController::getInstance();
-
-			$res = $third_party->verify_otp( $data );
-			if ( $res['code'] != 200 ) {
-				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
-			}
-		}
 
 
 	}
@@ -157,7 +151,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				array(
 					'payment'       => __( 'Payment', 'credglv' ),
 					'profile'       => __( 'Profile', 'credglv' ),
-					'referral'      => __( 'Network', 'credglv' ),
+					'referral'      => __( 'Teamwork', 'credglv' ),
 					'cash_redeem'   => __( 'Cash Redeem', 'credglv' ),
 					'local_redeem'  => __( 'Local Redeem', 'credglv' ),
 					'point_history' => __( 'History Log', 'credglv' ),
@@ -282,9 +276,13 @@ class UserController extends FrontController implements FrontControllerInterface
 ';
 
 		$order              = new OrderModel();
+		$settings 			= mycred_part_woo_settings();
+		$user_id 			= get_current_user_id();
 		$data               = [];
 		$data['html']       = '';
 		$data['total_cash'] = $order->getTotalUserCash( get_current_user_id() );
+		$mycred 				= mycred( $settings['mycred_default'] );
+		$data['gold_balance'] 	= $mycred->get_users_balance( $user_id );
 		$records            = $order->findAllrecordsUser( get_current_user_id() );
 		if ( ! empty( $records ) ) {
 			foreach ( $records as $val ) {
@@ -304,8 +302,35 @@ class UserController extends FrontController implements FrontControllerInterface
 
 
 	function wpb_woo_endpoint_title( $title, $id ) {
-		if ( is_wc_endpoint_url( 'register' ) ) { // add your endpoint urls
-			$title = ""; // change your entry-title
+
+		if ( is_page( $id ) ) {
+			switch ( $title ) {
+				case is_wc_endpoint_url( 'payment' ):
+					$title = __( 'Payment', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'profile' ):
+					$title = __( 'Profile', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'referral' ):
+
+					$title = __( 'Teamwork', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'cash_redeem' ):
+					$title = __( 'Cash Redeem', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'local_redeem' ):
+					$title = __( 'Withdrawal', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'point_history' ):
+					$title = __( 'History Log', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'edit-account' ):
+					$title = __( 'PIN', 'credglv' );
+					break;
+				case is_wc_endpoint_url( 'register' ):
+					$title = '';
+					break;
+			}
 		}
 
 		return $title;
@@ -328,7 +353,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		//add endpoint title
 
 		/* Hooks for myaccount referral endpoint */
-		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
+//		add_filter( 'woocommerce_account_menu_items', array( $this, 'add_my_account_menu' ), 5 );
 		add_filter( 'woocommerce_get_query_vars', array( $this, 'add_referral_query_var' ) );
 
 //		delete require first name and last name
@@ -358,6 +383,10 @@ class UserController extends FrontController implements FrontControllerInterface
 		$user = wp_get_current_user();
 
 		if ( ! is_user_logged_in() || in_array( 'customer', (array) $user->roles ) ) {
+			return false;
+			//The user has the "author" role
+		}
+		if ( ! is_user_logged_in()  || in_array( 'subscriber', (array) $user->roles ) ) {
 			return false;
 			//The user has the "author" role
 		}
@@ -432,7 +461,7 @@ class UserController extends FrontController implements FrontControllerInterface
 				}
 			}
 		}
-		if ( isset( $wp_query->query_vars['cashredeem'] ) || isset( $wp_query->query_vars['localredeem'] ) ) {
+		if ( isset( $wp_query->query_vars['cash_redeem'] ) || isset( $wp_query->query_vars['local_redeem'] ) ) {
 			global $post;
 			if ( isset( $post->ID ) ) {
 				if ( $post->ID == get_option( 'woocommerce_myaccount_page_id' ) ) {
@@ -454,18 +483,42 @@ class UserController extends FrontController implements FrontControllerInterface
 		if ( isset( $_FILES['file'] ) ) {
 			if ( $_FILES['file']['error'] <= 0 ) {
 				$type_avatar = $_FILES['file']['type'];
-				$user_id = get_current_user_id();
-				$explode   = explode( '/', $type_avatar );
+				$user_id     = get_current_user_id();
+				$explode     = explode( '/', $type_avatar );
 				if ( $explode[0] == 'image' ) {
 					$from_avatar = $_FILES['file']['tmp_name'];
-					$to        = wp_upload_dir()['basedir'];
-					$timezone  = + 7;
-					$time      = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
+					$to          = wp_upload_dir()['basedir'];
+					$timezone    = + 7;
+					$time        = gmdate( "Y-m-j-H-i-s", time() + 3600 * ( $timezone + date( "I" ) ) );
 					$name_avatar = $user_id . '_ava_' . $time . '_' . $_FILES['file']['name'];
-					$url       = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
-					$src       = $to . '/credglv/img/' . $name_avatar;
+					$url         = wp_upload_dir()['baseurl'] . '/credglv/img/' . $name_avatar;
+					$src         = $to . '/credglv/img/' . $name_avatar;
 					if ( ! is_file( $src ) ) {
 						move_uploaded_file( $from_avatar, $src );
+						$exif = exif_read_data( $src );
+						if ( $exif && isset( $exif['Orientation'] ) ) {
+							$orientation = $exif['Orientation'];
+							if ( $orientation != 1 ) {
+								$img = imagecreatefromjpeg( $src );
+								$deg = 0;
+								switch ( $orientation ) {
+									case 3:
+										$deg = 180;
+										break;
+									case 6:
+										$deg = 270;
+										break;
+									case 8:
+										$deg = 90;
+										break;
+								}
+								if ( $deg ) {
+									$img = imagerotate( $img, $deg, 0 );
+								}
+								// then rewrite the rotated image back to the disk as $filename
+								imagejpeg( $img, $src, 95 );
+							} // if there is some rotation necessary
+						}
 						update_user_meta( $user_id, 'avatar', $url );
 					}
 				}
@@ -495,7 +548,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			],
 			'ajax'    => [
 				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
-				'upload_avatar'		  => [ self::getInstance(), 'uploadAvatar' ],
+				'upload_avatar'       => [ self::getInstance(), 'uploadAvatar' ],
 			]
 		];
 	}

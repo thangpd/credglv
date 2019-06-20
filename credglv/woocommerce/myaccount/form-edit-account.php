@@ -39,7 +39,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
         <input type="text" class="input-text" name="cred_billing_phone" id="cred_billing_phone"
                value="<?php
 		       echo esc_attr( get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PHONE, true ) ); ?>"
-               maxlength="10"/>
+               maxlength="16"/>
     </p>
     <p class="woocommerce-form-row woocommerce-form-row--first form-row form-row-first">
         <label for="account_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span
@@ -51,7 +51,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
     <p class="woocommerce-form-row woocommerce-form-row--last form-row form-row-last">
         <label for="cred_user_pin">
 			<?php _e( 'Pin', 'woocommerce' );
-			echo get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PIN, true )
+
 			?>
             <span
                     class="required">*</span>
@@ -59,7 +59,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 
         <input type="password" class="input-text"
                name="<?php echo \credglv\front\controllers\UserController::METAKEY_PIN; ?>" id="cred_user_pin"
-               value=""
+               value="<?php echo get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ?>"
                maxlength="4"/>
     </p>
     <div class="clear"></div>

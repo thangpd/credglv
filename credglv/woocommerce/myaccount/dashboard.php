@@ -39,7 +39,7 @@ if ( $user->check_actived_referral( $user_id ) ) {
     <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
     <!-- The button used to copy the text -->
     <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
-    <button onclick="share_link()"><?php echo __( 'Share', 'credglv' ); ?></button>
+    <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
     <script>
         function myFunction() {
@@ -52,16 +52,21 @@ if ( $user->check_actived_referral( $user_id ) ) {
             /* Copy the text inside the text field */
             document.execCommand("copy");
         }
-
-        function share_link() {
-            alert('share');
-        }
-
-
     </script>
 	<?php
 } else {
-	echo 'Your account is not active. Contact admin or transfer at least ' . credglv()->config->credglv_joining_fee . ' to this account to active';
+
+// fong 
+?>
+
+<p>Your account is not fully activated. Some functions may not work properly. Beside, you may not enjoy some privilege that only Officially GLV Member has. </p>
+
+<p>For automatic activation, please ask your introducer to give you the Activation Fee. In case you don't know who your inrtoducer is, please contact us for further support. </p>
+
+<p>Learn more about <a href="https://member.goldleaf-ventures.com/member-activation-fee/">Activation Fee</a>.</p>
+
+<?php 
+
 };
 
 

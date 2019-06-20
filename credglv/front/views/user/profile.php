@@ -102,7 +102,7 @@ function render_profile_html() {
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_avatar">Avatar';
-	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<p><img style="width:125px;height:125px;object-fit: cover;" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
 	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
@@ -244,7 +244,7 @@ function render_profile_error_html() {
 	$html .= '<input type="file" name="user_avatar" class="hide">';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_avatar">Avatar';
-	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
+	$html .= '<p><img style="width:125px;height:125px;object-fit: cover;" src="' . $get_img_ava . '" alt="" class="update_img_ava"></p>';
 	$html .= '<input type="file" id="user_avatar" name="user_avatar" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
@@ -271,7 +271,7 @@ function render_profile_error_html() {
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_date">Date of Birth';
-	$html .= '<input type="date" min="2017-01-01" max="2017-12-30" id="user_date" name="user_date" value="' . $user_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '<input type="date" min="1900-01-01" max="2017-12-30" id="user_date" name="user_date" value="' . $user_date . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_fullname">Address';
@@ -320,6 +320,35 @@ function render_profile_error_html() {
 	echo $html;
 }
 
+function correctImageOrientation($filename) {
+  if (function_exists('exif_read_data')) {
+    $exif = exif_read_data($filename);
+    if($exif && isset($exif['Orientation'])) {
+      $orientation = $exif['Orientation'];
+      if($orientation != 1){
+        $img = imagecreatefromjpeg($filename);
+        $deg = 0;
+        switch ($orientation) {
+          case 3:
+            $deg = 180;
+            break;
+          case 6:
+            $deg = 270;
+            break;
+          case 8:
+            $deg = 90;
+            break;
+        }
+        if ($deg) {
+          $img = imagerotate($img, $deg, 0);        
+        }
+        // then rewrite the rotated image back to the disk as $filename 
+        imagejpeg($img, $filename, 95);
+      } // if there is some rotation necessary
+    } // if have the exif orientation info
+  } // if function exists      
+}
+
 $upload     = wp_upload_dir();
 $upload_dir = $upload['basedir'];
 $upload_dir = $upload_dir . '/credglv/img';
@@ -342,6 +371,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 				$src      = $to . '/credglv/img/' . $name_pp;
 				if ( ! is_file( $src ) ) {
 					move_uploaded_file( $from_pp, $src );
+					correctImageOrientation($src);
 					update_user_meta( $user_id, 'passports', $url );
 				}
 			}
@@ -361,6 +391,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 				$src       = $to . '/credglv/img/' . $name_iden;
 				if ( ! is_file( $src ) ) {
 					move_uploaded_file( $from_iden, $src );
+					correctImageOrientation($src);
 					update_user_meta( $user_id, 'iden', $url );
 				}
 			}
@@ -380,6 +411,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 				$src       = $to . '/credglv/img/' . $name_avatar;
 				if ( ! is_file( $src ) ) {
 					move_uploaded_file( $from_avatar, $src );
+					correctImageOrientation($src);
 					update_user_meta( $user_id, 'avatar', $url );
 				}
 			}
@@ -407,7 +439,7 @@ if ( isset( $_POST['uploadclick'] ) ) {
 		update_user_meta( $user_id, 'user_date', $user_date );
 		update_user_meta( $user_id, 'user_country', $user_country );
 		$layout = '';
-		$layout .= '<div style="background-color: green;text-align: center;color: white">Update Success</div>';
+		$layout .= '<div style="text-align: center;" class="alert alert-success">Update Success</div>';
 		echo $layout;
 		global $flag;
 		$flag = 0;

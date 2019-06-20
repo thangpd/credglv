@@ -101,6 +101,15 @@ return [
 					'url'          => plugins_url( 'credglv/assets/scripts/credglv-toaster.js' ),
 					'dependencies' => [
 						'jquery',
+						'boostrap-notify'
+					],
+				],
+				[
+					'id'           => 'boostrap-notify',
+					'url'          => plugins_url( 'credglv/assets/libs/bootstrap-notify.js' ),
+					'dependencies' => [
+						'jquery',
+
 					],
 				],
 				[
