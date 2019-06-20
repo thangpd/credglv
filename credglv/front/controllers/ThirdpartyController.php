@@ -7,9 +7,8 @@
 namespace credglv\front\controllers;
 
 use credglv\models\UserModel;
-use PHPUnit\Runner\Exception;
-use Twilio\Exceptions\TwilioException;
-use Twilio\Rest\Client;
+use Nexmo\Client;
+use Nexmo\Client\Credentials\Basic;
 
 use credglv\core\interfaces\FrontControllerInterface;
 
@@ -66,10 +65,24 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 	public function sendphone_otp( $data ) {
 
+		$key        = 'e085a74e';
+		$secret_key = 'Q9inkIngToo9rcpb';
+
+
+// Your Account SID and Auth Token from twilio.com/console
+//		$account_sid = 'ACbe3df4e270fa38fa4b4db4a3a53c26fc';
+//		$auth_token  = '5b00046a9b8b90b8278d3152f4e7521e';
+// A Twilio number you own with SMS capabilities
+//		$twilio_number = "+15672264603";
+
 		//limpaul
-			$account_sid = 'AC37e35bbe3a315e102b9aa5c68d50b928';
-			$auth_token  = '4f206322296e0857aa1193333412f3dd';
-			$twilio_number = "+18565425513";
+		// Your Account SID and Auth Token from twilio.com/console
+//		$account_sid = 'AC1c8eee0967b4265d453588fa6f315105';
+//		$auth_token  = 'a6d89e389a259aa02c1f6fb15576f260';
+// A Twilio number you own with SMS capabilities
+		$twilio_number = "+12028835507";
+// In production, these should be environment variables. E.g.:
+// $auth_token = $_ENV["TWILIO_ACCOUNT_SID"]
 
 		$phone_number = $data['phone'];
 
@@ -84,17 +97,24 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 				set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
 
 				try {
-					$client = new Client( $account_sid, $auth_token );
 
-					$client->messages->create(
+					$basic = new Basic( $key, $secret_key );
+
+					$client  = new Client( $basic );
+					$message = $client->message()->send( [
+						'to'   => $phone_number,
+						'from' => 'GLV Limited',
+						'text' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
+					] );
+//					$client->messages->create(
 					// Where to send a text message (your cell phone?)
-						$phone_number,
-						array(
-							'from' => $twilio_number,
-							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
-						)
-					);
-				} catch ( TwilioException $e ) {
+//						$phone_number,
+//						array(
+//							'from' => $twilio_number,
+//							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
+//						)
+//					);
+				} catch ( Client\Exception\Exception $e ) {
 					return array(
 						'code'    => 403,
 						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
@@ -113,7 +133,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 			return array(
 				'code'    => 200,
-				'message' => __( "An OTP was sent to  ***" . substr($phone_number, -3, 3) . ".", 'credglv' )
+				'message' => __( "We sent code verify to your phone. " . $phone_number . ". Expire in 60s", 'credglv' )
 			);
 		} else {
 
