@@ -9,6 +9,7 @@
 
 namespace Twilio\Rest\Video\V1\Room\Participant;
 
+use Twilio\Exceptions\TwilioException;
 use Twilio\InstanceContext;
 use Twilio\Values;
 use Twilio\Version;
@@ -16,14 +17,14 @@ use Twilio\Version;
 class SubscribedTrackContext extends InstanceContext {
     /**
      * Initialize the SubscribedTrackContext
-     * 
+     *
      * @param \Twilio\Version $version Version that contains the resource
      * @param string $roomSid Unique Room identifier where this Track is subscribed.
      * @param string $participantSid Unique Participant identifier that subscribes
      *                               to this Track.
      * @param string $sid A 34 character string that uniquely identifies this
      *                    resource.
-     * @return \Twilio\Rest\Video\V1\Room\Participant\SubscribedTrackContext 
+     * @return \Twilio\Rest\Video\V1\Room\Participant\SubscribedTrackContext
      */
     public function __construct(Version $version, $roomSid, $participantSid, $sid) {
         parent::__construct($version);
@@ -36,7 +37,7 @@ class SubscribedTrackContext extends InstanceContext {
 
     /**
      * Fetch a SubscribedTrackInstance
-     * 
+     *
      * @return SubscribedTrackInstance Fetched SubscribedTrackInstance
      * @throws TwilioException When an HTTP error occurs.
      */
@@ -60,7 +61,7 @@ class SubscribedTrackContext extends InstanceContext {
 
     /**
      * Provide a friendly representation
-     * 
+     *
      * @return string Machine friendly representation
      */
     public function __toString() {

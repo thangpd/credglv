@@ -9,6 +9,7 @@
 
 namespace Twilio\Rest\Serverless\V1\Service;
 
+use Twilio\Exceptions\TwilioException;
 use Twilio\InstanceContext;
 use Twilio\Values;
 use Twilio\Version;
@@ -19,11 +20,11 @@ use Twilio\Version;
 class BuildContext extends InstanceContext {
     /**
      * Initialize the BuildContext
-     * 
+     *
      * @param \Twilio\Version $version Version that contains the resource
      * @param string $serviceSid Service Sid.
      * @param string $sid Build Sid.
-     * @return \Twilio\Rest\Serverless\V1\Service\BuildContext 
+     * @return \Twilio\Rest\Serverless\V1\Service\BuildContext
      */
     public function __construct(Version $version, $serviceSid, $sid) {
         parent::__construct($version);
@@ -36,7 +37,7 @@ class BuildContext extends InstanceContext {
 
     /**
      * Fetch a BuildInstance
-     * 
+     *
      * @return BuildInstance Fetched BuildInstance
      * @throws TwilioException When an HTTP error occurs.
      */
@@ -59,7 +60,7 @@ class BuildContext extends InstanceContext {
 
     /**
      * Provide a friendly representation
-     * 
+     *
      * @return string Machine friendly representation
      */
     public function __toString() {
