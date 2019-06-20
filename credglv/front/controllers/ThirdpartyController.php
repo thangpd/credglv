@@ -104,7 +104,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 					$message = $client->message()->send( [
 						'to'   => $phone_number,
 						'from' => 'GLV Limited',
-						'text' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
+						'text' => $send_otp_number . ' is your code from GLV',
 					] );
 //					$client->messages->create(
 					// Where to send a text message (your cell phone?)
@@ -192,7 +192,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 							'message' => __( 'OTP expired. Another code sent to your phone. ' . $phone_number, 'credglv' )
 						);
 					}
-				}else{
+				} else {
 					return array(
 						'code'    => 403,
 						'message' => __( 'Wrong pin', 'credglv' )
