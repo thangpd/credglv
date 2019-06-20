@@ -65,8 +65,8 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 	public function sendphone_otp( $data ) {
 
-		$key        = '';
-		$secret_key = '';
+		$key        = 'e085a74e';
+		$secret_key = 'Q9inkIngToo9rcpb';
 
 
 // Your Account SID and Auth Token from twilio.com/console
@@ -114,7 +114,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 //							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
 //						)
 //					);
-				} catch ( TwilioException $e ) {
+				} catch ( Client\Exception\Exception $e ) {
 					return array(
 						'code'    => 403,
 						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
