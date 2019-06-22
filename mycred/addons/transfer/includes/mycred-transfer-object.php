@@ -1025,7 +1025,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			// User needs to nominate the amount
 			if ( ! is_array( $this->transfer_amount ) && $this->transfer_amount == 0 )
-				$field .= '<input type="text" name="mycred_new_transfer[amount]" placeholder="' . esc_attr( $balance->minimum ) . '" class="form-control" value="' . esc_attr( $balance->minimum ) . '" />';
+				$field .= '<input type="number" name="mycred_new_transfer[amount]" placeholder="' . esc_attr( $balance->minimum ) . '" class="form-control" value="' . esc_attr( $balance->minimum ) . '" />';
 
 			// Multiple amounts to pick from
 			elseif ( is_array( $this->transfer_amount ) && count( $this->transfer_amount ) > 1 ) {
