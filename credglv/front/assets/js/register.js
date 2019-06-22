@@ -62,8 +62,7 @@ jQuery(function ($) {
                     },
                     username: {
                         required: true,
-                        minlength: 1,
-                        regex: /[^0-9a-z]/g
+                        minlength: 1
                     },
                     email: {
                         required: true,
@@ -81,7 +80,6 @@ jQuery(function ($) {
                     },
                     user: {
                         required: "Required.",
-                        regex: "Please input only lowercase character and digit!"
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     email: {
@@ -276,13 +274,7 @@ jQuery(function ($) {
                 if (e.charCode > 47 && e.charCode < 58) {
                     return true;
                 }
-                if (e.charCode > 64 && e.charCode < 91) {
-                    return true;
-                }
                 if (e.charCode > 96 && e.charCode < 123) {
-                    return true;
-                }
-                if (e.charCode === 8){
                     return true;
                 }
                 return false;
