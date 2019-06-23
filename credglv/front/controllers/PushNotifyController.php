@@ -24,7 +24,7 @@ use PHPUnit\Runner\Exception;
 
 class PushNotifyController extends FrontController implements FrontControllerInterface {
 
-	public function send_notify($data) {
+	public function send_notify() {
 		// $serviceAccount = ServiceAccount::fromJsonFile('/Applications/XAMPP/xamppfiles/htdocs/Outsource/GLV/wp-content/plugins/credglv/glv-test-firebase-adminsdk-swohm-ad70b50da3.json');
 		// $firebase = (new Factory)
 		//     ->withServiceAccount($serviceAccount)
@@ -43,10 +43,16 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		// ]);
 
 		//$messaging->send($message);
-		$singleID = $data['device_token'];
+		if(!$_GET['device_token']){
+			$result['success'] = 'error';
+			$result['message'] = 'device_token is invalid';
+			return $result;
+		}
+		$singleID = $_GET['device_token'];
 		$fcmMsg = array(
 			'body' => 'here is a message. message',
 			'title' => 'This is title #1',
+			'url'	=> admin_url(),
 			'sound' => "default",
 		    'color' => "#203E78" 
 		);
@@ -69,20 +75,25 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
 		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fcmFields ) );
 
-		$result = curl_exec($ch);
+		$result = curl_exec($ch );
 		curl_close( $ch );
 		return json_decode($result);
 	}
 
-	public function register ($data) {
-		$deviceToken = $data['device_token'];
-		$user = get_user_by('login', $data['username']);
-		$user_id = $user->ID;
-		if(!$user_id){
+	public function register () {
+		if(!$_GET['device_token']){
 			$result['success'] = 'error';
-			$result['message'] = 'Please log in account first.';
+			$result['message'] = 'device_token is invalid';
 			return $result;
 		}
+		if(!$_GET['username']){
+			$result['success'] = 'error';
+			$result['message'] = 'userrname is invalid';
+			return $result;
+		}
+		$deviceToken = $_GET['device_token'];
+		$user = get_user_by('login', $_GET['username']);
+		$user_id = $user->ID;
 		$token_exist = get_user_meta($user_id,'device_token',true);
 		if($deviceToken){
 			if($token_exist == ''){
@@ -114,15 +125,22 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 
 	public function init_hook(){
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( 'send_notify/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( '/v1', '/send_notify', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
+		    'args' => array(
+		      'device_token'
+		      )
 		  ) );
 		} );
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( 'register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( '/v1', '/register_device_token', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
+		    'args' => array(
+		      'device_token',
+		      'username',
+		      )
 		  ) );
 		} );
 	}
