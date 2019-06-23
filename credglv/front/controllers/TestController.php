@@ -54,7 +54,7 @@ class TestController extends FrontController implements FrontControllerInterface
 							'registerPage',
 							[
 								'title' => __( 'test controller', 'credglv' ),
-//                                'single' => true
+                                'single' => true
 							]
 						],
 
