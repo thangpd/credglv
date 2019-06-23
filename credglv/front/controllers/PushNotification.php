@@ -74,7 +74,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return json_decode($result);
 	}
 
-	function register ($data) {
+	public function register ($data) {
 		$deviceToken = $data['device_token'];
 		$user = get_user_by('login', $data['username']);
 		$user_id = $user->ID;
@@ -112,9 +112,9 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return $result;
 	}
 
-	function init_hook(){
+	public function init_hook(){
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( '/send_notify/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( 'send_notify/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
 		  ) );
@@ -124,7 +124,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		 //  ) );
 		} );
 		add_action( 'rest_api_init', function () {
-		  register_rest_route( '/register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
+		  register_rest_route( 'register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
 		  ) );
