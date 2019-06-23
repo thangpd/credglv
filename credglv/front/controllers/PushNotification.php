@@ -125,7 +125,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'callback' => __CLASS__.'::register',
 		  ) );
 		} );
-		echo 'a';
+		echo '<label style="color:white">a</label>';
 	}
 
 	/**
