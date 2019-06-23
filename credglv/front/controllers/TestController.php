@@ -32,6 +32,9 @@ class TestController extends FrontController implements FrontControllerInterface
 		return $this->render( 'profile', [ 'data' => $data ] );
 	}
 
+	public function init_hook(){
+		echo 'a';
+	}
 	/**
 	 * Register all actions that controller want to hook
 	 * @return mixed
@@ -41,7 +44,7 @@ class TestController extends FrontController implements FrontControllerInterface
 
 		return [
 			'actions' => [
-
+				'init' => [ self::getInstance(), 'init_hook' ].
 				//'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
