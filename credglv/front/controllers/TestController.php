@@ -42,7 +42,7 @@ class TestController extends FrontController implements FrontControllerInterface
 		return [
 			'actions' => [
 
-				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
+				//'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
 
@@ -61,18 +61,7 @@ class TestController extends FrontController implements FrontControllerInterface
 				]
 			],
 			'assets'  => [
-				'js'  => [
-					/*[
-						'id'       => 'credglv-register-page-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/register.js',
-					],*/
-					[
-						'id'       => 'credglv-main-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/main.js',
-					]
-				]
+				
 			]
 		];
 	}
