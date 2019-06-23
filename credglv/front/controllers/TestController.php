@@ -29,7 +29,7 @@ class TestController extends FrontController implements FrontControllerInterface
 	public function registerPage() {
 		$data = [];
 
-		//return $this->render( 'ranking', [ 'data' => $data ] );
+		return $this->render( 'profile', [ 'data' => $data ] );
 	}
 
 	/**
