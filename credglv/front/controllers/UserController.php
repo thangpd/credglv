@@ -371,7 +371,6 @@ class UserController extends FrontController implements FrontControllerInterface
 		}
 
 		add_filter( 'show_admin_bar', array( $this, 'hide_admin_bar' ) );
-		echo 'a';
 	}
 
 	/**
