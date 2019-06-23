@@ -23,11 +23,6 @@ use PHPUnit\Runner\Exception;
 
 
 class PushNotifyController extends FrontController implements FrontControllerInterface {
-	public function pushNotifyPage() {
-		$data = [];
-
-		return $this->render( 'ranking', [ 'data' => $data ] );
-	}
 
 	public function send_notify($data) {
 		// $serviceAccount = ServiceAccount::fromJsonFile('/Applications/XAMPP/xamppfiles/htdocs/Outsource/GLV/wp-content/plugins/credglv/glv-test-firebase-adminsdk-swohm-ad70b50da3.json');
@@ -146,17 +141,17 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 			'ajax'    => [
 
 			],
-			'pages'   => [
-				'front' => [
-					'push_notify' =>
-						[
-							'pushNotifyPage',
-							[
-								'title' => __( 'Push', 'credglv' ),
-							]
-						],
-				]
-			],
+			// 'pages'   => [
+			// 	'front' => [
+			// 		'push_notify' =>
+			// 			[
+			// 				'pushNotifyPage',
+			// 				[
+			// 					'title' => __( 'Push', 'credglv' ),
+			// 				]
+			// 			],
+			// 	]
+			// ],
 			'assets'  => [
 				'js'  => [
 					/*[
