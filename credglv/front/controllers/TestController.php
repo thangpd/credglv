@@ -44,7 +44,7 @@ class TestController extends FrontController implements FrontControllerInterface
 
 		return [
 			'actions' => [
-				'init' => [ self::getInstance(), 'init_hook' ].
+				'init' => [ self::getInstance(), 'init_hook' ],
 				//'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [
