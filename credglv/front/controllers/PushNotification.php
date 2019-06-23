@@ -69,7 +69,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
 		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fcmFields ) );
 
-		$result = curl_exec($ch );
+		$result = curl_exec($ch);
 		curl_close( $ch );
 		return json_decode($result);
 	}
@@ -118,22 +118,14 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
 		  ) );
-			// register_rest_route( 'send_notify/v1', '/test', array(
-		 //    'methods' => 'GET',
-		 //    'callback' => __CLASS__.'::send_notify',
-		 //  ) );
 		} );
 		add_action( 'rest_api_init', function () {
 		  register_rest_route( 'register_devide_token/v1', '/deviceToken=(?P<device_token>[a-zA-Z0-9-]+)&username=(?P<username>[a-zA-Z0-9-]+)', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
 		  ) );
-			// register_rest_route( 'send_notify/v1', '/test', array(
-		 //    'methods' => 'GET',
-		 //    'callback' => __CLASS__.'::send_notify',
-		 //  ) );
 		} );
-
+		echo 'a';
 	}
 
 	/**
