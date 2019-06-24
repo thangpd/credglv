@@ -203,7 +203,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                     </ul>
                 </div>
                 <input type="tel" pattern="[0-9]*"
-                       class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+                       class="input-number-mobile r-mb <?php echo empty( $num_val ) ? '' : 'width80' ?>"
 					   name="cred_billing_phone"
 					   placeholder="Mobile number"
                        id="reg_phone_register"
