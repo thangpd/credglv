@@ -37,7 +37,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
             <div class="myaccount-login-page hide">
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
                     <label for="username"><?php esc_html_e( 'Username or email address', 'woocommerce' ); ?>&nbsp;</label>
-                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" autocapitalize="none" pattern="[a-z]*"
+                    <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" placeholder="Username or email address" name="username" autocapitalize="none" pattern="[a-z]*"
                            id="username" autocomplete="username"
                            value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
                 </p>
