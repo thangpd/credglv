@@ -41,7 +41,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                                autocapitalize="none" pattern="[a-z0-9]"
                                id="reg_username" autocomplete="username"
                                value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( $_POST['username'] ) : ''; ?>"/>
-                               <a href="#" class="f-label">Username</a>
+                               <p class="f-label">Username</p>
 
                                <?php // @codingStandardsIgnoreLine ?>
 
@@ -55,7 +55,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <input type="email" class="woocommerce-Input woocommerce-Input--text input-text r-email" placeholder="Email address" name="email"
                            id="reg_email" autocomplete="email"
                            value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
-                           <div class="f-label">Username</div>
+                           <p class="f-label">Username</p>
                 </p>
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_password' ) ) : ?>
