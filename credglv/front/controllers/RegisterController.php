@@ -190,7 +190,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 		?>
 
         <div class="form-row form-row-wide">
-       
+            <label for="reg_phone_register">
+				<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
+            </label>
             <div class="login_countrycode">
 
                 <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?>">
@@ -204,8 +206,7 @@ class RegisterController extends FrontController implements FrontControllerInter
                 </div>
                 <input type="tel" pattern="[0-9]*"
                        class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
-					   name="cred_billing_phone"
-					   class="Mobile number"
+                       name="cred_billing_phone"
                        id="reg_phone_register"
                        value="<?php echo $num_val; ?>" maxlength="10"/>
             </div>
