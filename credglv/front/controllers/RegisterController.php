@@ -193,7 +193,7 @@ class RegisterController extends FrontController implements FrontControllerInter
            
             <div class="login_countrycode">
 
-                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?>">
+                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
                     <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
                            value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
                            name="number_countrycode" size="4">
@@ -207,7 +207,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 					   name="cred_billing_phone"
                        id="reg_phone_register"
 					   value="<?php echo $num_val; ?>" maxlength="10"/>
-				<div class="f-label">Mobile number</div>
+					<div class="f-label">Mobile number</div>
             </div>
 
         </div>
