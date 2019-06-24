@@ -52,7 +52,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 				<?php endif; ?>
 
                 <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus">
-                    <input type="email" class="woocommerce-Input woocommerce-Input--text input-text r-email" placeholder="Email address" name="email"
+                    <input type="email" class="woocommerce-Input woocommerce-Input--text input-text r-email" name="email"
                            id="reg_email" autocomplete="email"
                            value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
                            <label class="f-label">Email address</label>
