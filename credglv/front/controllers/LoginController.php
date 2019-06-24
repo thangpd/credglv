@@ -68,7 +68,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
         </p>
         <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
-               
+                <label for="reg_phone">
+					<?php _e( 'Mobile number', 'credglv' ); ?>
+                </label>
 
                 <div class="login_countrycode">
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
