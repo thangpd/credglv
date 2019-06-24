@@ -52,7 +52,6 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		$fcmMsg = array(
 			'body' => 'here is a message. message',
 			'title' => 'This is title #1',
-			'url'	=> admin_url(),
 			'sound' => "default",
 		    'color' => "#203E78" 
 		);
@@ -63,7 +62,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		);
 
 		$headers = array(
-			'Authorization: key=AAAAezkvKa4:APA91bGOxymJnloNCZRFaVOB5X2_OREKfmFgczOZ_Ds2dYvOixbV8zZ7EHRlLGof9zMzO4I9ggrzsWYH1H1tptICZXD0yT7WZFgzj578-fqvbFyOu9IsrfWemNZTBMYJg3tjGlteN8_N',
+			'Authorization: key=AAAAkjudY3w:APA91bG4qRIbhZ-8nfi3Lrt2juVaFC8GQo_CNoPXMcKPDM_Tm5tNetB_IQIm890cS7McgqHbRlIZ2XjD2pR1o7IevdJFiiN825XDl5nAgT8OXk-i2yPNPfme2nirI0Xe2yZ0Liw25dGN',
 			'Content-Type: application/json'
 		);
 		 
