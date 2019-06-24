@@ -36,7 +36,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_username' ) ) : ?>
 
-                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">  
+                         <div class="f-label">Username</div>
                         <input type="text" class="woocommerce-Input woocommerce-Input--text input-text u-user" name="username"
                                autocapitalize="none" pattern="[a-z0-9]"
                                id="reg_username" autocomplete="username"
