@@ -68,10 +68,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
         </p>
         <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
-                <label for="reg_phone">
-					<?php _e( 'Mobile number', 'credglv' ); ?>
-                </label>
-
+               
                 <div class="login_countrycode">
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
 
@@ -88,7 +85,8 @@ class LoginController extends FrontController implements FrontControllerInterfac
                     <input type="button" id="hide_button" style="display: none" onclick="autofocus_input()">
                     <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
-                           id="reg_phone"
+						   id="reg_phone"
+						   placeholder="Mobibe number"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
 
                 </div>
