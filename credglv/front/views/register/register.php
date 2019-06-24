@@ -40,7 +40,10 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                         <input type="text" class="woocommerce-Input woocommerce-Input--text input-text u-user" name="username"
                                autocapitalize="none" pattern="[a-z0-9]"
                                id="reg_username" autocomplete="username"
-                               value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( $_POST['username'] ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
+                               value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( $_POST['username'] ) : ''; ?>"/>
+                               <div class="f-label">Username</div>
+
+                               <?php // @codingStandardsIgnoreLine ?>
 
 
                     </p>
