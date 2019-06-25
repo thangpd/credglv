@@ -69,7 +69,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
         <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
                
-                <div class="login_countrycode mt-40">
+                <div class="login_countrycode mt-30">
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
 
 
