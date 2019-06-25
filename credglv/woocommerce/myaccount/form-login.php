@@ -62,7 +62,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <span><?php echo __( 'Or log in with Username/email', 'credglv' ); ?></span></label>
             </p>
             <p class="woocommerce-LostPassword lost_password">
-                <a href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></a> or
+                <a href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></a>
 
                 <a href="<?php echo esc_url( wp_lostpassword_url() ); ?>"><?php esc_html_e( 'Lost your password?', 'woocommerce' ); ?></a>
             </p>
