@@ -136,7 +136,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$option = '<option value="' . $user->data->ID . '">' . $user->data->user_login . '</option>';
 		}
 		?>
-        <p class="form-row form-row-wide mt-40">
+        <p class="form-row form-row-wide mt-20">
             <label for="reg_referral">
 				<?php _e( 'Introducer', 'credglv' ); ?>
             </label>
@@ -191,7 +191,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
         <div class="form-row form-row-wide">
            
-            <div class="login_countrycode f-bd">
+            <div class="login_countrycode f-bd mt-20">
 
                 <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
                     <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
