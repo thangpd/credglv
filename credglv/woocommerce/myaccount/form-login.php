@@ -57,9 +57,9 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
             </p>
             <p class="form-row form-row-wide f-login-title">
                 <label for="login-with-phone" id="label-login-with-phone" style="display: none"> <input type="radio" id="login-with-phone" name="selector" checked>
-                    <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
+                    <span><?php echo __( 'Or log in with Mobile number', 'credglv' ); ?></span></label>
                 <label for="login-with-user" id="label-login-with-user"> <input type="radio" id="login-with-user" name="selector">
-                    <span><?php echo __( 'With username/email', 'credglv' ); ?></span></label>
+                    <span><?php echo __( 'Or log in with Username/email', 'credglv' ); ?></span></label>
             </p>
             <p class="woocommerce-LostPassword lost_password">
                 <a href="<?php echo esc_url( get_permalink( get_option( 'woocommerce_myaccount_page_id' ) ) . credglv()->config->getUrlConfigs( 'credglv_register' ) ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?></a> or
