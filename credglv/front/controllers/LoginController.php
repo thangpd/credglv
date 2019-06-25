@@ -60,12 +60,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		}
 
 		?>
-        <p class="form-row form-row-wide f-login-title">
-            <label for="login-with-phone" id="label-login-with-phone" style="display: none"> <input type="radio" id="login-with-phone" name="selector" checked>
-                <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
-            <label for="login-with-user" id="label-login-with-user"> <input type="radio" id="login-with-user" name="selector">
-                <span><?php echo __( 'With username/email', 'credglv' ); ?></span></label>
-        </p>
+       
         <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
                
