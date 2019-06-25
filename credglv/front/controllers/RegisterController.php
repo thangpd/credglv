@@ -191,7 +191,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
         <div class="form-row form-row-wide">
            
-            <div class="login_countrycode">
+            <div class="login_countrycode f-bd">
 
                 <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
                     <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
