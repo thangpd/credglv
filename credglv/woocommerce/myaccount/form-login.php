@@ -41,7 +41,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                            value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
                     <label class="f-label">Username or address</label>
                 </p>
-                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide custom-mg mt-40 f-bd">
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus custom-mg mt-40 f-bd">
                     <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password"
                            id="password" autocomplete="current-password"/>
                            <label class="f-label">Password</label>
