@@ -34,8 +34,8 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
         <form class="woocommerce-form woocommerce-form-login login" method="post">
 
 			<?php do_action( 'woocommerce_login_form_start' ); ?>
-            <div class="myaccount-login-page hide">
-                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus">
+            <div class="myaccount-login-page hide mt-40">
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus mt-50">
                     <input type="text" class="woocommerce-Input woocommerce-Input--text input-text us" name="username" autocapitalize="none" pattern="[a-z]*"
                            id="username" autocomplete="username"
                            value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( wp_unslash( $_POST['username'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>

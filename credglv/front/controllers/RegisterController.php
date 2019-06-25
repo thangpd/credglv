@@ -136,7 +136,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$option = '<option value="' . $user->data->ID . '">' . $user->data->user_login . '</option>';
 		}
 		?>
-        <p class="form-row form-row-wide">
+        <p class="form-row form-row-wide mt-20">
             <label for="reg_referral">
 				<?php _e( 'Introducer', 'credglv' ); ?>
             </label>
