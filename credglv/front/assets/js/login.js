@@ -221,23 +221,23 @@ jQuery(function ($) {
 
     credglv.login_toggle_login = function (form) {
 
-        // $(form).find('#login-with-phone').on('click', function (e) {
-        //     $(form).find('#label-login-with-phone').css('display','none');
-        //     $(form).find('#label-login-with-user').css('display','block');
-        //     var phone_login = $(form).find('.phone_login');
-        //     if (phone_login.is(':hidden')) {
-        //         phone_login.toggle('show');
-        //     }
-        //     var user = $(form).find('.phone_login').nextUntil('.otp-code');
-        //     if (user.is(':visible')) {
-        //         user.toggle('hide');
-        //     }
-        //     var autofocus = setInterval(function () {
-        //         $('#reg_phone').trigger('focus');
-        //         console.log('focus');
-        //         clearInterval(autofocus);
-        //     }, 1000);
-        // });
+        $(form).find('#login-with-phone').on('click', function (e) {
+            $(form).find('#label-login-with-phone').css('display','none');
+            $(form).find('#label-login-with-user').css('display','block');
+            var phone_login = $(form).find('.phone_login');
+            if (phone_login.is(':hidden')) {
+                phone_login.toggle('show');
+            }
+            var user = $(form).find('.phone_login').nextUntil('.otp-code');
+            if (user.is(':visible')) {
+                user.toggle('hide');
+            }
+            // var autofocus = setInterval(function () {
+            //     $('#reg_phone').trigger('focus');
+            //     console.log('focus');
+            //     clearInterval(autofocus);
+            // }, 1000);
+        });
         $(form).find('#login-with-user').on('click', function (e) {
             $(form).find('#label-login-with-phone').css('display','block');
             $(form).find('#label-login-with-user').css('display','none');
