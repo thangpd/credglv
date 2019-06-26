@@ -232,11 +232,7 @@ jQuery(function ($) {
             if (user.is(':visible')) {
                 user.toggle('hide');
             }
-            // var autofocus = setInterval(function () {
-            //     $('#reg_phone').trigger('focus');
-            //     console.log('focus');
-            //     clearInterval(autofocus);
-            // }, 1000);
+          
         });
         $(form).find('#login-with-user').on('click', function (e) {
             $(form).find('#label-login-with-phone').css('display','block');
