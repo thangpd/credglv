@@ -84,7 +84,11 @@ class LoginController extends FrontController implements FrontControllerInterfac
                            value="<?php echo $num_val; ?>" maxlength="10"/>
 							<label class="f-label">Mobile number</label>
                 </div>
-              
+                <!-- <script type="text/javascript">
+                    function autofocus_input() {
+                        jQuery('#reg_phone').trigger('focus');
+                    }
+                </script> -->
 
             </div>
         </div>
