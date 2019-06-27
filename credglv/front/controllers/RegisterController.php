@@ -136,9 +136,9 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$option = '<option value="' . $user->data->ID . '">' . $user->data->user_login . '</option>';
 		}
 		?>
-        <p class="form-row form-row-wide">
+        <p class="form-row form-row-wide mt-20">
             <label for="reg_referral">
-				<?php _e( 'Referral', 'credglv' ); ?>
+				<?php _e( 'Introducer', 'credglv' ); ?>
             </label>
 
             <select id="input_referral" name="input_referral" class="input-referral" style="width:100%">
@@ -190,12 +190,10 @@ class RegisterController extends FrontController implements FrontControllerInter
 		?>
 
         <div class="form-row form-row-wide">
-            <label for="reg_phone_register">
-				<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
-            </label>
-            <div class="login_countrycode">
+           
+            <div class="login_countrycode f-bd mt-20">
 
-                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?>">
+                <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
                     <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
                            value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
                            name="number_countrycode" size="4">
@@ -205,10 +203,11 @@ class RegisterController extends FrontController implements FrontControllerInter
                     </ul>
                 </div>
                 <input type="tel" pattern="[0-9]*"
-                       class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
-                       name="cred_billing_phone"
+                       class="input-number-mobile r-mb <?php echo empty( $num_val ) ? '' : 'width80' ?>"
+					   name="cred_billing_phone"
                        id="reg_phone_register"
-                       value="<?php echo $num_val; ?>" maxlength="10"/>
+					   value="<?php echo $num_val; ?>" maxlength="10"/>
+					<div class="f-label">Mobile number</div>
             </div>
 
         </div>

@@ -7,9 +7,8 @@
 namespace credglv\front\controllers;
 
 use credglv\models\UserModel;
-use PHPUnit\Runner\Exception;
-use Twilio\Exceptions\TwilioException;
-use Twilio\Rest\Client;
+use Nexmo\Client;
+use Nexmo\Client\Credentials\Basic;
 
 use credglv\core\interfaces\FrontControllerInterface;
 
@@ -66,54 +65,53 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 	public function sendphone_otp( $data ) {
 
-		//limpaul
-			$account_sid = 'AC37e35bbe3a315e102b9aa5c68d50b928';
-			$auth_token  = '4f206322296e0857aa1193333412f3dd';
-			$twilio_number = "+18565425513";
+		$key        = 'glvdev_6bBB6_hq';
+		$secret_key = 't4mWUoAO6Ocucu3bhvDl0tNAuHOxJmHtXNlrskukxc';
 
 		$phone_number = $data['phone'];
 
 		if ( WP_DEBUG == false ) {
-//			$account_sid = 'ACbe3df4e270fa38fa4b4db4a3a53c26fc';//test
-//			$auth_token  = '5b00046a9b8b90b8278d3152f4e7521e';//test
-// A Twilio number you own with SMS capabilities
-//			$twilio_number = "+15672264603";//test
 			if ( ! empty( $phone_number ) ) {
-//				if ( ! empty( get_transient( $phone_number ) ) ) {
 				$send_otp_number = mt_rand( 1000, 9999 );
 				set_transient( $phone_number, $send_otp_number, MINUTE_IN_SECONDS );
 
-				try {
-					$client = new Client( $account_sid, $auth_token );
 
-					$client->messages->create(
-					// Where to send a text message (your cell phone?)
-						$phone_number,
-						array(
-							'from' => $twilio_number,
-							'body' => $send_otp_number . __( ' is your code from GLV', 'credglv' ),
-						)
-					);
-				} catch ( TwilioException $e ) {
+				$curl = curl_init();
+
+				curl_setopt_array( $curl, array(
+					CURLOPT_URL            => "https://api.wavecell.com/sms/v1/" . $key . "/single",
+					CURLOPT_RETURNTRANSFER => true,
+					CURLOPT_ENCODING       => "",
+					CURLOPT_MAXREDIRS      => 10,
+					CURLOPT_TIMEOUT        => 30,
+					CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
+					CURLOPT_CUSTOMREQUEST  => "POST",
+					CURLOPT_POSTFIELDS     => "{\"source\":\"GLV Limited\",\"destination\":\"" . $phone_number . "\",\"text\":\"" . $send_otp_number . " is your code from GLV" . "\",\"encoding\": \"AUTO\"}",
+					CURLOPT_HTTPHEADER     => array(
+						"authorization: Bearer ".$secret_key."",
+						"content-type: application/json"
+					),
+				) );
+
+				$response = curl_exec( $curl );
+				$err      = curl_error( $curl );
+
+				curl_close( $curl );
+
+				if ( $err ) {
 					return array(
 						'code'    => 403,
-						'message' => __( $e->getMessage() . $phone_number, 'credglv' ),
+						'message' => __( 'Error when sending OTP to:' . $phone_number, 'credglv' ),
 					);
 				}
-				/*
-			} else {
-				return array(
-					'code'    => 200,
-					'message' => __( 'We sent code verify to your phone.', 'credglv' ),
-				);
-			}*/
+
 			} else {
 				return array( 'code' => 404, 'message' => 'Missing phone number' );
 			}
 
 			return array(
 				'code'    => 200,
-				'message' => __( "An OTP was sent to  ***" . substr($phone_number, -3, 3) . ".", 'credglv' )
+				'message' => __( "We sent code verify to your phone. " . $phone_number . ". Expire in 60s", 'credglv' )
 			);
 		} else {
 
@@ -172,7 +170,7 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 							'message' => __( 'OTP expired. Another code sent to your phone. ' . $phone_number, 'credglv' )
 						);
 					}
-				}else{
+				} else {
 					return array(
 						'code'    => 403,
 						'message' => __( 'Wrong pin', 'credglv' )

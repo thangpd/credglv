@@ -34,7 +34,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -42,8 +42,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated fadeInDown',
-                exit: 'animated fadeOutRight'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -86,7 +86,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -94,8 +94,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated bounceInDown',
-                exit: 'animated bounceOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -138,7 +138,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -146,8 +146,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated bounceIn',
-                exit: 'animated bounceOut'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -159,7 +159,7 @@
 
     var dangerClick = function (title, message, url, target) {
         if (title === '') {
-            title = 'Danger';
+            title = 'Error';
         }
         if (message === '') {
             message = 'Default Message';
@@ -190,7 +190,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -198,14 +198,20 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated flipInY',
-                exit: 'animated flipOutX'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
             onClose: null,
             onClosed: null,
             icon_type: 'class',
+            showMethod: 'fadeIn',
+            showDuration: '5000',
+            showEasing: 'swing',
+            hideMethod: 'fadeOut',
+            hideDuration: '5000',
+            hideEasing: 'swing',
         });
     }
 
@@ -242,7 +248,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -250,8 +256,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated lightSpeedIn',
-                exit: 'animated lightSpeedOut'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -294,7 +300,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -302,8 +308,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated rollIn',
-                exit: 'animated rollOut'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,
@@ -346,7 +352,7 @@
                 from: "top",
                 align: "right"
             },
-            offset: 20,
+            offset: 0,
             spacing: 10,
             z_index: 1031,
             delay: 3300,
@@ -354,8 +360,8 @@
             url_target: '_blank',
             mouse_over: null,
             animate: {
-                enter: 'animated zoomInDown',
-                exit: 'animated zoomOutUp'
+                enter: 'animated slideInDown faster',
+                exit: 'animated slideOutUp faster'
             },
             onShow: null,
             onShown: null,

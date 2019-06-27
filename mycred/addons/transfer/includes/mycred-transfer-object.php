@@ -831,6 +831,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 			ob_start();
 
 ?>
+
 <div class="mycred-transfer-cred-wrapper"<?php if ( $this->reference != '' ) echo ' id="transfer-form-' . esc_attr( $this->reference ) . '"'; ?>>
 	<form class="form mycred-transfer mycred-transfer-form" id="mycred-transfer-form-<?php echo esc_attr( $this->reference ); ?>" method="post" data-ref="<?php echo esc_attr( $this->reference ); ?>" action="">
 
@@ -926,7 +927,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			// No recipient, one needs to be nominated
 			if ( count( $recipients ) <= 1 )
-				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" />';
+				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" autocorrect="off" autocapitalize="none"/>';
 
 			// One specific recipient is set
 			elseif ( count( $recipients ) == 1 ) {
@@ -1025,7 +1026,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			// User needs to nominate the amount
 			if ( ! is_array( $this->transfer_amount ) && $this->transfer_amount == 0 )
-				$field .= '<input type="text" name="mycred_new_transfer[amount]" placeholder="' . esc_attr( $balance->minimum ) . '" class="form-control" value="' . esc_attr( $balance->minimum ) . '" />';
+				$field .= '<input type="number" name="mycred_new_transfer[amount]" placeholder="' . esc_attr( $balance->minimum ) . '" class="form-control" value="' . esc_attr( $balance->minimum ) . '" />';
 
 			// Multiple amounts to pick from
 			elseif ( is_array( $this->transfer_amount ) && count( $this->transfer_amount ) > 1 ) {

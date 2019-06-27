@@ -60,43 +60,35 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		}
 
 		?>
-        <p class="form-row form-row-wide">
-            <label for="login-with-phone"> <input type="radio" id="login-with-phone" name="selector" checked>
-                <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
-            <label for="login-with-user"> <input type="radio" id="login-with-user" name="selector">
-                <span><?php echo __( 'With username/ email', 'credglv' ); ?></span></label>
-        </p>
-        <div class="phone_login">
+       
+        <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
-                <label for="reg_phone">
-					<?php _e( 'Mobile number', 'credglv' ); ?> <span class="required">*</span>
-                </label>
-
-                <div class="login_countrycode">
+               
+                <div class="login_countrycode f-bd">
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
 
 
-					?>">
+					?> f-p-focus">
                         <input type="tel" pattern="[0-9]*" class="woocommerce-phone-countrycode" placeholder="+84"
                                value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
-                               name="number_countrycode" size="4">
-                        <ul class="digit_cs-list">
+                               name="number_countrycode" size="4" readonly>
+                        <ul class="digit_cs-list" style="margin: 2% 0">
                             <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
                             <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
                         </ul>
                     </div>
-                    <input type="button" id="hide_button" style="display: none" onclick="autofocus_input()">
+                    <input type="button" id="hide_button" style="display: none">
                     <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
-                           id="reg_phone"
+						   id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
-
+							<label class="f-label">Mobile number</label>
                 </div>
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                     function autofocus_input() {
                         jQuery('#reg_phone').trigger('focus');
                     }
-                </script>
+                </script> -->
 
             </div>
         </div>
@@ -111,7 +103,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
         <p class="form-row form-row-wide otp-code" data-phone="yes" style="display:none">
             <label for="cred_otp_code_login">
-				<?php _e( 'OTP', 'credglv' ); ?> <span class="required">*</span>
+				<?php _e( 'OTP', 'credglv' ); ?>
+				<i class="ld-ext-right hide" style="margin-left: 15px;" id="spinning1">
+	        	</i>
             </label>
             <input type="tel" class="input-otp-code" pattern="[0-9]*"
                    name="cred_otp_code"
