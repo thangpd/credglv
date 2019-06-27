@@ -346,9 +346,11 @@ jQuery(function ($) {
     }
     credglv.button_sumit = function (form) {
         $(form).find('.woocommerce-Button.button.btn.btn-default.ld-ext-right').on('click', function () {
-            $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
-            console.log('submit clicked');
-
+            setTimeout(function(){
+                $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
+                console.log('submit clicked');
+            }, 200);
+           
         });
     }
 
