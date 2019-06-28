@@ -232,11 +232,7 @@ jQuery(function ($) {
             if (user.is(':visible')) {
                 user.toggle('hide');
             }
-            var autofocus = setInterval(function () {
-                $('#reg_phone').trigger('focus');
-                console.log('focus');
-                clearInterval(autofocus);
-            }, 1000);
+          
         });
         $(form).find('#login-with-user').on('click', function (e) {
             $(form).find('#label-login-with-phone').css('display','block');
@@ -253,11 +249,11 @@ jQuery(function ($) {
             if (user.is(':hidden')) {
                 user.toggle('show');
             }
-            var autofocus = setInterval(function () {
-                $('#username').trigger('focus');
-                console.log('focus');
-                clearInterval(autofocus);
-            }, 1000);
+            // var autofocus = setInterval(function () {
+            //     $('#username').trigger('focus');
+            //     console.log('focus');
+            //     clearInterval(autofocus);
+            // }, 1000);
             $('button[type="submit"]').css('display','block');
             $(form).find('.error_log').text('');
         });
@@ -350,7 +346,11 @@ jQuery(function ($) {
     }
     credglv.button_sumit = function (form) {
         $(form).find('.woocommerce-Button.button.btn.btn-default.ld-ext-right').on('click', function () {
-            console.log('submit clicked');
+            setTimeout(function(){
+                $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
+                console.log('submit clicked');
+            }, 500);
+           
         });
     }
 

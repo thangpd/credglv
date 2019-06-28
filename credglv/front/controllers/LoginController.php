@@ -60,16 +60,11 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		}
 
 		?>
-        <p class="form-row form-row-wide">
-            <label for="login-with-phone" id="label-login-with-phone" style="display: none"> <input type="radio" id="login-with-phone" name="selector" checked>
-                <span><?php echo __( 'With phone number', 'credglv' ); ?></span></label>
-            <label for="login-with-user" id="label-login-with-user"> <input type="radio" id="login-with-user" name="selector">
-                <span><?php echo __( 'With username/email', 'credglv' ); ?></span></label>
-        </p>
+       
         <div class="phone_login" style="padding-bottom: 0">
             <div class="form-row form-row-wide">
                
-                <div class="login_countrycode">
+                <div class="login_countrycode f-bd">
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
 
 
@@ -79,21 +74,23 @@ class LoginController extends FrontController implements FrontControllerInterfac
                                name="number_countrycode" size="4" readonly>
                         <ul class="digit_cs-list" style="margin: 2% 0">
                             <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
-                            <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+							<li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+							<li class="dig-cc-visible" data-value="+65" data-country="malaysia">(+65) Singapore</li>
+							<li class="dig-cc-visible" data-value="+852" data-country="malaysia">(+852) HongKong</li>
                         </ul>
                     </div>
-                    <input type="button" id="hide_button" style="display: none" onclick="autofocus_input()">
+                    <input type="button" id="hide_button" style="display: none">
                     <input type="tel" class="input-number-mobile <?php echo empty( $num_val ) ? '' : 'width80' ?>"
                            name="cred_billing_phone"
 						   id="reg_phone"
                            value="<?php echo $num_val; ?>" maxlength="10"/>
 							<label class="f-label">Mobile number</label>
                 </div>
-                <script type="text/javascript">
+                <!-- <script type="text/javascript">
                     function autofocus_input() {
                         jQuery('#reg_phone').trigger('focus');
                     }
-                </script>
+                </script> -->
 
             </div>
         </div>

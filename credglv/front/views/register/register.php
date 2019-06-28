@@ -36,7 +36,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_username' ) ) : ?>
 
-                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus">  
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide custom-mg f-p-focus mt-30 f-bd">  
                         <input type="text" class="woocommerce-Input woocommerce-Input--text input-text u-user" name="username"
                                autocapitalize="none" pattern="[a-z0-9]"
                                id="reg_username" autocomplete="username"
@@ -51,7 +51,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<?php endif; ?>
 
-                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide f-p-focus">
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide custom-mg  f-p-focus  mt-30 f-bd">
                     <input type="email" class="woocommerce-Input woocommerce-Input--text input-text r-email" name="email"
                            id="reg_email" autocomplete="email"
                            value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
@@ -77,7 +77,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <button type="submit" class="woocommerce-Button button  btn btn-default ld-ext-right "
                             name="register"
                             value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?>
-                        <div class="ld ld-spinner ld-spin"></div>
+                            <div class="ld" id="spinning"></div>
                     </button>
                 </p>
                 <p class="woocommerce-LostPassword lost_password">

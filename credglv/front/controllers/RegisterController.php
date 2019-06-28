@@ -136,7 +136,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$option = '<option value="' . $user->data->ID . '">' . $user->data->user_login . '</option>';
 		}
 		?>
-        <p class="form-row form-row-wide">
+        <p class="form-row form-row-wide mt-20">
             <label for="reg_referral">
 				<?php _e( 'Introducer', 'credglv' ); ?>
             </label>
@@ -191,7 +191,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
         <div class="form-row form-row-wide">
            
-            <div class="login_countrycode">
+            <div class="login_countrycode custom-mg f-bd mt-20">
 
                 <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
                     <input type="text" class="woocommerce-phone-countrycode" placeholder="+84"
@@ -207,7 +207,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 					   name="cred_billing_phone"
                        id="reg_phone_register"
 					   value="<?php echo $num_val; ?>" maxlength="10"/>
-					<div class="f-label">Mobile number</div>
+					<label class="f-label">Mobile number</label>
             </div>
 
         </div>
