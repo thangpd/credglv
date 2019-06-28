@@ -62,7 +62,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		);
 
 		$headers = array(
-			'Authorization: key=AAAAkjudY3w:APA91bG4qRIbhZ-8nfi3Lrt2juVaFC8GQo_CNoPXMcKPDM_Tm5tNetB_IQIm890cS7McgqHbRlIZ2XjD2pR1o7IevdJFiiN825XDl5nAgT8OXk-i2yPNPfme2nirI0Xe2yZ0Liw25dGN',
+			'Authorization: key=AAAAWBLwt9s:APA91bG4rSuKFxGEtx-fTbnxIib-guizmW_fYDcYt1fvubEGvIrKgFAG6ohyzPtHqSuh2cwtcwMOCD7OxLkE4W_uHYJZdkjjUd97sxVQKcEqsLKMwVewz1Ojm1cStdMNokMVFQv5Z2iv',
 			'Content-Type: application/json'
 		);
 		 
