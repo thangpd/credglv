@@ -207,7 +207,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 					   name="cred_billing_phone"
                        id="reg_phone_register"
 					   value="<?php echo $num_val; ?>" maxlength="10"/>
-					<div class="f-label">Mobile number</div>
+					<label class="f-label">Mobile number</label>
             </div>
 
         </div>
