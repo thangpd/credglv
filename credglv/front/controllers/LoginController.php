@@ -74,7 +74,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
                                name="number_countrycode" size="4" readonly>
                         <ul class="digit_cs-list" style="margin: 2% 0">
                             <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
-                            <li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+							<li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
+							<li class="dig-cc-visible" data-value="+65" data-country="malaysia">(+65) Singapore</li>
+							<li class="dig-cc-visible" data-value="+852" data-country="malaysia">(+852) HongKong</li>
                         </ul>
                     </div>
                     <input type="button" id="hide_button" style="display: none">
