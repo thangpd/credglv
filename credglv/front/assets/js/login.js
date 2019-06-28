@@ -349,7 +349,7 @@ jQuery(function ($) {
             setTimeout(function(){
                 $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
                 console.log('submit clicked');
-            }, 1000);
+            }, 500);
            
         });
     }
