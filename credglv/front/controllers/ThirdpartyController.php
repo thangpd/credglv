@@ -70,6 +70,18 @@ class ThirdpartyController extends FrontController implements FrontControllerInt
 
 		$phone_number = $data['phone'];
 
+
+		//accept or deny  phone by country
+
+		preg_match( '#^(\+84)|(\+65)|(\+852)|(\+60)#', $phone_number, $match );
+
+		if ( ! $match ) {
+			$this->responseJson( array(
+				'code'    => 403,
+				'message' => __( 'Error when sending OTP to:' . $phone_number, 'credglv' )
+			) );
+		}
+
 		if ( WP_DEBUG == false ) {
 			if ( ! empty( $phone_number ) ) {
 				$send_otp_number = mt_rand( 1000, 9999 );
