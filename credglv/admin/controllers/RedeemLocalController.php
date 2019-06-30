@@ -78,7 +78,7 @@ class RedeemLocalController extends AdminController implements ControllerInterfa
 				$log       = json_decode( $val->data );
 
 				$log = $log->message;
-				if ( ! empty( $user_name ) ) {
+				if ( empty( $user_name ) ) {
 					$user_name = $log->user_name;
 				}
 				$status      = $val->active == 0 ? '<label class="switch ">
