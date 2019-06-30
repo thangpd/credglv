@@ -66,8 +66,11 @@ class OrderController extends FrontController implements FrontControllerInterfac
 			if ( $amount >= $data_validate['max_tax'] ) {
 
 				if ( $type == OrderModel::ORDER_TYPE_CASH ) {
-					$user_id = get_current_user_id();
-					$fee     = $amount * $data_validate['max_tax_percent'] / 100;
+					$user_id   = get_current_user_id();
+					$user_name = get_user_by( 'ID', $user_id );
+					$user_name = $user_name->data->user_login;
+
+					$fee = $amount * $data_validate['max_tax_percent'] / 100;
 					if ( $fee <= $data_validate['max_tax'] ) {
 						$fee = $data_validate['max_tax'];
 					}
@@ -86,8 +89,9 @@ class OrderController extends FrontController implements FrontControllerInterfac
 						$order->type           = $type;
 						$order->active         = 1;
 						$order->data           = json_encode( array(
+							'user_name'       => $user_name,
 							$type . '_redeem' => '',
-							'message'         => __( 'Cash Redeem from ' . $mycred->core['name']['singular'] .' : '. ( $amount - $fee ) . $mycred->core['after'], 'credglv' )
+							'message'         => __( 'Cash Redeem from ' . $mycred->core['name']['singular'] . ' : ' . ( $amount - $fee ) . $mycred->core['after'], 'credglv' )
 						) );
 						$order->save();
 					} catch ( Exception $e ) {
@@ -100,7 +104,9 @@ class OrderController extends FrontController implements FrontControllerInterfac
 				} elseif ( $type == OrderModel::ORDER_TYPE_LOCAL ) {
 					$order = new OrderModel();
 
-					$user_id = get_current_user_id();
+					$user_id   = get_current_user_id();
+					$user_name = get_user_by( 'ID', $user_id );
+					$user_name = $user_name->data->user_login;
 
 					$total_user_cash = $order->getTotalUserCash( $user_id, 1, OrderModel::ORDER_TYPE_CASH );
 					$fee             = 0;
@@ -113,7 +119,8 @@ class OrderController extends FrontController implements FrontControllerInterfac
 							$order->type           = $type;
 							$order->active         = 0;
 							$order->data           = json_encode( array(
-								$type . '_redeem' => '',
+								'user_name'       => $user_name,
+								$type . '_redeem' => $amount - $fee,
 								'message'         => __( 'Local bank redeem from cash : ' . ( $amount - $fee ), 'credglv' )
 							) );
 							$order->save();
@@ -125,7 +132,8 @@ class OrderController extends FrontController implements FrontControllerInterfac
 							$order->type           = OrderModel::ORDER_TYPE_CASH;
 							$order->active         = 1;
 							$order->data           = json_encode( array(
-								$type . '_redeem' => '',
+								'user_name'       => $user_name,
+								$type . '_redeem' => - $amount - $fee,
 								'message'         => __( 'Redeem to local bank : ' . ( $amount - $fee ), 'credglv' )
 							) );
 							$order->save();
@@ -153,8 +161,8 @@ class OrderController extends FrontController implements FrontControllerInterfac
 			}
 		} else {
 			$this->responseJson( [
-				'code' => 403,
-				'data' => 'Empty amount',
+				'code'    => 403,
+				'data'    => 'Empty amount',
 				'message' => 'Empty amount'
 			] );
 		}

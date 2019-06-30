@@ -70,13 +70,17 @@ class RedeemLocalController extends AdminController implements ControllerInterfa
 		$data         = [];
 		$data['html'] = '';
 		$records      = $order->findAllrecordsUser( '', OrderModel::ORDER_TYPE_LOCAL );
+
 		if ( ! empty( $records ) ) {
 			foreach ( $records as $val ) {
 				$user_name = get_user_by( 'ID', $val->user_id );
 				$user_name = $user_name->data->user_login;
 				$log       = json_decode( $val->data );
 
-				$log         = $log->message;
+				$log = $log->message;
+				if ( ! empty( $user_name ) ) {
+					$user_name = $log->user_name;
+				}
 				$status      = $val->active == 0 ? '<label class="switch ">
           <input type="checkbox" name="credglv_active_order" data-order_id="' . $val->id . '" class="primary">
           <span class="slider round"></span>
