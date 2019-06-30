@@ -223,7 +223,10 @@ jQuery(function ($) {
 
         $(form).find('#login-with-phone').on('click', function (e) {
             $(form).find('#label-login-with-phone').css('display','none');
-            $(form).find('#label-login-with-user').css('display','block');
+            setTimeout(function() {
+                $(form).find('#label-login-with-user').css('display','block');
+            }, 1500);
+            
             var phone_login = $(form).find('.phone_login');
             if (phone_login.is(':hidden')) {
                 phone_login.toggle('show');
@@ -235,7 +238,10 @@ jQuery(function ($) {
           
         });
         $(form).find('#login-with-user').on('click', function (e) {
-            $(form).find('#label-login-with-phone').css('display','block');
+            
+            setTimeout(function() {
+                $(form).find('#label-login-with-phone').css('display','block');
+            }, 1500);
             $(form).find('#label-login-with-user').css('display','none');
             var otp = $(form).find('.otp-code');
             if (otp.is(':visible')) {
