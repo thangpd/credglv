@@ -220,7 +220,7 @@ jQuery(function ($) {
     }
 
     credglv.login_toggle_login = function (form) {
-
+       
         $(form).find('#login-with-phone').on('click', function (e) {
             $(form).find('#label-login-with-phone').css('display','none');
             setTimeout(function() {
@@ -354,14 +354,16 @@ jQuery(function ($) {
         $(form).find('.woocommerce-Button.button.btn.btn-default.ld-ext-right').on('click', function () {
             setTimeout(function(){
                 $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
-                console.log('submit clicked');
-            }, 500);
-           
+                
+            }, 200);
+          
         });
+       
     }
 
     $(document).ready(function () {
 
+        
         credglv.button_sumit('form.login');
         credglv.onchange_otp('form.login');
         credglv.preventinputtext_mobilefield('form.login');

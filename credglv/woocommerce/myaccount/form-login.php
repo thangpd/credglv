@@ -57,7 +57,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
             </p>
             <p class="form-row form-row-wide f-login-title">
                 <label for="login-with-phone" id="label-login-with-phone" style="display: none"> <input type="radio" id="login-with-phone" name="selector" checked>
-                    <a class="login-type" ><span class="login-type" ><?php echo __( 'Or log in with Mobile number', 'credglv' ); ?></span></a></label>
+                    <a class="login-type" ><span class="login-type-1" ><?php echo __( 'Or log in with Mobile number', 'credglv' ); ?></span></a></label>
                 <label for="login-with-user" id="label-login-with-user"> <input type="radio" id="login-with-user" name="selector">
                 <a class="login-type"> <span class="login-type"><?php echo __( 'Or log in with Username/email', 'credglv' ); ?></a></span></label>
             </p>
