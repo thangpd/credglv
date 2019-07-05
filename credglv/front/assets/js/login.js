@@ -354,9 +354,20 @@ jQuery(function ($) {
         $(form).find('.woocommerce-Button.button.btn.btn-default.ld-ext-right').on('click', function () {
             setTimeout(function(){
                 $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').addClass('login-click');
+                console.log('test');
                 
+                setTimeout(function(){
+                    if($('input').val() == ''){
+                        $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').removeClass('login-click');
+                    }
+                    if($('.woocommerce-Button.button.btn.btn-default.ld-ext-right').parents('form').find('.phone_login').find('.login_countrycode').find('.error')){
+                        console.log('test');
+                        $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').removeClass('login-click');
+                    }
+                }, 1000);
+               
             }, 200);
-          
+         
         });
        
     }
