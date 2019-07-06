@@ -927,7 +927,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			// No recipient, one needs to be nominated
 			if ( count( $recipients ) <= 1 )
-				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" autocorrect="off" autocapitalize="none"/>';
+				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control rc" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" autocorrect="off" autocapitalize="none"/>';
 
 			// One specific recipient is set
 			elseif ( count( $recipients ) == 1 ) {

@@ -177,7 +177,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				<div class="form-group select-recipient-wrapper">
 				<label>' . __( "Pin", "credglv" ) . '</label>
 				<input type="password" maxlength="4" name="mycred_new_transfer[pin_transfer]"  
-				value="" aria-required="true" class="form-control" >
+				value="" aria-required="true" class="form-control rc" >
 				</div>
 			</div>
 		</div>
