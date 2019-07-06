@@ -70,8 +70,9 @@ class LoginController extends FrontController implements FrontControllerInterfac
 
 					?> f-p-focus">
                         <input type="tel" pattern="[0-9]*" class="woocommerce-phone-countrycode" placeholder="+84"
-                               value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
-                               name="number_countrycode" size="4" readonly>
+						value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
+						name="number_countrycode" size="4" readonly>
+						<span class="flag"></span>
                         <ul class="digit_cs-list" style="margin: 2% 0">
                             <li class="dig-cc-visible" data-value="+60" data-country="malaysia">(+60) Malaysia</li>
 							<li class="dig-cc-visible" data-value="+84" data-country="vietnam">(+84) Vietnam</li>
