@@ -46,7 +46,8 @@ jQuery(function ($) {
             list.hide();
         });
         form.find('.dig-cc-visible').on('click', function (e) {
-            $(this).parent().prev().val($(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').val($(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').attr('placeholder',$(this).data('value'));
         })
     };
 
