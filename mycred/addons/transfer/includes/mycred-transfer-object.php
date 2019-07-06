@@ -922,13 +922,13 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			}
 
-			$field = '<div class="form-group select-recipient-wrapper">';
-			if ( $this->args['recipient_label'] != '' ) $field .= '<label>' . esc_html( $this->args['recipient_label'] ) . '</label>';
+			$field = '<div class="form-group select-recipient-wrapper f-p-focus" style="margin-bottom : 0;">';
+			
 
 			// No recipient, one needs to be nominated
 			if ( count( $recipients ) <= 1 )
-				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control rc" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" autocorrect="off" autocapitalize="none"/>';
-
+				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control rc" data-form="' . esc_attr( $this->reference ) . '" autocorrect="off" autocapitalize="none"/>';
+				if ( $this->args['recipient_label'] != '' ) $field .= '<label class="f-label">' . esc_html( $this->args['recipient_label'] ) . '</label>';
 			// One specific recipient is set
 			elseif ( count( $recipients ) == 1 ) {
 
