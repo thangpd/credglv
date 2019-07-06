@@ -296,5 +296,12 @@ jQuery(function ($) {
             clearInterval(autofocus_ready);
         }, 1000)
 
+        $('.register .woocommerce-Button').on('click', function(){
+            console.log('n');
+            setTimeout(function(){
+                $(this).addClass('login-click');
+            },2000)
+        });
+
     });
 });
