@@ -68,7 +68,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
                     <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : '';
 
 
-					?> f-p-focus">
+					?> f-p-focus" style="margin-bottom: 0;">
                         <input type="tel" pattern="[0-9]*" class="woocommerce-phone-countrycode" placeholder="+84"
 						value="<?php echo ! empty( $num_contrycode ) ? $num_contrycode : '' ?>"
 						name="number_countrycode" size="4" readonly>
