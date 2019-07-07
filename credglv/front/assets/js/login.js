@@ -154,14 +154,14 @@ jQuery(function ($) {
             beforeSend: function (res) {
             },
             success: function (res) {
-                $(form).find('.error_log').text(res.message);
+                $(form).find('#reg_phone-error').text(res.message);
                 if (res.code === 200) {
                     location.reload();
 
                 } else if (res.code === 400) {
                     //toggle loading button
                     $('#cred_otp_code_login').val('');
-                    $(form).find('.error_log').text(res.message);
+                    $(form).find('#reg_phone-error').text(res.message);
 
                 } else if (res.code === 403) {
                     //expired otp
@@ -371,7 +371,7 @@ jQuery(function ($) {
                         $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').removeClass('login-click');
                     }
                     if($('.woocommerce-Button.button.btn.btn-default.ld-ext-right').parents('form').find('.phone_login').find('.login_countrycode').find('.error')){
-                        console.log('test');
+                        console.log('error');
                         $('.woocommerce-Button.button.btn.btn-default.ld-ext-right').removeClass('login-click');
                     }
                 }, 1000);
