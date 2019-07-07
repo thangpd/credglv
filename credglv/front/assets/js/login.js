@@ -41,13 +41,18 @@ jQuery(function ($) {
             $(form).find('.digit_cs-list').show();
             event.stopPropagation();
         });
-        $(document).on('click', function (e) {
-            var list = $('.digit_cs-list');
-            list.hide();
+        $('body').on('click', function (e) {
+            var dropdown = form.find('.woocommerce-phone-countrycode');
+            if(dropdown.length && e.target!=dropdown){
+                    $('.digit_cs-list').hide();
+            }
         });
         form.find('.dig-cc-visible').on('click', function (e) {
             $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').val($(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').attr('value',$(this).data('value'));
             $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').attr('placeholder',$(this).data('value'));
+            $(this).parents('.phone_login').removeClass('phone_login-fc');
+
         })
     };
 
