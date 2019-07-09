@@ -81,6 +81,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 		} else {
 			wc_add_notice( __( 'Otp is required', 'woocommerce' ), 'error' );
+
 			return $_POST;
 		}
 		if ( isset( $_POST[ self::METAKEY_PHONE ] ) && $_POST[ self::METAKEY_PHONE ] == '' ) {
@@ -114,9 +115,8 @@ class UserController extends FrontController implements FrontControllerInterface
 				return $_POST;
 			}
 		} else {
-			update_user_meta( $user_id, self::METAKEY_PIN, $_POST[ self::METAKEY_PIN ] );
+			update_user_meta( $user_id, self::METAKEY_PIN, md5( $_POST[ self::METAKEY_PIN ] ) );
 		}
-
 
 
 	}
@@ -275,15 +275,15 @@ class UserController extends FrontController implements FrontControllerInterface
         <p class="spacer">&nbsp;</p>
 ';
 
-		$order              = new OrderModel();
-		$settings 			= mycred_part_woo_settings();
-		$user_id 			= get_current_user_id();
-		$data               = [];
-		$data['html']       = '';
-		$data['total_cash'] = $order->getTotalUserCash( get_current_user_id() );
-		$mycred 				= mycred( $settings['mycred_default'] );
-		$data['gold_balance'] 	= $mycred->get_users_balance( $user_id );
-		$records            = $order->findAllrecordsUser( get_current_user_id() );
+		$order                = new OrderModel();
+		$settings             = mycred_part_woo_settings();
+		$user_id              = get_current_user_id();
+		$data                 = [];
+		$data['html']         = '';
+		$data['total_cash']   = $order->getTotalUserCash( get_current_user_id() );
+		$mycred               = mycred( $settings['mycred_default'] );
+		$data['gold_balance'] = $mycred->get_users_balance( $user_id );
+		$records              = $order->findAllrecordsUser( get_current_user_id() );
 		if ( ! empty( $records ) ) {
 			foreach ( $records as $val ) {
 				$log = json_decode( $val->data );
@@ -386,7 +386,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			return false;
 			//The user has the "author" role
 		}
-		if ( ! is_user_logged_in()  || in_array( 'subscriber', (array) $user->roles ) ) {
+		if ( ! is_user_logged_in() || in_array( 'subscriber', (array) $user->roles ) ) {
 			return false;
 			//The user has the "author" role
 		}
