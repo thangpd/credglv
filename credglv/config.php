@@ -144,6 +144,13 @@ return [
 						'jquery'
 					],
 				],
+				[
+					'id'           => 'spinning',
+					'url'          => plugins_url( 'credglv/assets/libs/spinning/spinning.js' ),
+					'dependencies' => [
+						'jquery'
+					],
+				],
 
 			],
 			'styles'  => [
@@ -180,6 +187,16 @@ return [
 				[
 					'id'           => 'jquery-ui',
 					'url'          => plugins_url( 'credglv/assets/libs/jquery-ui/jquery-ui.css' ),
+					'dependencies' => []
+				],
+				[
+					'id'           => 'spinning',
+					'url'          => 'https://spin.js.org/spin.css',
+					'dependencies' => []
+				],
+				[
+					'id'           => 'boostrap-notify',
+					'url'          => plugins_url( 'credglv/assets/styles/animate.css' ),
 					'dependencies' => []
 				],
 			]

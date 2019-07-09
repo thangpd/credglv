@@ -127,7 +127,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 
 	public function credglv_pro_custom_transfer_messages( $message ) {
-		$message['low_amount']    = __( 'You must transfer minimum ', 'credglv' ) . $this->minimum_transer . '.';
+		$message['low_amount']    = __( 'Minimum amount is ', 'credglv' ) . $this->minimum_transer . '.' . __(' Gold', 'credglv');
 		$message['invalid_pin']   = __( 'Your pin is wrong', 'credglv' );
 		$message['amount_higher'] = __( 'Your amount is higher than balance', 'credglv' );
 
@@ -135,6 +135,10 @@ class MycredController extends FrontController implements FrontControllerInterfa
 	}
 
 	function credglv_assets_enqueue() {
+		wp_register_script( 'cred-mycred-detail', plugin_dir_url( __DIR__ ) . '/assets/js/mycred.js' );
+		wp_enqueue_script( 'cred-mycred-detail' );
+		wp_register_script( 'mycred-notifications' , plugins_url('credglv/assets/scripts/credglv-mycred-notify.js') );
+		wp_enqueue_script( 'mycred-notifications' );
 
 	}
 
@@ -170,15 +174,16 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
-				<div class="form-group select-recipient-wrapper">
-				<label>' . __( "Pin", "credglv" ) . '</label>
+				<div class="form-group select-recipient-wrapper f-p-focus pin">
+				
 				<input type="password" maxlength="4" name="mycred_new_transfer[pin_transfer]"  
-				value="" aria-required="true" class="form-control" >
+				value="" aria-required="true" class="form-control rc" >
+				<label class="f-label">' . __( "Pin", "credglv" ) . '</label>
 				</div>
 			</div>
 		</div>
 		<br>
-		<p>' . __( 'Transaction fee (will be debited to recipent’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold. The amount is a multiple of 10.', 'credglv' ) . '</p>
+		<p>' . __( 'Transaction fee (will be debited to sender’s Gold Wallet): 1 Gold. Minimum transaction amount: 10 Gold. The amount is a multiple of 10.', 'credglv' ) . '</p>
 ';
 		$fields .= $fields_temp;
 

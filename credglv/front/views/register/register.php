@@ -36,23 +36,26 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_username' ) ) : ?>
 
-                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                        <label for="reg_username"><?php esc_html_e( 'Username', 'woocommerce' ); ?>&nbsp;<span
-                                    class="required">*</span></label>
-                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username"
+                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide custom-mg f-p-focus mt-30 f-bd rg">  
+                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text u-user" name="username"
                                autocapitalize="none" pattern="[a-z0-9]"
                                id="reg_username" autocomplete="username"
-                               value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( $_POST['username'] ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
+                               value="<?php echo ( ! empty( $_POST['username'] ) ) ? esc_attr( $_POST['username'] ) : ''; ?>"/>
+                               <label class="f-label">Username</label>
+
+                               <?php // @codingStandardsIgnoreLine ?>
+
+
                     </p>
+                   
 
 				<?php endif; ?>
 
-                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-                    <label for="reg_email"><?php esc_html_e( 'Email address', 'woocommerce' ); ?>&nbsp;<span
-                                class="required">*</span></label>
-                    <input type="email" class="woocommerce-Input woocommerce-Input--text input-text" name="email"
+                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide custom-mg  f-p-focus  mt-30 f-bd rg-em">
+                    <input type="email" class="woocommerce-Input woocommerce-Input--text input-text r-email" name="email"
                            id="reg_email" autocomplete="email"
                            value="<?php echo ( ! empty( $_POST['email'] ) ) ? esc_attr( wp_unslash( $_POST['email'] ) ) : ''; ?>"/><?php // @codingStandardsIgnoreLine ?>
+                           <label class="f-label">Email address</label>
                 </p>
 
 				<?php if ( 'no' === get_option( 'woocommerce_registration_generate_password' ) ) : ?>
@@ -74,7 +77,7 @@ do_action( 'woocommerce_before_customer_login_form' ); ?>
                     <button type="submit" class="woocommerce-Button button  btn btn-default ld-ext-right "
                             name="register"
                             value="<?php esc_attr_e( 'Register', 'woocommerce' ); ?>"><?php esc_html_e( 'Register', 'woocommerce' ); ?>
-                        <div class="ld ld-spinner ld-spin"></div>
+                            <div class="ld" id="spinning"></div>
                     </button>
                 </p>
                 <p class="woocommerce-LostPassword lost_password">

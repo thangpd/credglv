@@ -22,6 +22,18 @@ function render_profile_html() {
 		return $get_img_pp[0];
 	}
 
+	function get_pp_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports_number' ) ) == 0 ) {
+			$get_pp_num = [ '' ];
+		} else {
+			$get_pp_num = get_user_meta( $user_id, 'passports_number' );
+		}
+
+		return $get_pp_num[0];
+
+	}
+
 	function get_img_iden() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
@@ -31,6 +43,18 @@ function render_profile_html() {
 		}
 
 		return $get_img_iden[0];
+	}
+
+	function get_iden_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden_number' ) ) == 0 ) {
+			$get_iden_num = [ '' ];
+		} else {
+			$get_iden_num = get_user_meta( $user_id, 'iden_number' );
+		}
+
+		return $get_iden_num[0];
+
 	}
 
 	function get_gender() {
@@ -90,7 +114,9 @@ function render_profile_html() {
 
 	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
+	$get_pp_num   = get_pp_num();
 	$get_img_iden = get_img_iden();
+	$get_iden_num = get_iden_num();
 	$get_gender   = get_gender();
 	$get_address  = get_address();
 	$get_fullname = get_fullname();
@@ -161,9 +187,17 @@ function render_profile_html() {
 	$html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="iden_num">Identification Number';
+	$html .= '<input type="number" id="iden_num" name="iden_num" value="' . $get_iden_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_passports">Passport';
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="pp_num">Passport Number';
+	$html .= '<input type="number" id="pp_num" name="pp_num" value="' . $get_pp_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
 	$html .= '</form>';
@@ -198,6 +232,18 @@ function render_profile_error_html() {
 		return $get_img_pp[0];
 	}
 
+	function get_pp_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports_number' ) ) == 0 ) {
+			$get_pp_num = [ '' ];
+		} else {
+			$get_pp_num = get_user_meta( $user_id, 'passports_number' );
+		}
+
+		return $get_pp_num[0];
+
+	}
+
 	function get_img_iden() {
 		$user_id = get_current_user_id();
 		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
@@ -207,6 +253,18 @@ function render_profile_error_html() {
 		}
 
 		return $get_img_iden[0];
+	}
+
+	function get_iden_num(){
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden_number' ) ) == 0 ) {
+			$get_iden_num = [ '' ];
+		} else {
+			$get_iden_num = get_user_meta( $user_id, 'iden_number' );
+		}
+
+		return $get_iden_num[0];
+
 	}
 
 	function get_fullname() {
@@ -233,7 +291,9 @@ function render_profile_error_html() {
 
 	$get_img_ava  = get_img_ava();
 	$get_img_pp   = get_img_pp();
+	$get_pp_num   = get_pp_num();
 	$get_img_iden = get_img_iden();
+	$get_iden_num = get_iden_num();
 	$get_fullname = get_fullname();
 	$get_address  = get_address();
 
@@ -311,9 +371,17 @@ function render_profile_error_html() {
 	$html .= '<input type="file" id="user_indentification" name="user_indentification" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="iden_num">Identification Number';
+	$html .= '<input type="number" id="iden_num" name="iden_num" value="' . $get_iden_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
 	$html .= '<label for="user_passports">Passport';
 	$html .= '<p><img style="width:125px;height:125px" src="' . $get_img_pp . '" alt="" class="update_img_pp"></p>';
 	$html .= '<input type="file" id="user_passports" name="user_passports" class="woocommerce-Input woocommerce-Input--password input-text">';
+	$html .= '</p>';
+	$html .= '<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">';
+	$html .= '<label for="pp_num">Passport Number';
+	$html .= '<input type="number" id="pp_num" name="pp_num" value="' . $get_pp_num . '" class="woocommerce-Input woocommerce-Input--password input-text">';
 	$html .= '</p>';
 	$html .= '<button class="btn btn-default ld-ext-right" type="submit" name="uploadclick" >'.__('Update Profile','credglv').'<div class="ld ld-spinner ld-spin"></div></button>';
 	$html .= '</form>';
@@ -417,27 +485,71 @@ if ( isset( $_POST['uploadclick'] ) ) {
 			}
 		}
 	}
+
+	function check_img_pp() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'passports' ) ) == 0 ) {
+			$get_img_pp = [ '' ];
+		} else {
+			$get_img_pp = get_user_meta( $user_id, 'passports' );
+		}
+
+		return $get_img_pp[0];
+	}
+	function check_img_iden() {
+		$user_id = get_current_user_id();
+		if ( sizeof( get_user_meta( $user_id, 'iden' ) ) == 0 ) {
+			$get_img_iden = [ '' ];
+		} else {
+			$get_img_iden = get_user_meta( $user_id, 'iden' );
+		}
+
+		return $get_img_iden[0];
+	}
+
 	$user_gender   = $_POST['user_gender'];
 	$user_fullname = $_POST['user_fullname'];
 	$user_date     = $_POST['user_date'];
 	$user_address  = $_POST['user_address'];
 	$user_country  = $_POST['user_country'];
-	if ( empty( $user_fullname )  || empty( $user_address ) ) {
+	$iden_num      = $_POST['iden_num'];
+	$pp_num 	   = $_POST['pp_num'];
+	$img_iden      = check_img_iden();
+	$img_pp        = check_img_pp();
+	if ( empty( $user_fullname )  || empty( $user_address ) || empty( $iden_num ) || empty( $pp_num ) || empty( $img_iden ) || empty( $img_pp )) {
 		if ( empty( $user_fullname ) ) {
-			echo '<div style="background-color: red;text-align: center; color: white">Invalid Full Name</div>';
+			echo '<div class="alert alert-danger">Invalid Full Name</div>';
 			global $flag;
 			$flag = 1;
 		} else if ( empty( $user_address ) ) {
-			echo '<div style="background-color: red;text-align: center; color: white">Invalid Address</div>';
+			echo '<div class="alert alert-danger">Invalid Address</div>';
 			global $flag;
 			$flag = 3;
-		}
+		} else if ( empty( $iden_num ) ) {
+			echo '<div class="alert alert-danger">Invalid Identification Number</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $pp_num ) ) {
+			echo '<div class="alert alert-danger">Invalid Passport Number</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $img_iden ) ) {
+			echo '<div class="alert alert-danger">Invalid Identification Card</div>';
+			global $flag;
+			$flag = 5;
+		} else if ( empty( $img_pp ) ) {
+			echo '<div class="alert alert-danger">Invalid Passport Card</div>';
+			global $flag;
+			$flag = 5;
+		} 
 	} else if ( ! empty( $user_fullname )  && ! empty( $user_address ) ) {
 		update_user_meta( $user_id, 'user_fullname', $user_fullname );
 		update_user_meta( $user_id, 'user_address', $user_address );
 		update_user_meta( $user_id, 'user_gender', $user_gender );
 		update_user_meta( $user_id, 'user_date', $user_date );
 		update_user_meta( $user_id, 'user_country', $user_country );
+		update_user_meta( $user_id, 'iden_number', $iden_num);
+		update_user_meta( $user_id, 'passports_number', $pp_num);
 		$layout = '';
 		$layout .= '<div style="text-align: center;" class="alert alert-success">Update Success</div>';
 		echo $layout;
@@ -452,5 +564,7 @@ if ( $flag == 0 ) {
 } else {
 	render_profile_error_html();
 }
+
+echo '<button class="btn btn-default ld-ext-right" type="button" onclick="window.location.href=\''.esc_html(home_url('/')).'customer-logout'.'\'">'.__('Logout','credglv').'</button>';
 
 

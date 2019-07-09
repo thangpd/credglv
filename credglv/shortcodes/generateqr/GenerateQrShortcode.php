@@ -37,7 +37,8 @@ class GenerateQrShortcode extends Shortcode {
 	public function getAttributes() {
 		return [
 			'layout' => '',
-			'width'  => '200'
+			'width'  => '140',
+			'height' => '140'
 		];
 	}
 
@@ -52,21 +53,7 @@ class GenerateQrShortcode extends Shortcode {
 	public function getShortcodeContent( $data = [], $params = [], $key = '' ) {
 
 		$data           = $this->getData( $data );
-		$link_file      = '';
-		$referral       = new UserModel();
-		$url_share_link = $referral->get_url_share_link();
-
-		$qrCode       = new QrCode( $url_share_link );
-		$file_qr_code = 'qr_code' . get_current_user_id() . '.png';
-		$link_file    = CREDGLV_QR_CODE . DIRECTORY_SEPARATOR . $file_qr_code;
-		if ( is_dir( CREDGLV_QR_CODE ) ) {
-			if ( ! is_file( $link_file ) ) {
-				$qrCode->writeFile( $link_file );
-			}
-		} else {
-			throwException( new \Exception( 'cant write qrcode' . CREDGLV_QR_CODE ) );
-		}
-		$link_file = CREDGLV_QR_CODE_URI . $file_qr_code;
+		$link_file      = home_url('generate-qrcode	');
 
 		return $this->render( $this->contentView, array( 'data' => $data['data'], 'link_file' => $link_file ), true );
 	}

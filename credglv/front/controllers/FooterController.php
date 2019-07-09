@@ -24,14 +24,21 @@ class FooterController extends FrontController implements FrontControllerInterfa
 
 
 		$share_link = __( 'Be a GLV Member and enjoy many benefits ', 'credglv' ) . $user_model->get_url_share_link();
-		echo '<script type="text/javascript">
-            
-        PullToRefresh.init({
-            mainElement: \'body\',
-            onRefresh: function(){ window.location.reload(); }
-        });
-        </script>
-        
+		if( is_user_logged_in() ){
+			echo '<script type="text/javascript">
+	            
+	        PullToRefresh.init({
+	            mainElement: \'body\',
+	            onRefresh: function(){ window.location.reload(); }
+	        });
+	        </script>';
+        }
+        echo '</script>
+        <script type="text/javascript">
+			var target = document.getElementById("spinning");
+			console.log(target);
+			var spinner = new Spinner().spin(target);
+		</script>
         <script>
             function showAndroidShare() {
                 try {

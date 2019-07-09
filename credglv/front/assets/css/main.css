@@ -46,7 +46,7 @@ section.the-css-at-table .tr > span {
     text-align: left;
 }
 section.the-css-at-table .tr:nth-child(odd) {
-    background-color: #F6F7FA;
+    background-color: #2f4058;
 }
 section.the-css-at-table .tr:nth-child(even) {
     background-color: white;

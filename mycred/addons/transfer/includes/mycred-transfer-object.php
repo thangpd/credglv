@@ -819,7 +819,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 				'show_limit'      => 0,
 				'show_message'    => 1,
 				'placeholder'     => '',
-				'recipient_label' => __( 'Recipient', 'mycred' ),
+				'recipient_label' => __( 'Recipients username', 'mycred' ),
 				'amount_label'    => __( 'Amount', 'mycred' ),
 				'balance_label'   => __( 'Balance', 'mycred' ),
 				'message_label'   => __( 'Message', 'mycred' )
@@ -831,6 +831,7 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 			ob_start();
 
 ?>
+
 <div class="mycred-transfer-cred-wrapper"<?php if ( $this->reference != '' ) echo ' id="transfer-form-' . esc_attr( $this->reference ) . '"'; ?>>
 	<form class="form mycred-transfer mycred-transfer-form" id="mycred-transfer-form-<?php echo esc_attr( $this->reference ); ?>" method="post" data-ref="<?php echo esc_attr( $this->reference ); ?>" action="">
 
@@ -921,13 +922,13 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 
 			}
 
-			$field = '<div class="form-group select-recipient-wrapper">';
-			if ( $this->args['recipient_label'] != '' ) $field .= '<label>' . esc_html( $this->args['recipient_label'] ) . '</label>';
+			$field = '<div class="form-group select-recipient-wrapper f-p-focus recipient">';
+			
 
 			// No recipient, one needs to be nominated
 			if ( count( $recipients ) <= 1 )
-				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control" data-form="' . esc_attr( $this->reference ) . '" placeholder="' . $placeholder . '" />';
-
+				$field .= '<input type="text" name="mycred_new_transfer[recipient_id]" value="" aria-required="true" class="mycred-autofill form-control rc" data-form="' . esc_attr( $this->reference ) . '" autocorrect="off" autocapitalize="none"/>';
+				if ( $this->args['recipient_label'] != '' ) $field .= '<label class="f-label">' . esc_html( $this->args['recipient_label'] ) . '</label>';
 			// One specific recipient is set
 			elseif ( count( $recipients ) == 1 ) {
 
@@ -1020,13 +1021,13 @@ if ( ! class_exists( 'myCRED_Transfer' ) ) :
 			$balance    = $this->balances[ $type_id ];
 			$point_type = $balance->point_type;
 
-			$field      = '<div class="form-group select-amount-wrapper">';
-			if ( $this->args['amount_label'] != '' ) $field .= '<label>' . esc_html( $this->args['amount_label'] ) . '</label>';
+			$field      = '<div class="form-group select-amount-wrapper f-p-focus amount" >';
+			
 
 			// User needs to nominate the amount
 			if ( ! is_array( $this->transfer_amount ) && $this->transfer_amount == 0 )
 				$field .= '<input type="number" name="mycred_new_transfer[amount]" placeholder="' . esc_attr( $balance->minimum ) . '" class="form-control" value="' . esc_attr( $balance->minimum ) . '" />';
-
+				if ( $this->args['amount_label'] != '' ) $field .= '<label class="f-label">' . esc_html( $this->args['amount_label'] ) . '</label>';
 			// Multiple amounts to pick from
 			elseif ( is_array( $this->transfer_amount ) && count( $this->transfer_amount ) > 1 ) {
 

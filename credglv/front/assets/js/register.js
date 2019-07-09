@@ -41,12 +41,16 @@ jQuery(function ($) {
             $(form).find('.digit_cs-list').show();
             event.stopPropagation();
         });
-        $(document).on('click', function (e) {
-            var list = $('.digit_cs-list');
-            list.hide();
+        $('body').on('click', function (e) {
+            var dropdown = form.find('.woocommerce-phone-countrycode');
+            if(dropdown.length && e.target!=dropdown){
+                    $('.digit_cs-list').hide();
+            }
         });
         form.find('.dig-cc-visible').on('click', function (e) {
-            $(this).parent().prev().val($(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').val($(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').attr('value',$(this).data('value'));
+            $(this).closest('.list_countrycode').find('.woocommerce-phone-countrycode').attr('placeholder',$(this).data('value'));
         })
     };
 
@@ -87,7 +91,7 @@ jQuery(function ($) {
                         // minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                     cred_otp_code: {
-                        required: "An One Time PIN was sent to your phone.",
+                        required: "A one time password (OTP) was sent to your phone.",
                         minlength: jQuery.validator.format("At least {0} characters required!")
                     },
                 }, submitHandler: function (form) {
@@ -266,11 +270,28 @@ jQuery(function ($) {
 
     }
 
+    credglv.preventinputtext_usernamefield = function (form) {
+        form = $(form);
+        form.find('#reg_username').bind({
+            keypress: function (e) {
+                //alert(e.charCode)
+                if (e.charCode > 47 && e.charCode < 58) {
+                    return true;
+                }
+                if (e.charCode > 96 && e.charCode < 123) {
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     $(document).ready(function () {
         credglv.onchange_otp('form.register');
         credglv.preventinputtext_mobilefield('form.register');
         credglv.validate_submitform_register('form.register');
         credglv.checkrequirement('form.register');
+        credglv.preventinputtext_usernamefield('form.register');
         credglv.select2login();
 
         $('form.login').find('.phone_login').nextUntil('.otp-code').hide();
@@ -278,6 +299,13 @@ jQuery(function ($) {
             $('#hide_button').trigger('click');
             clearInterval(autofocus_ready);
         }, 1000)
+
+        $('.register .woocommerce-Button').on('click', function(){
+            console.log('n');
+            setTimeout(function(){
+                $(this).addClass('login-click');
+            },2000)
+        });
 
     });
 });

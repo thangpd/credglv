@@ -28,29 +28,89 @@ if ( $user->check_actived_referral( $user_id ) ) {
 
 	$wmc_html = '<div id="credglv-qr-code">
                 
-                <div class="wmc-banners">';
+                <div class="wmc-banners" style="display: flex">';
 
 	$wmc_html .= '<div class="qr_code">' . do_shortcode( '[credglv_generateqr]' ) . '</div>';
 
-	$wmc_html .= '</div>';
+    $wmc_html .= '<div style="">
+                    <video width="300" height="170" controls>
+                      <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                      <source src="https://www.w3schools.com/html/mov_bbb.ogg" type="video/ogg">
+                      Your browser does not support HTML5 video.
+                    </video>
+                 </div>';
+    $wmc_html .= '</div>';
 
 	echo $wmc_html;
 	?>
-    <input type="text" value="<?php echo $user->get_url_share_link() ?>" id="myInput">
     <!-- The button used to copy the text -->
-    <button onclick="myFunction()"><?php echo __( 'Copy text', 'credglv' ); ?></button>
+    <button data-clipboard-text="<?php echo $user->get_url_share_link() ?>" id="btn_copy" class="woocommerce-Button button btn btn-default ld-ext-right"><?php echo __( 'Copy link', 'credglv' ); ?><div class="ld" id="spinning1" style="top: 65%; right: 0"></div></button>
     <button onclick="showAndroidShare()"><?php echo __( 'Share', 'credglv' ); ?></button>
 
-    <script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+    <script type="text/javascript">
+        var target = document.getElementById("spinning1");
+        console.log(target);
+        var spinner = new Spinner().spin(target);
+
+        var clipboard = new ClipboardJS('button');
+        clipboard.on('success', function (){
+            jQuery('#btn_copy').toggleClass('running');
+            var toggle = setInterval(function(){
+                jQuery('#btn_copy').toggleClass('running');
+                clearInterval(toggle);
+            },1000)
+            var load_toaster = setInterval(function(){
+                toaster('success','','The Share URL was coppied to your clipboard. Now go and share it!');
+                clearInterval(load_toaster);
+            },1000);
+            // jQuery('#success_noti').stop();
+            // jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+            //     jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+            //         jQuery('#success_noti').fadeOut(3000);
+            //     }});
+            // }});
+        })
         function myFunction() {
-            /* Get the text field */
-            var copyText = document.getElementById("myInput");
+            jQuery('#btn_copy').toggleClass('running');
+            var toggle = setInterval(function(){
+                jQuery('#btn_copy').toggleClass('running');
+                clearInterval(toggle);
+            },1000)
+            var load_toaster = setInterval(function(){
+                toaster('success','','The Share URL was coppied to your clipboard. Now go and share it!');
+                clearInterval(load_toaster);
+            },1000);
+            // jQuery('#success_noti').stop();
+            // jQuery('#success_noti').fadeOut({queue:false,complete: function(){
+            //     jQuery('#success_noti').fadeIn({duration: 1500, complete: function(){
+            //         jQuery('#success_noti').fadeOut(3000);
+            //     }});
+            // }});
 
-            /* Select the text field */
-            copyText.select();
+            var el = document.getElementById("myInput");
+            el.select();
+            var oldContentEditable = el.contentEditable,
+                oldReadOnly = el.readOnly,
+                range = document.createRange();
 
-            /* Copy the text inside the text field */
-            document.execCommand("copy");
+            el.contentEditable = true;
+            el.readOnly = false;
+            range.selectNodeContents(el);
+
+            var s = window.getSelection();
+            s.removeAllRanges();
+            s.addRange(range);
+
+            el.setSelectionRange(0, 999999); // A big number, to cover anything that could be inside the element.
+
+            el.contentEditable = oldContentEditable;
+            el.readOnly = oldReadOnly;
+
+
+            document.execCommand('copy');
+            el.blur();
+
         }
     </script>
 	<?php
