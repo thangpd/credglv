@@ -12,6 +12,8 @@ namespace credglv\front\controllers;
 
 use credglv\core\interfaces\FrontControllerInterface;
 use credglv\models\UserModel;
+use credglv\models\NotifyModel;
+use credglv\front\controllers\PushNotifyController;
 
 
 class MycredController extends FrontController implements FrontControllerInterface {
