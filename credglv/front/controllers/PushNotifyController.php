@@ -158,9 +158,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'callback' => __CLASS__.'::register',
 		    'args' => array(
 		      	'device_token',
-		      	'user_id' => array(
-		      		'default' => get_current_user_id(),
-		      	),
+		      	'user_id'
 		      )
 		  ) );
 		} );
