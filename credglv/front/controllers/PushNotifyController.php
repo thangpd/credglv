@@ -36,7 +36,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 
 		$notify = new NotifyModel();
 		$user_id = $notify->get_user_by_device_token($deviceToken);
-		$notify->add_user_notification('12',$body,$type,$link);
+		$notify->add_user_notification(12,'$body',1,'$link');
 	}
 
 	public function send_notify($request) {
