@@ -52,7 +52,7 @@ foreach ($data['test'] as $key => $value) {
 	<li style="position: relative; overflow: hidden; display: block;padding: 10px;<?php echo $color ?>">
 		<a href="<?php echo $value->link ?>" style="display: block; position: relative; color: black">
 			<div style="float: left; margin-right: 10px">
-				<img src="http://localhost/Outsource/GLV/wp-content/uploads/credglv/img/20_ava_2019-06-3-18-51-33_61725047_1079796815553593_8550129646849490944_n.jpg" style="width: 65px; height: 65px; display: block; border-radius: 50%">
+				<img src="http://test1.goldleaf-ventures.com/wp-content/uploads/credglv/img/1_ava_2019-06-4-20-36-41_3800412.png" style="width: 65px; height: 65px; display: block; border-radius: 50%">
 			</div>
 			<div>
 				<span><?php echo $content ?></span>
