@@ -12,54 +12,71 @@ namespace credglv\front\controllers;
 
 use credglv\core\components\RoleManager;
 use credglv\models\UserModel;
+use credglv\models\NotifyModel;
 use credglv\core\interfaces\FrontControllerInterface;
 use http\Client\Curl\User;
 use PHPUnit\Runner\Exception;
 
 // use Kreait\Firebase;
-// use Kreait\Firebase\Factory;
 // use Kreait\Firebase\ServiceAccount;
+// use Kreait\Firebase\Messaging;
 // use Kreait\Firebase\Messaging\CloudMessage;
 
 
 class PushNotifyController extends FrontController implements FrontControllerInterface {
+	public function push($deviceToken='',$title='',$body='',$type='0',$link=''){
+		$url = admin_url('/').'wp-json/v1/send_notify?deviceToken='.$deviceToken.'&title='.$title.'&body'.$body;
+		$ch = curl_init();
+		curl_setopt( $ch,CURLOPT_URL, $url );
+		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
 
-	public function send_notify() {
-		// $serviceAccount = ServiceAccount::fromJsonFile('/Applications/XAMPP/xamppfiles/htdocs/Outsource/GLV/wp-content/plugins/credglv/glv-test-firebase-adminsdk-swohm-ad70b50da3.json');
-		// $firebase = (new Factory)
-		//     ->withServiceAccount($serviceAccount)
-		//     ->withDatabaseUri('https://glv-test.firebaseio.com/')
-		//     ->create();
-		// print_r($firebase);
-		// $database = $firebase->getDatabase();
-		// $auth = $firebase->getAuth();
+		$result = curl_exec( $ch );
+		curl_close( $ch );
 
-		// $messaging = $firebase->getMessaging();
-		// $deviceToken = $data['device_token'] ? $data['device_token'] : '';
-		// $message = CloudMessage::fromArray([
-		// 	'token'			=> $deviceToken,
-		//     'notification' 	=> ['title' => 'GLV', 'body' => 'Welcome'], // optional
-		//     'data' 			=> [], // optional
-		// ]);
+		$notify = new NotifyModel();
+		$user_id = $notify->get_user_by_device_token($deviceToken);
+		$notify->add_user_notification($user_id,$body,$type,$link);
+	}
 
-		//$messaging->send($message);
+	public function send_notify($request) {
 		if(!$_GET['device_token']){
 			$result['success'] = 'error';
 			$result['message'] = 'device_token is invalid';
 			return $result;
 		}
-		$singleID = $_GET['device_token'];
-		$fcmMsg = array(
-			'body' => 'here is a message. message',
-			'title' => 'This is title #1',
-			'sound' => "default",
-		    'color' => "#203E78" 
-		);
-		$fcmFields = array(
-			'to' => $singleID,
-		    'priority' => 'high',
-			'notification' => $fcmMsg
-		);
+		$params = $request->get_params();
+		$token = $params['device_token'];
+		$os = 'ios';
+		$title = $params['title'];
+		$body = $params['body'];
+
+	    $notification = array(
+	    	'body'=>$body,
+	    	'title'=>$title,
+	    );
+
+	    $msg = array(
+	    	'message'=> 'This is message',
+	    );
+
+	    if($os == 'ios'){
+	        $fields = array(
+	        	"content_available" => true,
+	        	"priority" => "high",
+	        	'to'=> $token,
+	        	'data'=> $msg
+	        );
+	    }else{
+	        $fields = array(
+	        	'notification' => $notification,
+	        	"content_available" => false,
+	        	"priority" => 'high',
+	        	'to'=> $token,
+	        	'data'=> $msg
+	        );
+	    }
+
+	    //return $fields;
 
 		$headers = array(
 			'Authorization: key=AAAAWBLwt9s:APA91bG4rSuKFxGEtx-fTbnxIib-guizmW_fYDcYt1fvubEGvIrKgFAG6ohyzPtHqSuh2cwtcwMOCD7OxLkE4W_uHYJZdkjjUd97sxVQKcEqsLKMwVewz1Ojm1cStdMNokMVFQv5Z2iv',
@@ -68,31 +85,31 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		 
 		$ch = curl_init();
 		curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
-		curl_setopt( $ch,CURLOPT_POST, true );
+		curl_setopt( $ch,CURLOPT_CUSTOMREQUEST, "POST" );
 		curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
 		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
 		curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
-		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fcmFields ) );
+		curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
 
 		$result = curl_exec($ch );
 		curl_close( $ch );
 		return json_decode($result);
 	}
 
-	public function register () {
-		if(!$_GET['device_token']){
+	public function register ($request) {
+		$params = $request->get_params();
+		$deviceToken = $params['device_token'];
+		$user_id = $params['user_id'];
+		if(!$deviceToken){
 			$result['success'] = 'error';
 			$result['message'] = 'device_token is invalid';
 			return $result;
 		}
-		if(!$_GET['username']){
+		if(!$user_id){
 			$result['success'] = 'error';
-			$result['message'] = 'userrname is invalid';
+			$result['message'] = 'username is invalid';
 			return $result;
 		}
-		$deviceToken = $_GET['device_token'];
-		$user = get_user_by('login', $_GET['username']);
-		$user_id = $user->ID;
 		$token_exist = get_user_meta($user_id,'device_token',true);
 		if($deviceToken){
 			if($token_exist == ''){
@@ -122,13 +139,15 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		return $result;
 	}
 
-	public function init_hook(){
+	function init_hook(){
 		add_action( 'rest_api_init', function () {
 		  register_rest_route( '/v1', '/send_notify', array(
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::send_notify',
 		    'args' => array(
-		      'device_token'
+		      'device_token',
+		      'title',
+		      'body'
 		      )
 		  ) );
 		} );
@@ -137,11 +156,14 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'methods' => 'GET',
 		    'callback' => __CLASS__.'::register',
 		    'args' => array(
-		      'device_token',
-		      'username',
+		      	'device_token',
+		      	'user_id' => array(
+		      		'default' => get_current_user_id(),
+		      	),
 		      )
 		  ) );
 		} );
+		//add_action('init','push');
 	}
 
 	/**
@@ -153,22 +175,23 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 
 		return [
 			'actions' => [
-				'init'				=> [ self::getInstance(), 'init_hook' ],
+				'init'	=> [ self::getInstance(), 'init_hook' ],
 			],
 			'ajax'    => [
 
 			],
-			// 'pages'   => [
-			// 	'front' => [
-			// 		'push_notify' =>
-			// 			[
-			// 				'pushNotifyPage',
-			// 				[
-			// 					'title' => __( 'Push', 'credglv' ),
-			// 				]
-			// 			],
-			// 	]
-			// ],
+			'pages'   => [
+				'front' => [
+					'push_notify' =>
+						[
+							'test',
+							[
+								'title' => __( 'Push', 'credglv' ),
+								'single' => true,
+							]
+						],
+				]
+			],
 			'assets'  => [
 				'js'  => [
 					/*[

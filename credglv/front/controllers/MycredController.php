@@ -207,6 +207,47 @@ class MycredController extends FrontController implements FrontControllerInterfa
 
 	}
 
+	public function credglv_transfer_notification( $transferid , $request, $setting ){
+		if ( isset( $request['recipient_id'] ) && ! empty( $request['recipient_id'] ) ) {
+			$notify_model = new NotifyModel();
+			$log_id = $notify_model->get_log_id_by_tranfer_id($transferid);
+			if($request['reference'] == 'transfer'){
+				$user_id = $request['recipient_id'];
+				//push_notify
+				$deviceToken = get_user_meta($user_id,'device_token',true);
+				$fullname = get_user_meta($user_id,'user_fullname',true);
+				$title = __('Transfer','credglv');
+				$body = __('You have received gold from ','credglv').$fullname;
+				$type = 1;
+				$link = home_url('/').'point_history?tranferid='.$log_id;
+				if($deviceToken)
+					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+			}
+			if($request['reference'] == 'partial_payment'){
+				$user_id = $request['sender_id'];
+				//push_notify
+				$deviceToken = get_user_meta($user_id,'device_token',true);
+				$title = __('New order','credglv');
+				$body = __('You have a new order','credglv');
+				$type = 2;
+				$link = home_url('/').'view_order/'.$request['data'];
+				if($deviceToken)
+					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+			}
+			if($request['reference'] == 'benefit_register_fee'){
+				$user_id = $request['recipient_id'];
+				//push_notify
+				$deviceToken = get_user_meta($user_id,'device_token',true);
+				$title = __('Commission','credglv');
+				$body = __('You have received comission from member ','credglv').$fullname;
+				$type = 3;
+				$link = home_url('/').'point_history?tranferid='.$log_id;
+				if($deviceToken)
+					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+			}
+		}
+	}
+
 
 	public function init_hook() {
 		add_filter( 'mycred_transfer_messages', [ $this, 'credglv_pro_custom_transfer_messages' ] );
@@ -226,6 +267,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				'init'                       => [ self::getInstance(), 'init_hook' ],
 				'wp_enqueue_scripts'         => [ self::getInstance(), 'credglv_assets_enqueue' ],
 				'mycred_transfer_completed'  => [ self::getInstance(), 'credglv_transfer_active_verify', 10, 4 ],
+				'mycred_transfer_completed'  => [ self::getInstance(), 'credglv_transfer_notification', 10, 6 ],
 				'mycred_transfer_form_extra' => [ self::getInstance(), 'credglv_transfer_form_extra_otp_field', 10, 3 ],
 			],
 			'assets'  => [
