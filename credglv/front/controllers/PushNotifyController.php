@@ -34,12 +34,9 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		$result = curl_exec( $ch );
 		curl_close( $ch );
 
-		$deviceToken = 'fSZSdeC_Uio:APA91bFZL4Go1yqeoDdqXr_0Achav5GDFtdGNI79UQyUH7ZgzPSQ_9S3IyUFs00ekN4R20foYQp1-JWgqbbDZVzvE3f326s_VXCQ4fv7yc1gy0Vr-oLIC2LNdBAWawqLv2mPcGyQKvwL';
-
 		$notify = new NotifyModel();
 		$user_id = $notify->get_user_by_device_token($deviceToken);
-		print_r($user_id);
-		$notify->add_user_notification($user_id,$body,$type,$url);
+		$notify->add_user_notification($user_id,$body,$type,$link);
 	}
 
 	public function send_notify($request) {
