@@ -181,6 +181,24 @@ class LoginController extends FrontController implements FrontControllerInterfac
 		}
 	}
 
+	function get_cookie_login() {
+		return $_COOKIE['user_id'];
+	}
+
+	public function init_hook() {
+		$current_user = wp_get_current_user();
+		$user_id = $current_user->ID;
+		setcookie("user_id", $user_id, 2147483647, '/');
+
+		add_action( 'rest_api_init', function () {
+		  register_rest_route( '/v1', '/get_cookie_login', array(
+		    'methods' => 'GET',
+		    'callback' => __CLASS__.'::get_cookie_login' 
+				) 
+			);
+		});
+	}
+
 
 	/**
 	 * Register all actions that controller want to hook
@@ -194,6 +212,7 @@ class LoginController extends FrontController implements FrontControllerInterfac
 //				'wp_head'                      => [ self::getInstance(), 'add_custom_js' ],
 				'woocommerce_login_form_start' => [ self::getInstance(), 'credglv_extra_login_fields' ],
 				'woocommerce_login_form'       => [ self::getInstance(), 'credglv_extra_otp_login_fields' ],
+				'init'					   	   => [ self::getInstance(), 'init_hook' ],
 				'wp_enqueue_scripts'           => [ self::getInstance(), 'credglv_assets_enqueue' ],
 			],
 			'ajax'    => [

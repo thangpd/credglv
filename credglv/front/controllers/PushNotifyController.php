@@ -26,16 +26,17 @@ use PHPUnit\Runner\Exception;
 class PushNotifyController extends FrontController implements FrontControllerInterface {
 	public function push($deviceToken='',$title='',$body='',$type='0',$link=''){
 		$url = home_url('/').'wp-json/v1/send_notify?device_token='.$deviceToken.'&title='.urlencode($title).'&body='.urlencode($body);
-		$ch = curl_init();
-		curl_setopt( $ch,CURLOPT_URL, $url );
-		curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+	    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
 		$result = curl_exec( $ch );
 		curl_close( $ch );
 
 		$notify = new NotifyModel();
 		$user_id = $notify->get_user_by_device_token($deviceToken);
-		$notify->add_user_notification($user_id,$body,$type,$link);
+		$notify->add_user_notification($user_id,$body,$type,$url);
 	}
 
 	public function send_notify($request) {
@@ -46,7 +47,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 			$result['message'] = 'device_token is invalid';
 			return $result;
 		}
-		$os = 'ios';
+		$os = '';
 		$title = $params['title'];
 		$body = $params['body'];
 
