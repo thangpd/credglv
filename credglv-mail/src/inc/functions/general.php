@@ -2,7 +2,7 @@
 /**
  * General functions
  *
- * @package notification/credglv
+ * @package notification/credmail
  */
 
 /**
@@ -11,6 +11,6 @@
  * @since  [Next]
  * @return View
  */
-function notification_credglv_create_view() {
-	return notification_credglv_runtime()->view();
+function notification_credmail_create_view() {
+	return notification_credmail_runtime()->view();
 }

@@ -1,5 +1,5 @@
 {
-	"name": "notification/credglv",
+	"name": "notification/credmail",
 	"type": "wordpress-plugin",
 	"scripts": {
 		"phpcs": "phpcs",
@@ -12,7 +12,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"BracketSpace\\Notification\\Credglv\\": "src/class"
+			"BracketSpace\\Notification\\Credmail\\": "src/class"
 		}
 	}
 }

@@ -5,10 +5,10 @@
  * @autor   Kuba Mikita (jakub@underdev.it)
  * @version 1.2.1
  * @usage   see https://github.com/Kubitomakita/Requirements
- * @package notification/credglv
+ * @package notification/credmail
  */
 
-namespace BracketSpace\Notification\Credglv\Utils;
+namespace BracketSpace\Notification\Credmail\Utils;
 
 /**
  * Requirements class

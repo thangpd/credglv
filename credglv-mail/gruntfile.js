@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 	            options: {
 	                cwd: '.',
 	                domainPath: 'languages',
-	                mainFile: 'notification-credglv.php',
+	                mainFile: 'notification-credmail.php',
 	                exclude: [
 		                'node_modules/',
 		                'assets',
@@ -28,12 +28,12 @@ module.exports = function(grunt) {
 
 	    addtextdomain: {
 	        options: {
-	            textdomain: 'notification-credglv'
+	            textdomain: 'notification-credmail'
 	        },
 	        target: {
 	            files: {
 	                src: [
-	                    'notification-credglv.php',
+	                    'notification-credmail.php',
 	                    './src/**/*.php',
 	                ]
 	            }

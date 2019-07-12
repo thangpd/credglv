@@ -2,10 +2,10 @@
 /**
  * Enqueues scripts
  *
- * @package notification/credglv
+ * @package notification/credmail
  */
 
-namespace BracketSpace\Notification\Credglv\Admin;
+namespace BracketSpace\Notification\Credmail\Admin;
 
 use BracketSpace\Notification\Utils\Files;
 
@@ -59,10 +59,10 @@ class Scripts {
 	 */
 	public function enqueue_scripts( $page_hook ) {
 
-		wp_enqueue_style( 'notification-credglv', $this->files->asset_url( 'css', 'style.css' ), [], $this->files->asset_mtime( 'css', 'style.css' ) );
-		wp_enqueue_script( 'notification-credglv', $this->files->asset_url( 'js', 'scripts.min.js' ), [ 'jquery' ], $this->files->asset_mtime( 'js', 'scripts.min.js' ), true );
+		wp_enqueue_style( 'notification-credmail', $this->files->asset_url( 'css', 'style.css' ), [], $this->files->asset_mtime( 'css', 'style.css' ) );
+		wp_enqueue_script( 'notification-credmail', $this->files->asset_url( 'js', 'scripts.min.js' ), [ 'jquery' ], $this->files->asset_mtime( 'js', 'scripts.min.js' ), true );
 
-		wp_localize_script( 'notification-credglv', 'notification_credglv', [
+		wp_localize_script( 'notification-credmail', 'notification_credmail', [
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		] );
 

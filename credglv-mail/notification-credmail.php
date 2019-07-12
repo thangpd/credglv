@@ -1,26 +1,26 @@
 <?php
 /**
- * Plugin Name: Notification : credglv
+ * Plugin Name: Notification : Credglv Mail Notification
  * Description: Extension for Notification plugin
  * Plugin URI: https://bracketspace.com
  * Author: BracketSpace
  * Author URI: https://bracketspace.com
  * Version: 1.0.0
  * License: GPL3
- * Text Domain: notification-credglv
+ * Text Domain: notification-credmail
  * Domain Path: /languages
  *
- * @package notification/credglv
+ * @package notification/credmail
  */
 
 /**
  * Things @todo. Replace globally these values:
- * - Credglv
- * - credglv
- * - credglv
+ * - Credmail
+ * - Credglv Mail Notification
+ * - credmail
  *
  * You can do this with this simple command replacing the sed parts:
- * find . -type f \( -iname \*.php -o -iname \*.txt -o -iname \*.json -o -iname \*.js \) -exec sed -i 's/Credglv/YOURNAMESPACE/g; s/credglv/Your Nicename/g; s/credglv/yourslug/g' {} +
+ * find . -type f \( -iname \*.php -o -iname \*.txt -o -iname \*.json -o -iname \*.js \) -exec sed -i 's/Credmail/YOURNAMESPACE/g; s/Credglv Mail Notification/Your Nicename/g; s/credmail/yourslug/g' {} +
  *
  * Or just execute the rename.sh script
  */
@@ -34,17 +34,17 @@ require_once 'vendor/autoload.php';
  * Gets plugin runtime object.
  *
  * @since  [Next]
- * @return BracketSpace\Notification\Credglv\Runtime
+ * @return BracketSpace\Notification\Credmail\Runtime
  */
-function notification_credglv_runtime() {
+function notification_credmail_runtime() {
 
-	global $notification_credglv_runtime;
+	global $notification_credmail_runtime;
 
-	if ( empty( $notification_credglv_runtime ) ) {
-		$notification_credglv_runtime = new BracketSpace\Notification\Credglv\Runtime( __FILE__ );
+	if ( empty( $notification_credmail_runtime ) ) {
+		$notification_credmail_runtime = new BracketSpace\Notification\Credmail\Runtime( __FILE__ );
 	}
 
-	return $notification_credglv_runtime;
+	return $notification_credmail_runtime;
 
 }
 
@@ -56,7 +56,7 @@ add_action( 'notification/boot/initial', function() {
 	/**
 	 * Requirements check
 	 */
-	$requirements = new BracketSpace\Notification\Credglv\Utils\Requirements( __( 'Notification : credglv', 'notification-credglv' ), [
+	$requirements = new BracketSpace\Notification\Credmail\Utils\Requirements( __( 'Notification : Credglv Mail Notification', 'notification-credmail' ), [
 		'php'          => '5.6',
 		'wp'           => '4.9',
 		'notification' => '6.0.0',
@@ -69,7 +69,7 @@ add_action( 'notification/boot/initial', function() {
 		return;
 	}
 
-	$runtime = notification_credglv_runtime();
+	$runtime = notification_credmail_runtime();
 	$runtime->boot();
 
 } );

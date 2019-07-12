@@ -2,10 +2,10 @@
 /**
  * Runtime
  *
- * @package notification/credglv
+ * @package notification/credmail
  */
 
-namespace BracketSpace\Notification\Credglv;
+namespace BracketSpace\Notification\Credmail;
 
 use BracketSpace\Notification\Utils;
 
@@ -55,7 +55,7 @@ class Runtime extends Utils\DocHooks {
 
 		$this->files = new Utils\Files( $this->plugin_file );
 
-		$i18n    = $this->add_hooks( new Utils\Internationalization( $this->files, 'notification-credglv' ) );
+		$i18n    = $this->add_hooks( new Utils\Internationalization( $this->files, 'notification-credmail' ) );
 		$scripts = $this->add_hooks( new Admin\Scripts( $this->files ) );
 
 	}

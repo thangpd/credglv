@@ -1,4 +1,4 @@
-=== Notification : credglv ===
+=== Notification : Credglv Mail Notification ===
 Contributors: notification
 Tags: notification, notify, email, mail
 Requires at least: 3.6
