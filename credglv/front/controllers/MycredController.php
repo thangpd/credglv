@@ -100,6 +100,13 @@ class MycredController extends FrontController implements FrontControllerInterfa
 							'',
 							$settings['point_type'] );
 						$user->update_active_status( $user_id );
+						$deviceToken = get_user_meta($user_id,'device_token',true);
+						$title = __('Commission','credglv');
+						$body = __('You have received comission from member ','credglv').$fullname;
+						$type = 2;
+						$link = home_url('/').'point_history';
+						if($deviceToken)
+							PushNotifyController::push($deviceToken,$title,$body,$type,$link);
 					}
 				}
 			}

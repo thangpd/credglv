@@ -282,6 +282,14 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		$wpdb->insert( $table, $data, $format );
 		$my_id = $wpdb->insert_id;
 
+		$deviceToken = get_user_meta($user_id,'device_token',true);
+		$title = __('New member','credglv');
+		$body = __('A new member have already register by your referal','credglv');
+		$link = home_url('/').'referral';
+		$type = 4;
+		if($deviceToken)
+			PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+
 		return $my_id;
 	}
 
