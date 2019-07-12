@@ -75,7 +75,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	        	"content_available" => false,
 	        	"priority" => 10,
 	        	"to" => $token,
-	        	"data" => ("targetScreen" => 'test'),
+	        	"data" => array("targetScreen" => 'test'),
 	        );
 	    }
 
