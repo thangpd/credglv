@@ -72,9 +72,10 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	    }else{
 	        $fields = array(
 	        	"notification" => $notification,
+	        	"content_available" => false,
 	        	"priority" => 10,
-	        	"registration_ids"=> $token,
-	        	"data"=> $msg
+	        	"to" => $token,
+	        	"data" => ("targetScreen" => 'test'),
 	        );
 	    }
 
