@@ -50,14 +50,16 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		$os = '';
 		$title = $params['title'];
 		$body = $params['body'];
+		$link = $param['link'];
 
 	    $notification = array(
 	    	'body'=>$body,
 	    	'title'=>$title,
+	    	'link' => $link
 	    );
 
 	    $msg = array(
-	    	'contents'=> $param['link'],
+	    	'contents'=> $link,
 	    );
 
 	    if($os == 'ios'){
