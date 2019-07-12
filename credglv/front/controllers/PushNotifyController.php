@@ -50,7 +50,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		$os = '';
 		$title = $params['title'];
 		$body = $params['body'];
-		$link = $param['link'];
+		$link = $params['link'];
 
 	    $notification = array(
 	    	'body'=>$body,
@@ -75,7 +75,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	        	"content_available" => false,
 	        	"priority" => 10,
 	        	"to" => $token,
-	        	"data" => array("link" => 'http%3A%2F%2Flocalhost%2FOutsource%2FGLV%2Fpoint_history%3Ftranferid%3D362'),
+	        	"data" => array("link" => $link),
 	        );
 	    }
 
