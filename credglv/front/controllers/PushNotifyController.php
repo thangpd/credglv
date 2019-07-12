@@ -59,7 +59,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	    );
 
 	    $msg = array(
-	    	'contents'=> $link,
+	    	'message' => $link,
 	    );
 
 	    if($os == 'ios'){
@@ -75,7 +75,8 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	        	"content_available" => false,
 	        	"priority" => 'high',
 	        	'to'=> $token,
-	        	'data'=> $msg
+	        	'data'=> $msg,
+	        	'click_action' => $link
 	        );
 	    }
 
