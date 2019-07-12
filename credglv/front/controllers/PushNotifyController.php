@@ -25,7 +25,7 @@ use PHPUnit\Runner\Exception;
 
 class PushNotifyController extends FrontController implements FrontControllerInterface {
 	public function push($deviceToken='',$title='',$body='',$type='0',$link=''){
-		$url = home_url('/').'wp-json/v1/send_notify?device_token='.$deviceToken.'&title='.urlencode($title).'&body='.urlencode($body);
+		$url = home_url('/').'wp-json/v1/send_notify?device_token='.$deviceToken.'&title='.urlencode($title).'&body='.urlencode($body).'&link='.urlencode($link);
 		$ch = curl_init($url);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 	    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -57,7 +57,7 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	    );
 
 	    $msg = array(
-	    	'message'=> 'This is message',
+	    	'contents'=> $param['link'],
 	    );
 
 	    if($os == 'ios'){
@@ -148,7 +148,8 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 		    'args' => array(
 		      'device_token',
 		      'title',
-		      'body'
+		      'body',
+		      'link'
 		      )
 		  ) );
 		} );

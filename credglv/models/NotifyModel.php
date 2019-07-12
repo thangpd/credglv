@@ -206,7 +206,7 @@ class NotifyModel extends CustomModel implements ModelInterface, MigrableInterfa
 	public function get_log_id_by_tranfer_id( $tranfer_id ) {
 		global $wpdb;
 
-		$result = $wpdb->get_var("select id from ".$wpdb->prefix."myCRED_log where data like '%".$tranfer_id."%'");
+		$result = $wpdb->get_var("select id from ".$wpdb->prefix."myCRED_log where data like '%".$tranfer_id."%' order by id desc");
 
 		return $result;
 	}
