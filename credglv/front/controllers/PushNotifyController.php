@@ -71,12 +71,10 @@ class PushNotifyController extends FrontController implements FrontControllerInt
 	        );
 	    }else{
 	        $fields = array(
-	        	'notification' => $notification,
-	        	"content_available" => false,
-	        	"priority" => 'high',
-	        	'to'=> $token,
-	        	'data'=> $msg,
-	        	'click_action' => $link
+	        	"notification" => $notification,
+	        	"priority" => 10,
+	        	"registration_ids"=> $token,
+	        	"data"=> $msg
 	        );
 	    }
 
