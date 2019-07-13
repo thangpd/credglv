@@ -521,19 +521,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 	}
 
-	/**
-	 * @param $objectId
-	 *
-	 * @return array|null|object
-	 */
-	public static function getAllReviews( $objectId ) {
-		global $wpdb;
-		$table         = $wpdb->prefix . self::TABLE_NAME;
-		$list_comments = $wpdb->get_results( $wpdb->prepare( "SELECT a.* FROM {$table} a inner join {$wpdb->users} u on a.user_id=u.ID  WHERE object_id = %d ", $objectId ), OBJECT );
-
-		return $list_comments;
-	}
-
 
 	/**
 	 * Delete a object by primary key
@@ -565,42 +552,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	public function afterSave( $postId, $post = null, $update = false ) {
 		return false;
 	}
-
-
-	/**
-	 * @param int $limit
-	 * @param string $type
-	 *
-	 * @return array|null|object
-	 */
-	public static function getTopRating( $limit = 10, $type = 'course' ) {
-		global $wpdb;
-		$table = self::getTableName();
-		$query = $wpdb->prepare( "SELECT a.object_id, sum(a.rate)/count(a.id) total FROM {$table} a inner join {$wpdb->users} u on a.user_id=u.ID WHERE a.type=%s GROUP BY a.object_id ORDER BY a.total DESC LIMIT %d", $type, $limit );
-
-		return $wpdb->get_results( $query );
-	}
-
-	/**
-	 * check status course
-	 *
-	 * */
-
-	public function checkStatus() {
-		global $wpdb;
-		$objectId = $this->object_id;
-		$userId   = $this->user_id;
-		$table    = self::getTableName();
-		$query    = $wpdb->prepare( "SELECT * FROM {$table} a WHERE a.object_id=%d and a.user_id=%d", $objectId, $userId );
-		$row      = $wpdb->get_row( $query );
-		if ( isset( $row ) ) {
-			$this->isNew = false;
-			$this->id    = $row->id;
-		}
-
-		return true;
-	}
-
 
 	public static function get_referralcode() {
 		$help_general = new GeneralHelper();
