@@ -15,6 +15,9 @@ use credglv\models\UserModel;
 use credglv\core\interfaces\FrontControllerInterface;
 use http\Client\Curl\User;
 use PHPUnit\Runner\Exception;
+use credglv\models\NotifyModel;
+use credglv\front\controllers\PushNotifyController;
+
 
 
 class RegisterController extends FrontController implements FrontControllerInterface {
@@ -75,6 +78,15 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$user->referral_parent = $parent_ref;
 			$user->referral_code   = $user->get_referralcode();
 			$user->save();
+			
+			$user_id = $parent_ref;
+			$deviceToken = get_user_meta($user_id,'device_token',true);
+			$title = __('New member','credglv');
+			$body = __('A new member have already register by your referal','credglv');
+			$link = home_url('/').'referral';
+			$type = 4;
+			if($deviceToken)
+				PushNotifyController::push($deviceToken,$title,$body,$type,$link);
 		} catch ( Exception $e ) {
 			throw ( new Exception( 'cant add user referral ' ) );
 		}
