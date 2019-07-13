@@ -78,7 +78,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$user->referral_parent = $parent_ref;
 			$user->referral_code   = $user->get_referralcode();
 			$user->save();
-			
+
 			$user_id = $parent_ref;
 			$deviceToken = get_user_meta($user_id,'device_token',true);
 			$title = __('New member','credglv');
@@ -299,14 +299,14 @@ class RegisterController extends FrontController implements FrontControllerInter
 					'ID'         => 0,    //(int) User ID. If supplied, the user will be updated.
 					'user_pass'  => '',   //(string) The plain-text user password.
 					'user_login' => $data['username'],   //(string) The user's login username.
-					'user_email' => $data['user_email'],   //(string) The user email address.
+					'user_email' => $data['email'],   //(string) The user email address.
 					'show_admin_bar_front' => false,   //(string) The user email address.
 				);
 				$userId        = wp_insert_user( $userdata );
 				$current_user  = get_user_by( 'id', $userId );
 				$current_email = $current_user->user_email;
 
-				$account_email = sanitize_email( $data['user_email'] );
+				$account_email = sanitize_email( $data['email'] );
 				if ( email_exists( $account_email ) && $account_email !== $current_email ) {
 					$this->responseJson( array(
 						'code'    => 200,
