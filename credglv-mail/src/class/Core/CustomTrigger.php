@@ -7,8 +7,6 @@
 
 namespace BracketSpace\Notification\Credmail\Core;
 
-use BracketSpace\Notification\Utils\Files;
-
 /**
  * Custom trigger class
  */
@@ -22,7 +20,7 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 		// 1. Slug, can be prefixed with your plugin name.
 		// 2. Title, should be translatable.
 		parent::__construct(
-			'myplugin/custom_trigger',
+			'credmail/custom_trigger',
 			__( 'Custom Trigger title', 'textdomain' )
 		);
 
@@ -31,7 +29,7 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 		// 3. (optional) Action args, default: 1.
 		// It's the same as add_action( 'any_action_hook', 'callback', 10, 2 ) with
 		// only difference - the callback is always action() method (see below).
-		$this->add_action( 'any_action_hook', 10, 2 );
+		$this->add_action( 'admin_init', 10, 2 );
 
 		// 1. Trigger group, should be translatable.
 		// This is optional, Group is displayed in the Trigger select.
@@ -42,8 +40,27 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 		$this->set_description(
 			__( 'Fires when a page with "myparam" parameter is visited', 'textdomain' )
 		);
-
+		add_filter( 'notification/carrier/email/recipients', array( $this, 'add_recipient_custom_trigger' ), 10, 3 );
 	}
+
+	public function add_recipient_custom_trigger( $recipients, $context, $trigger ) {
+		if ( $trigger->slug == $this->slug ) {
+			echo '<pre>';
+			print_r( $recipients );
+			echo '</pre>';
+//			echo '<pre>';
+//			print_r( $context );
+//			echo '</pre>';
+//
+
+			echo '<pre>';
+			print_r( $trigger->slug );
+			echo '</pre>';
+		}
+
+		return $recipients;
+	}
+
 
 	/**
 	 * Assigns action callback args to object
@@ -53,7 +70,7 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 	 *
 	 * @return mixed void or false if no notifications should be sent
 	 */
-	public function action( $param_one, $param_two ) {
+	public function action() {
 
 		/**
 		 * This is a method callback hooked to the action you've added in the Constructor.
@@ -65,13 +82,11 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 		 */
 
 		// If the second parameter ($process in our action) is false then abort, no carriers will be processed.
-		if ( false === $param_two ) {
-			return false;
-		}
+//		if ( false === $param_two ) {
+//			return false;
+//		}
 
 		// We can assign any property here, whole object will be accessible in Merge Tag resolver.
-		$this->param_value = $param_one;
-
 	}
 
 	/**
@@ -96,7 +111,7 @@ class CustomTrigger extends \BracketSpace\Notification\Abstracts\Trigger {
 			'name'        => __( 'Parametrized URL', 'textdomain' ),
 			// Resolver (required), this can be a closure like below or function name
 			// like: 'parametrized_url_resolver' or array( $this, 'parametrized_url_resolver' ).
-			'resolver'    => function( $trigger ) {
+			'resolver'    => function ( $trigger ) {
 				// Trigger object is available here,
 				// with all the properties you set in action() method.
 				return add_query_arg( 'source', $trigger->param_value, site_url() );

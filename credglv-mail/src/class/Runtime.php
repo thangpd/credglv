@@ -7,6 +7,9 @@
 
 namespace BracketSpace\Notification\Credmail;
 
+use BracketSpace\Notification\Credmail\Core\CustomTrigger;
+use BracketSpace\Notification\Credmail\Hook\SignupHook;
+use BracketSpace\Notification\Credmail\Hook\UserRegisteredHook;
 use BracketSpace\Notification\Utils;
 
 /**
@@ -25,6 +28,7 @@ class Runtime extends Utils\DocHooks {
 	 * Class constructor
 	 *
 	 * @since [Next]
+	 *
 	 * @param string $plugin_file Plugin main file full path.
 	 */
 	public function __construct( $plugin_file ) {
@@ -57,6 +61,29 @@ class Runtime extends Utils\DocHooks {
 
 		$i18n    = $this->add_hooks( new Utils\Internationalization( $this->files, 'notification-credmail' ) );
 		$scripts = $this->add_hooks( new Admin\Scripts( $this->files ) );
+		notification_register_trigger( new CustomTrigger() );
+		//add recipients to UserRegisteredHook
+		new UserRegisteredHook();
+	}
+
+	/**
+	 * Loads functions from src/inc/functions directory
+	 * All .php files are loaded automatically
+	 *
+	 * @since  [Next]
+	 * @return void
+	 */
+	public function load_functions() {
+
+		$function_files = glob( $this->files->dir_path( 'src/inc/functions/' ) . '*.php' );
+
+		if ( empty( $function_files ) ) {
+			return;
+		}
+
+		foreach ( $function_files as $file ) {
+			require_once $file;
+		}
 
 	}
 
@@ -81,27 +108,6 @@ class Runtime extends Utils\DocHooks {
 	 */
 	public function view() {
 		return new Utils\View( $this->files );
-	}
-
-	/**
-	 * Loads functions from src/inc/functions directory
-	 * All .php files are loaded automatically
-	 *
-	 * @since  [Next]
-	 * @return void
-	 */
-	public function load_functions() {
-
-		$function_files = glob( $this->files->dir_path( 'src/inc/functions/' ) . '*.php' );
-
-		if ( empty( $function_files ) ) {
-			return;
-		}
-
-		foreach ( $function_files as $file ) {
-			require_once $file;
-		}
-
 	}
 
 }
