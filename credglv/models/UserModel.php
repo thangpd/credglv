@@ -39,6 +39,8 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 
 	public function redirectLogout() {
+		$user_id = get_current_user_id();
+		delete_user_meta($user_id,'device_token');
 		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
 			if ( ! is_admin() ) {
 				wp_redirect( $myaccount_page );
@@ -282,13 +284,13 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		$wpdb->insert( $table, $data, $format );
 		$my_id = $wpdb->insert_id;
 
-		$deviceToken = get_user_meta($user_id,'device_token',true);
-		$title = __('New member','credglv');
-		$body = __('A new member have already register by your referal','credglv');
-		$link = home_url('/').'referral';
-		$type = 4;
-		if($deviceToken)
-			PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+		// $deviceToken = get_user_meta($user_id,'device_token',true);
+		// $title = __('New member','credglv');
+		// $body = __('A new member have already register by your referal','credglv');
+		// $link = home_url('/').'referral';
+		// $type = 4;
+		// if($deviceToken)
+		// 	PushNotifyController::push($deviceToken,$title,$body,$type,$link);
 
 		return $my_id;
 	}

@@ -55,6 +55,7 @@ class MycredController extends FrontController implements FrontControllerInterfa
 		$settings = mycred_part_woo_settings();
 		if ( isset( $request['recipient_id'] ) && ! empty( $request['recipient_id'] ) ) {
 			$user_id = $request['recipient_id'];
+			$ref_id = $request['sender_id'];
 			$mycred  = mycred( $settings['point_type'] );
 
 			// Excluded from usage
@@ -88,18 +89,19 @@ class MycredController extends FrontController implements FrontControllerInterfa
 							$user_id,
 							- $this->joining_fee,
 							__( 'Joining fee', 'credglv' ),
-							1,
+							$ref_id,
 							'',
 							$settings['point_type'] );
 						$benefit_of_joining_fee = $this->mycred_share_commision( $user_id, $mycred, $this->joining_fee );
 						$mycred->add_creds( 'benefit_register_fee',
-							1,
+							$ref_id,
 							$benefit_of_joining_fee,
 							__( 'Benefit of register fee from user: ' . $user_id, 'credglv' ),
-							'',
+							$user_id,
 							'',
 							$settings['point_type'] );
 						$user->update_active_status( $user_id );
+
 						$deviceToken = get_user_meta($user_id,'device_token',true);
 						$title = __('Commission','credglv');
 						$body = __('You have received comission from member ','credglv').$fullname;
@@ -232,28 +234,28 @@ class MycredController extends FrontController implements FrontControllerInterfa
 				if($deviceToken)
 					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
 			}
-			if($request['reference'] == 'partial_payment'){
-				$user_id = $request['sender_id'];
-				//push_notify
-				$deviceToken = get_user_meta($user_id,'device_token',true);
-				$title = __('New order','credglv');
-				$body = __('You have a new order','credglv');
-				$type = 2;
-				$link = home_url('/').'view_order/'.$request['data'];
-				if($deviceToken)
-					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
-			}
-			if($request['reference'] == 'benefit_register_fee'){
-				$user_id = $request['recipient_id'];
-				//push_notify
-				$deviceToken = get_user_meta($user_id,'device_token',true);
-				$title = __('Commission','credglv');
-				$body = __('You have received comission from member ','credglv').$fullname;
-				$type = 3;
-				$link = home_url('/').'point_history?tranferid='.$log_id;
-				if($deviceToken)
-					PushNotifyController::push($deviceToken,$title,$body,$type,$link);
-			}
+			// if($request['reference'] == 'partial_payment'){
+			// 	$user_id = $request['sender_id'];
+			// 	//push_notify
+			// 	$deviceToken = get_user_meta($user_id,'device_token',true);
+			// 	$title = __('New order','credglv');
+			// 	$body = __('You have a new order','credglv');
+			// 	$type = 2;
+			// 	$link = home_url('/').'view_order/'.$request['data'];
+			// 	if($deviceToken)
+			// 		PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+			// }
+			// if($request['reference'] == 'benefit_register_fee'){
+			// 	$user_id = $request['recipient_id'];
+			// 	//push_notify
+			// 	$deviceToken = get_user_meta($user_id,'device_token',true);
+			// 	$title = __('Commission','credglv');
+			// 	$body = __('You have received comission from member ','credglv').$fullname;
+			// 	$type = 3;
+			// 	$link = home_url('/').'point_history?tranferid='.$log_id;
+			// 	if($deviceToken)
+			// 		PushNotifyController::push($deviceToken,$title,$body,$type,$link);
+			// }
 		}
 	}
 
