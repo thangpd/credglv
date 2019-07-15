@@ -56,26 +56,46 @@ class UserController extends FrontController implements FrontControllerInterface
 
 	}*/
 
+	public static function registerAction() {
+		return [
+			'actions' => [
+				'woocommerce_save_account_details_errors' => [
+					self::getInstance(),
+					'credglv_wooc_edit_profile_save_fields'
+				],
+				'init'                                    => [ self::getInstance(), 'init_hook' ],
+				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
+			],
+			'assets'  => [
+				'js' => [
+					[
+						'id'       => 'credglv-main-js',
+						'isInline' => false,
+						'url'      => '/front/assets/js/main.js',
+					]
+				]
+			],
+			'ajax'    => [
+				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
+				'upload_avatar'       => [ self::getInstance(), 'uploadAvatar' ],
+			]
+		];
+	}
 
 	/**
 	 * Register new endpoints to use inside My Account page.
 	 */
-
-
 	function credglv_wooc_edit_profile_save_fields( $args ) {
-		$user_id = get_current_user_ID();
-
-
+		$user_id     = get_current_user_ID();
+		$data_change = [];
 		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
 //			$_POST['number_countrycode'].$_POST['cred_billing_phone']
-			$data = array(
+			$data        = array(
 				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
 				'otp'   => $_POST['cred_otp_code']
 			);
-
 			$third_party = ThirdpartyController::getInstance();
-
-			$res = $third_party->verify_otp( $data );
+			$res         = $third_party->verify_otp( $data );
 			if ( $res['code'] != 200 ) {
 				wc_add_notice( __( $res['message'], 'woocommerce' ), 'error' );
 			}
@@ -107,7 +127,6 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 
 		}
-
 		if ( ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) ) {
 			if ( empty( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ) ) {
 				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
@@ -117,10 +136,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		} else {
 			update_user_meta( $user_id, self::METAKEY_PIN, md5( $_POST[ self::METAKEY_PIN ] ) );
 		}
-
-
 	}
-
 
 	/**
 	 * Print the customer avatar in My Account page, after the welcome message
@@ -167,17 +183,6 @@ class UserController extends FrontController implements FrontControllerInterface
 		}
 
 		return $items;
-	}
-
-	public function add_referral_query_var( $vars ) {
-		$vars['referral']      = 'referral';
-		$vars['payment']       = 'payment';
-		$vars['profile']       = 'profile';
-		$vars['local_redeem']  = 'local_redeem';
-		$vars['cash_redeem']   = 'cash_redeem';
-		$vars['point_history'] = 'point_history';
-
-		return $vars;
 	}
 
 	public function woocommerce_account_referral_endpoint_hook() {
@@ -373,6 +378,17 @@ class UserController extends FrontController implements FrontControllerInterface
 		add_filter( 'show_admin_bar', array( $this, 'hide_admin_bar' ) );
 	}
 
+	public function add_referral_query_var( $vars ) {
+		$vars['referral']      = 'referral';
+		$vars['payment']       = 'payment';
+		$vars['profile']       = 'profile';
+		$vars['local_redeem']  = 'local_redeem';
+		$vars['cash_redeem']   = 'cash_redeem';
+		$vars['point_history'] = 'point_history';
+
+		return $vars;
+	}
+
 	/**
 	 * Hide menu with customer
 	 *
@@ -411,7 +427,6 @@ class UserController extends FrontController implements FrontControllerInterface
 
 		return $arr;
 	}
-
 
 	public function redirectLoginUrl(
 		$login_url, $redirect, $force_reauth
@@ -525,32 +540,6 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 		}
 		$this->responseJson( array( 'code' => 200, $name_avatar ) );
-	}
-
-	public static function registerAction() {
-		return [
-			'actions' => [
-				'woocommerce_save_account_details_errors' => [
-					self::getInstance(),
-					'credglv_wooc_edit_profile_save_fields'
-				],
-				'init'                                    => [ self::getInstance(), 'init_hook' ],
-				'wp_enqueue_scripts'                      => [ self::getInstance(), 'credglv_assets_enqueue' ],
-			],
-			'assets'  => [
-				'js' => [
-					[
-						'id'       => 'credglv-main-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/main.js',
-					]
-				]
-			],
-			'ajax'    => [
-				'ajax_update_profile' => [ self::getInstance(), 'updateProfile' ],
-				'upload_avatar'       => [ self::getInstance(), 'uploadAvatar' ],
-			]
-		];
 	}
 
 }
