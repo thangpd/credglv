@@ -8,6 +8,7 @@
 namespace BracketSpace\Notification\Credmail;
 
 use BracketSpace\Notification\Credmail\Core\CredglvPinChanged;
+use BracketSpace\Notification\Credmail\Core\CredglvReceiveSubmission;
 use BracketSpace\Notification\Credmail\Core\CredglvSignup;
 use BracketSpace\Notification\Utils;
 
@@ -64,6 +65,8 @@ class Runtime extends Utils\DocHooks {
 		notification_register_trigger( new CredglvSignup() );
 		//Register CredglvPinChanged Trigger notification
 		notification_register_trigger( new CredglvPinChanged() );
+		//Register CredglvPinChanged Trigger notification
+		notification_register_trigger( new CredglvReceiveSubmission() );
 
 	}
 
