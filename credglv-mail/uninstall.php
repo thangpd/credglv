@@ -2,7 +2,7 @@
 /**
  * Plugin uninstallation file
  *
- * @package notification/credglv
+ * @package notification/credmail
  */
 
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {

@@ -23,6 +23,84 @@ use credglv\front\controllers\PushNotifyController;
 class RegisterController extends FrontController implements FrontControllerInterface {
 
 	/**
+	 * Register all actions that controller want to hook
+	 * @return mixed
+	 */
+	public static function registerAction() {
+
+
+		return [
+			'actions' => [
+
+				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
+				'woocommerce_register_form'       => [
+					self::getInstance(),
+					'credglv_extra_otp_register_fields'
+				],
+//				'woocommerce_save_account_details_errors' => [ self::getInstance(), 'credglv_edit_save_fields' ],
+				'woocommerce_register_post'       => [
+					self::getInstance(),
+					'credglv_validate_extra_register_fields',
+					10,
+					3,
+				],
+				'woocommerce_created_customer'    => [
+					self::getInstance(),
+					'credglv_validate_extra_register_fields_update'
+				],
+				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
+			],
+			'ajax'    => [
+				'referrer_ajax_search'                    => [ self::getInstance(), 'referrer_ajax_search' ],
+				'credglv_ajax_register'                   => [ self::getInstance(), 'credglv_ajax_register' ],
+				'credglv_ajax_sendphone_message_register' => [
+					self::getInstance(),
+					'credglv_ajax_sendphone_message_register'
+				],
+
+			],
+			'pages'   => [
+				'front' => [
+					'register' =>
+						[
+							'registerPage',
+							[
+								'title' => __( 'Be a GLV Member and enjoy many benefits', 'credglv' ),
+//                                'single' => true
+							]
+						],
+
+				]
+			],
+			'assets'  => [
+				'css' => [
+					[
+						'id'           => 'credglv-user-register',
+						'isInline'     => false,
+						'url'          => '/front/assets/css/register.css',
+						'dependencies' => [ 'credglv-style', 'select2' ]
+					],
+				],
+				'js'  => [
+					/*[
+						'id'       => 'credglv-register-page-js',
+						'isInline' => false,
+						'url'      => '/front/assets/js/register.js',
+					],*/
+					[
+						'id'       => 'credglv-main-js',
+						'isInline' => false,
+						'url'      => '/front/assets/js/main.js',
+					]
+				]
+			]
+		];
+	}
+
+
+//add_action( 'woocommerce_save_account_details_errors', array( $this, 'credglv_edit_save_fields' ), 10, 1 );
+
+	/**
 	 * referrer_ajax_search
 	 */
 	public function referrer_ajax_search() {
@@ -133,7 +211,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 	 * Extra otp register fields
 	 */
 	function credglv_extra_otp_register_fields() {
-		$user_ref='';
+		$user_ref = '';
 		if ( isset( $_GET['ru'] ) ) {
 			$user_ref = $_GET['ru'];
 		} elseif ( isset( $_COOKIE[ UserController::METAKEY_COOKIE ] ) ) {
@@ -202,7 +280,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 		?>
 
         <div class="form-row form-row-wide">
-           
+
             <div class="login_countrycode custom-mg f-bd mt-20">
 
                 <div class="list_countrycode <?php echo empty( $num_val ) ? 'hide' : ''; ?> f-p-focus">
@@ -216,10 +294,10 @@ class RegisterController extends FrontController implements FrontControllerInter
                 </div>
                 <input type="tel" pattern="[0-9]*"
                        class="input-number-mobile r-mb <?php echo empty( $num_val ) ? '' : 'width80' ?>"
-					   name="cred_billing_phone"
+                       name="cred_billing_phone"
                        id="reg_phone_register"
-					   value="<?php echo $num_val; ?>" maxlength="10"/>
-					<label class="f-label">Mobile number</label>
+                       value="<?php echo $num_val; ?>" maxlength="10"/>
+                <label class="f-label">Mobile number</label>
             </div>
 
         </div>
@@ -272,6 +350,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 			}
 		} else {
+
 			return $this->render( 'register', [ 'data' => $data ] );
 		}
 	}
@@ -283,18 +362,18 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		$userid = UserModel::getUserIDByPhone( $data['phone'] );
 
-
+		//!== 200 phone is not registered
 		if ( $userid['code'] !== 200 ) {
 
 			$third_party = ThirdpartyController::getInstance();
 			$res_mes     = $third_party->verify_otp( $data );
-
+			//403 OTP expired. Another code sent to your phone.
 			if ( $res_mes['code'] == 403 ) {
 				$third_party->sendphone_otp( $data );
 			}
-
+			// 200 OTP is matched. Start register
 			if ( $res_mes['code'] == 200 ) {
-
+				$pass          = UserModel::get_referralcode();
 				$userdata      = array(
 					'ID'         => 0,    //(int) User ID. If supplied, the user will be updated.
 					'user_pass'  => '',   //(string) The plain-text user password.
@@ -303,7 +382,12 @@ class RegisterController extends FrontController implements FrontControllerInter
 					'show_admin_bar_front' => false,   //(string) The user email address.
 				);
 				$userId        = wp_insert_user( $userdata );
-				$current_user  = get_user_by( 'id', $userId );
+
+				$user_pin = mt_rand( 1000, 9999 );
+                $userdata['ID']=$userId;
+                $userdata['user_pin']=$user_pin;
+                $userdata['user_phone']=$data['phone'];
+                $current_user  = get_user_by( 'id', $userId );
 				$current_email = $current_user->user_email;
 
 				$account_email = sanitize_email( $data['email'] );
@@ -313,15 +397,21 @@ class RegisterController extends FrontController implements FrontControllerInter
 						'message' => __( 'This email address is already registered.', 'woocommerce' )
 					) );
 				}
+				$userdata['user_email']=$data['email'];
+				do_action( 'credglv_user_registered', $userdata );
 
 				//On success
 				if ( ! is_wp_error( $userId ) ) {
 					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
+					//create user pin
+					update_user_meta( $userId, UserController::METAKEY_PIN, $user_pin );
+
+					//update email
 					wp_update_user( array( 'ID' => $userId, 'user_email' => $data['email'] ) );
+
 					wp_set_auth_cookie( $userId, true );
-
-
-					$this->credglv_validate_extra_register_fields_update($userId);
+					//action credglv_user_registered use for send notification mail
+					$this->credglv_validate_extra_register_fields_update( $userId );
 					$this->responseJson( array( 'code' => 200, 'message' => "User created : " . $userId ) );
 				} else {
 					$this->responseJson( array( 'code' => 404, 'message' => 'Cant create user' ) );
@@ -331,6 +421,28 @@ class RegisterController extends FrontController implements FrontControllerInter
 			}
 		} else {
 			$this->responseJson( $userid );
+		}
+	}
+
+	function credglv_validate_extra_register_fields_update( $customer_id ) {
+		if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
+			$parent_ref = $_POST['input_referral'];
+		} else {
+			$parent_ref = '';
+		}
+		try {
+			$user                  = new UserModel();
+			$user->user_id         = $customer_id;
+			$user->referral_parent = $parent_ref;
+			$user->referral_code   = $user->get_referralcode();
+			$user->save();
+		} catch ( Exception $e ) {
+			throw ( new Exception( 'cant add user referral ' ) );
+		}
+		if ( isset( $_POST['cred_billing_phone'] ) && isset( $_POST['number_countrycode'] ) ) {
+			update_user_meta( $customer_id, 'cred_billing_phone', sanitize_text_field( $_POST['number_countrycode'] ) . sanitize_text_field( $_POST['cred_billing_phone'] ) );
+		} else {
+			throw( new Exception( 'missing phone or number countrycode' ) );
 		}
 	}
 
@@ -357,81 +469,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 			$this->responseJson( $res );
 		}
 		wp_die();
-	}
-
-	/**
-	 * Register all actions that controller want to hook
-	 * @return mixed
-	 */
-	public static function registerAction() {
-
-
-		return [
-			'actions' => [
-
-				'woocommerce_register_form_start' => [ self::getInstance(), 'credglv_extra_register_fields' ],
-				'woocommerce_register_form'       => [
-					self::getInstance(),
-					'credglv_extra_otp_register_fields'
-				],
-//				'woocommerce_save_account_details_errors' => [ self::getInstance(), 'credglv_edit_save_fields' ],
-				'woocommerce_register_post'       => [
-					self::getInstance(),
-					'credglv_validate_extra_register_fields',
-					10,
-					3,
-				],
-				'woocommerce_created_customer'    => [
-					self::getInstance(),
-					'credglv_validate_extra_register_fields_update'
-				],
-				'wp_enqueue_scripts'              => [ self::getInstance(), 'credglv_assets_enqueue' ],
-			],
-			'ajax'    => [
-				'referrer_ajax_search'                    => [ self::getInstance(), 'referrer_ajax_search' ],
-				'credglv_ajax_register'                   => [ self::getInstance(), 'credglv_ajax_register' ],
-				'credglv_ajax_sendphone_message_register' => [
-					self::getInstance(),
-					'credglv_ajax_sendphone_message_register'
-				],
-
-			],
-			'pages'   => [
-				'front' => [
-					'register' =>
-						[
-							'registerPage',
-							[
-								'title' => __( 'Be a GLV Member and enjoy many benefits', 'credglv' ),
-//                                'single' => true
-							]
-						],
-
-				]
-			],
-			'assets'  => [
-				'css' => [
-					[
-						'id'           => 'credglv-user-register',
-						'isInline'     => false,
-						'url'          => '/front/assets/css/register.css',
-						'dependencies' => [ 'credglv-style', 'select2' ]
-					],
-				],
-				'js'  => [
-					/*[
-						'id'       => 'credglv-register-page-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/register.js',
-					],*/
-					[
-						'id'       => 'credglv-main-js',
-						'isInline' => false,
-						'url'      => '/front/assets/js/main.js',
-					]
-				]
-			]
-		];
 	}
 
 }
