@@ -21,7 +21,7 @@ class CredglvReceiveSubmission extends \BracketSpace\Notification\Abstracts\Trig
 		// 2. Title, should be translatable.
 		parent::__construct(
 			'credmail/credglv_receive_commission',
-			__( 'Credglv Receive Submission', 'notification-credmail' )
+			__( 'Credglv Receive Commission', 'notification-credmail' )
 		);
 
 		// 1. Action hook.
