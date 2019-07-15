@@ -13,7 +13,7 @@ namespace credglv\front\controllers;
 use credglv\core\components\RoleManager;
 use credglv\models\UserModel;
 use credglv\core\interfaces\FrontControllerInterface;
-use http\Client\Curl\User;
+
 use PHPUnit\Runner\Exception;
 use credglv\models\NotifyModel;
 use credglv\front\controllers\PushNotifyController;
@@ -424,27 +424,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 		}
 	}
 
-	function credglv_validate_extra_register_fields_update( $customer_id ) {
-		if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
-			$parent_ref = $_POST['input_referral'];
-		} else {
-			$parent_ref = '';
-		}
-		try {
-			$user                  = new UserModel();
-			$user->user_id         = $customer_id;
-			$user->referral_parent = $parent_ref;
-			$user->referral_code   = $user->get_referralcode();
-			$user->save();
-		} catch ( Exception $e ) {
-			throw ( new Exception( 'cant add user referral ' ) );
-		}
-		if ( isset( $_POST['cred_billing_phone'] ) && isset( $_POST['number_countrycode'] ) ) {
-			update_user_meta( $customer_id, 'cred_billing_phone', sanitize_text_field( $_POST['number_countrycode'] ) . sanitize_text_field( $_POST['cred_billing_phone'] ) );
-		} else {
-			throw( new Exception( 'missing phone or number countrycode' ) );
-		}
-	}
 
 	public function credglv_ajax_sendphone_message_register() {
 		$res = array( 'code' => 404, 'message' => __( 'Phone is registed', 'credglv' ) );
