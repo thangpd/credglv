@@ -7,8 +7,8 @@
 
 namespace BracketSpace\Notification\Credmail;
 
+use BracketSpace\Notification\Credmail\Core\CredglvPinChanged;
 use BracketSpace\Notification\Credmail\Core\CredglvSignup;
-use BracketSpace\Notification\Credmail\Hook\SignupHook;
 use BracketSpace\Notification\Utils;
 
 /**
@@ -62,7 +62,9 @@ class Runtime extends Utils\DocHooks {
 		$scripts = $this->add_hooks( new Admin\Scripts( $this->files ) );
 		//Register Credglvsignup Trigger notification
 		notification_register_trigger( new CredglvSignup() );
-		//add recipients to UserRegisteredHook
+		//Register CredglvPinChanged Trigger notification
+		notification_register_trigger( new CredglvPinChanged() );
+
 	}
 
 	/**

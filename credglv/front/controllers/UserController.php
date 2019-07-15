@@ -86,12 +86,13 @@ class UserController extends FrontController implements FrontControllerInterface
 	 * Register new endpoints to use inside My Account page.
 	 */
 	function credglv_wooc_edit_profile_save_fields( $args ) {
+
 		$user_id     = get_current_user_ID();
 		$data_change = [];
 		if ( isset( $_POST['cred_otp_code'] ) && ! empty( $_POST['cred_otp_code'] ) ) {
 //			$_POST['number_countrycode'].$_POST['cred_billing_phone']
 			$data        = array(
-				'phone' => $_POST['number_countrycode'] . $_POST['cred_billing_phone'],
+				'phone' => $_POST['cred_billing_phone'],
 				'otp'   => $_POST['cred_otp_code']
 			);
 			$third_party = ThirdpartyController::getInstance();
@@ -119,22 +120,68 @@ class UserController extends FrontController implements FrontControllerInterface
 
 						return $_POST;
 					} else {
+						$data_change['meta_phone'] = __( 'Phone changed to' ) . $_POST[ self::METAKEY_PHONE ];
 						update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
 					}
 				} else {
+					$data_change['meta_phone'] = __( 'Phone changed to: ' ) . $_POST[ self::METAKEY_PHONE ];
 					update_user_meta( $user_id, self::METAKEY_PHONE, $_POST[ self::METAKEY_PHONE ] );
 				}
 			}
 
 		}
-		if ( ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' ) ) {
+		if ( ( isset( $_POST[ self::METAKEY_PIN ] ) && $_POST[ self::METAKEY_PIN ] == '' && $_POST[ self::METAKEY_PIN ] == '****' ) ) {
 			if ( empty( get_user_meta( $user_id, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ) ) {
 				$args->add( 'user_pin_name_error', __( 'Pin is required.', 'woocommerce' ) );
 
 				return $_POST;
 			}
 		} else {
+			$current_pin = get_user_meta( $user_id, self::METAKEY_PIN, true );
+			if ( $_POST[ self::METAKEY_PIN ] != $current_pin &&$_POST[ self::METAKEY_PIN ]!='****' ) {
+				$data_change['meta_pin'] = 'Pin';
+			}
 			update_user_meta( $user_id, self::METAKEY_PIN, md5( $_POST[ self::METAKEY_PIN ] ) );
+		}
+		$account_email = ! empty( $_POST['account_email'] ) ? wc_clean( wp_unslash( $_POST['account_email'] ) ) : '';
+		$pass_cur      = ! empty( $_POST['password_current'] ) ? wp_unslash( $_POST['password_current'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$pass1         = ! empty( $_POST['password_1'] ) ? wp_unslash( $_POST['password_1'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$pass2         = ! empty( $_POST['password_2'] ) ? wp_unslash( $_POST['password_2'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$save_pass     = true;
+		$save_email    = true;
+
+		$current_user = get_user_by( 'id', $user_id );
+
+		if ( $account_email ) {
+			$account_email = sanitize_email( $account_email );
+			if ( ! is_email( $account_email ) ) {
+				$save_email = false;
+			} elseif ( email_exists( $account_email ) ) {
+				$save_email = false;
+			} elseif ( $account_email == $current_user->user_email ) {
+				$save_email = false;
+			}
+			if ( $save_email ) {
+				$data_change['email'] = 'Email';
+			}
+		}
+		if ( ! empty( $pass_cur ) && empty( $pass1 ) && empty( $pass2 ) ) {
+			$save_pass = false;
+		} elseif ( ! empty( $pass1 ) && empty( $pass_cur ) ) {
+			$save_pass = false;
+		} elseif ( ! empty( $pass1 ) && empty( $pass2 ) ) {
+			$save_pass = false;
+		} elseif ( ( ! empty( $pass1 ) || ! empty( $pass2 ) ) && $pass1 !== $pass2 ) {
+			$save_pass = false;
+		} elseif ( ! empty( $pass1 ) && ! wp_check_password( $pass_cur, $current_user->user_pass, $current_user->ID ) ) {
+			$save_pass = false;
+		}
+
+		if ( $pass1 && $save_pass ) {
+			$data_change['password'] = 'Password';
+		}
+		if ( ! empty( $data_change ) ) {
+			do_action( 'credglv_security_info_changed', $data_change );
 		}
 	}
 

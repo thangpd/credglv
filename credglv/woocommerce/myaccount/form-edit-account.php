@@ -59,7 +59,7 @@ do_action( 'woocommerce_before_edit_account_form' ); ?>
 
         <input type="password" class="input-text"
                name="<?php echo \credglv\front\controllers\UserController::METAKEY_PIN; ?>" id="cred_user_pin"
-               value="<?php echo get_user_meta( $user->data->ID, \credglv\front\controllers\UserController::METAKEY_PIN, true ) ?>"
+               value="<?php echo '****'?>"
                maxlength="4"/>
     </p>
     <div class="clear"></div>
