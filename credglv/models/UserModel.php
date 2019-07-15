@@ -80,6 +80,8 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 	public function redirectLogout() {
+		$user_id = get_current_user_id();
+		delete_user_meta($user_id,'device_token');
 		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
 			if ( ! is_admin() ) {
 				wp_redirect( $myaccount_page );
@@ -336,6 +338,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		$tablename = self::getTableName();
 		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d and active=%d", $user_id, $status );
 		$result    = $wpdb->get_results( $prepare );
+
 
 		return $result;
 	}
