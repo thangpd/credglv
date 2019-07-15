@@ -19,13 +19,55 @@ use credglv\front\controllers\UserController;
 use credglv\helpers\GeneralHelper;
 
 class UserModel extends CustomModel implements ModelInterface, MigrableInterface {
+	const TABLE_NAME = 'credglv_user_refer';
+
+	/**
+	 * Get phone by userid
+	 * @return mixed
+	 */
+	public static function getPhoneByUserID( $userID ) {
+
+		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
+
+		return $phone;
+	}
+
+	/**
+	 * Get user id by phone
+	 * @return mixed
+	 */
+	public static function getUserIDByPhone( $phone ) {
+		global $wpdb;
+
+		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
+
+		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
+
+
+		if ( ! empty( $mobile_num_result ) ) {
+
+			$res['userID'] = $mobile_num_result;
+
+			return $res;
+
+		} else {
+			$res['code']    = 404;
+			$res['message'] = __( 'Phone is not registered', 'credglv' );
+
+		}
+
+	}
+
+	public static function getPosttypeConfig() {
+		// TODO: Implement getPosttypeConfig() method.
+	}
+
 	/**
 	 * @return string Profile url
 	 */
 	public function getProfileUrl() {
 		return site_url();
 	}
-
 
 	/**
 	 * add_registered_for_referrer  template hook
@@ -36,7 +78,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			add_user_meta( $user_id, 'referrer_unikey', md5( $user_id . 'referrer_unikey' ), true );
 		}
 	}
-
 
 	public function redirectLogout() {
 		if ( $myaccount_page = credglv_get_woo_myaccount() ) {
@@ -59,8 +100,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 		return true;
 	}
-
-	const TABLE_NAME = 'credglv_user_refer';
 
 	/**
 	 * Run this function when plugin was activated
@@ -147,6 +186,24 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 	/**
+	 * Abstract function get name of table/model
+	 * @return mixed
+	 */
+	public function getName() {
+		return self::getTableName();
+	}
+
+	/**
+	 * Get table name of this model
+	 * @return string
+	 */
+	public static function getTableName() {
+		global $wpdb;
+
+		return $wpdb->prefix . self::TABLE_NAME;
+	}
+
+	/**
 	 * Run this function when plugin was deactivated
 	 * We need clear all things when we leave.
 	 * Please be a polite man!
@@ -168,6 +225,13 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 		}
 	}
+
+
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
 
 	/**
 	 * @return mixed
@@ -218,26 +282,11 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		];
 	}
 
-	/**
-	 * Abstract function get name of table/model
-	 * @return mixed
-	 */
-	public function getName() {
-		return self::getTableName();
-	}
-
-	/**
-	 * Get table name of this model
-	 * @return string
-	 */
-	public static function getTableName() {
-		global $wpdb;
-
-		return $wpdb->prefix . self::TABLE_NAME;
-	}
-
-
-
+	/* check actived referral
+	 *
+	 *
+	 *
+	*/
 
 	public function referral_user( $user_field, $where, $user_id ) {
 		global $wpdb;
@@ -247,6 +296,11 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		);
 	}
 
+	/* check actived referral
+		 *
+		 *
+		 *
+		*/
 
 	public function get_url_share_link() {
 		$link_share = '';
@@ -268,28 +322,28 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $link_share;
 	}
 
-
 	/* check actived referral
 	 *
 	 *
 	 *
 	*/
-	public function add_user_to_referral( $user_id ) {
-		global $wpdb;
-		$table  = self::getTableName();
-		$data   = array( 'user_id' => $user_id, 'active' => 0, 'referral_code' => $this->get_referralcode(), );
-		$format = array( '%d', '%d', '%s', );
-		$wpdb->insert( $table, $data, $format );
-		$my_id = $wpdb->insert_id;
 
-		return $my_id;
+	public function check_actived_referral( $user_id, $status = 1 ) {
+		global $wpdb;
+		if ( ! $this->has_user( $user_id ) ) {
+			$result = $this->add_user_to_referral( $user_id, $status );
+		}
+		$tablename = self::getTableName();
+		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d and active=%d", $user_id, $status );
+		$result    = $wpdb->get_results( $prepare );
+
+		return $result;
 	}
 
-	/* check actived referral
+	/*  update active status user referral
 	 *
-	 *
-	 *
-	*/
+	 * */
+
 	public function has_user( $user_id ) {
 		global $wpdb;
 		$tablename = self::getTableName();
@@ -302,28 +356,24 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		}
 	}
 
-	/* check actived referral
-		 *
-		 *
-		 *
-		*/
-	public function check_actived_referral( $user_id, $status = 1 ) {
+	public function add_user_to_referral( $user_id ) {
 		global $wpdb;
-		if ( ! $this->has_user( $user_id ) ) {
-			$result = $this->add_user_to_referral( $user_id, $status );
-		}
-		$tablename = self::getTableName();
-		$prepare   = $wpdb->prepare( "SELECT user_id FROM {$tablename} where user_id=%d and active=%d", $user_id, $status );
-		$result = $wpdb->get_results( $prepare );
+		$table  = self::getTableName();
+		$data   = array( 'user_id' => $user_id, 'active' => 0, 'referral_code' => $this->get_referralcode(), );
+		$format = array( '%d', '%d', '%s', );
+		$wpdb->insert( $table, $data, $format );
+		$my_id = $wpdb->insert_id;
 
-		return $result;
+		return $my_id;
 	}
 
-	/* check actived referral
-	 *
-	 *
-	 *
-	*/
+	public static function get_referralcode( $numchar = 8 ) {
+		$help_general = new GeneralHelper();
+
+		return $help_general->getRandomString( $numchar );
+
+	}
+
 	public function add_userId( $user_id, $status = 0 ) {
 		global $wpdb;
 		$tablename = self::getTableName();
@@ -333,9 +383,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
-	/*  update active status user referral
-	 *
-	 * */
 	public function update_active_status( $user_id, $status = 1 ) {
 		global $wpdb;
 		$wpdb->update(
@@ -363,43 +410,11 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
-
-	/**
-	 * Get phone by userid
-	 * @return mixed
-	 */
-	public static function getPhoneByUserID( $userID ) {
-
-		$phone = get_user_meta( $userID, UserController::METAKEY_PHONE, true );
-
-		return $phone;
-	}
-
-	/**
-	 * Get user id by phone
-	 * @return mixed
-	 */
-	public static function getUserIDByPhone( $phone ) {
-		global $wpdb;
-
-		$res = array( 'code' => 200, 'message' => 'Phone is registered' );
-
-		$mobile_num_result = $wpdb->get_var( "select user_id from " . $wpdb->prefix . "usermeta  where meta_key='" . UserController::METAKEY_PHONE . "' and meta_value='" . $phone . "' " );
-
-
-		if ( ! empty( $mobile_num_result ) ) {
-
-			$res['userID'] = $mobile_num_result;
-
-			return $res;
-
-		} else {
-			$res['code']    = 404;
-			$res['message'] = __( 'Phone is not registered', 'credglv' );
-
-		}
-
-	}
+	/*
+	 * get referral tree
+	 * Not limit level
+	 * */
+	// write [when active = 1] and to function mysql to turn of debug
 
 	/**
 	 * Get referral parent
@@ -422,6 +437,10 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	}
 
 
+	/*
+		 * Retrieve total number of followers
+		 */
+
 	/**
 	 * Get referral parent user_login
 	 * return ID,user_login object
@@ -436,11 +455,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $result;
 	}
 
-	/*
-	 * get referral tree
-	 * Not limit level
-	 * */
-	// write [when active = 1] and to function mysql to turn of debug
 	public function recursive_tree_referral_user( $id, $level = 0 ) {
 		$user          = get_user_by( 'ID', $id );
 		$user_fullname = get_user_meta( $id, 'user_fullname', true );
@@ -468,10 +482,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return (object) $subarr;
 	}
 
-
-	/*
-		 * Retrieve total number of followers
-		 */
 	function count_referral_user( $user_id ) {
 		global $wpdb;
 		//return 0;
@@ -487,7 +497,7 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 			$tablename = self::getTableName();
 			$prepare   = $wpdb->prepare( "select ID,display_name,user_login from " . $wpdb->prefix . "users where ID in (select user_id from {$tablename} where referral_parent=%s)", $id );
 
-			$result    = $wpdb->get_results( $prepare, ARRAY_A );
+			$result = $wpdb->get_results( $prepare, ARRAY_A );
 
 			$subarr = array();
 			foreach ( $result as $k => $v ) {
@@ -521,7 +531,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 
 	}
 
-
 	/**
 	 * Delete a object by primary key
 	 *
@@ -541,7 +550,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		return $deleted;
 	}
 
-
 	/**
 	 * Override current behavior after model was saved
 	 *
@@ -551,13 +559,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 	 */
 	public function afterSave( $postId, $post = null, $update = false ) {
 		return false;
-	}
-
-	public static function get_referralcode() {
-		$help_general = new GeneralHelper();
-
-		return $help_general->getRandomString();
-
 	}
 
 	/**
@@ -572,10 +573,6 @@ class UserModel extends CustomModel implements ModelInterface, MigrableInterface
 		} catch ( \Exception $e ) {
 
 		}
-	}
-
-	public static function getPosttypeConfig() {
-		// TODO: Implement getPosttypeConfig() method.
 	}
 
 	public function init() {
