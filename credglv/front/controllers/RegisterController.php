@@ -314,6 +314,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 			}
 		} else {
+
 			return $this->render( 'register', [ 'data' => $data ] );
 		}
 	}
@@ -336,15 +337,20 @@ class RegisterController extends FrontController implements FrontControllerInter
 			}
 			// 200 OTP is matched. Start register
 			if ( $res_mes['code'] == 200 ) {
-
+				$pass          = UserModel::get_referralcode();
 				$userdata      = array(
 					'ID'                   => 0,    //(int) User ID. If supplied, the user will be updated.
-					'user_pass'            => '',   //(string) The plain-text user password.
+					'user_pass'            => $pass,   //(string) The plain-text user password.
 					'user_login'           => $data['username'],   //(string) The user's login username.
 					'user_email'           => $data['user_email'],   //(string) The user email address.
 					'show_admin_bar_front' => false,   //(string) The user email address.
 				);
 				$userId        = wp_insert_user( $userdata );
+
+				$user_pin = UserModel::get_referralcode( 4 );
+                $userdata['user_pin']=$user_pin;
+                $userdata['user_phone']=$data['phone'];
+				do_action( 'credglv_user_registered', $userdata );
 				$current_user  = get_user_by( 'id', $userId );
 				$current_email = $current_user->user_email;
 
@@ -359,8 +365,14 @@ class RegisterController extends FrontController implements FrontControllerInter
 				//On success
 				if ( ! is_wp_error( $userId ) ) {
 					update_user_meta( $userId, UserController::METAKEY_PHONE, $data['phone'] );
+					//create user pin
+					update_user_meta( $userId, UserController::METAKEY_PIN, $user_pin );
+
+					//update email
 					wp_update_user( array( 'ID' => $userId, 'user_email' => $data['email'] ) );
+
 					wp_set_auth_cookie( $userId, true );
+					//action credglv_user_registered use for send notification mail
 					$this->credglv_validate_extra_register_fields_update( $userId );
 					$this->responseJson( array( 'code' => 200, 'message' => "User created : " . $userId ) );
 				} else {

@@ -7,9 +7,8 @@
 
 namespace BracketSpace\Notification\Credmail;
 
-use BracketSpace\Notification\Credmail\Core\CustomTrigger;
+use BracketSpace\Notification\Credmail\Core\CredglvSignup;
 use BracketSpace\Notification\Credmail\Hook\SignupHook;
-use BracketSpace\Notification\Credmail\Hook\UserRegisteredHook;
 use BracketSpace\Notification\Utils;
 
 /**
@@ -61,9 +60,9 @@ class Runtime extends Utils\DocHooks {
 
 		$i18n    = $this->add_hooks( new Utils\Internationalization( $this->files, 'notification-credmail' ) );
 		$scripts = $this->add_hooks( new Admin\Scripts( $this->files ) );
-		notification_register_trigger( new CustomTrigger() );
+		//Register Credglvsignup Trigger notification
+		notification_register_trigger( new CredglvSignup() );
 		//add recipients to UserRegisteredHook
-		new UserRegisteredHook();
 	}
 
 	/**
