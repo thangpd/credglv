@@ -19,7 +19,6 @@ use credglv\models\NotifyModel;
 use credglv\front\controllers\PushNotifyController;
 
 
-
 class RegisterController extends FrontController implements FrontControllerInterface {
 
 	/**
@@ -144,38 +143,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 
 //add_action( 'woocommerce_save_account_details_errors', array( $this, 'credglv_edit_save_fields' ), 10, 1 );
-	function credglv_validate_extra_register_fields_update( $customer_id ) {
-		if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
-			$parent_ref = $_POST['input_referral'];
-		} else {
-			$parent_ref = '';
-		}
-		try {
-			$user                  = new UserModel();
-			$user->user_id         = $customer_id;
-			$user->referral_parent = $parent_ref;
-			$user->referral_code   = $user->get_referralcode();
-			$user->save();
-
-			$user_id = $parent_ref;
-			$deviceToken = get_user_meta($user_id,'device_token',true);
-			$title = __('New member','credglv');
-			$body = __('A new member have already register by your referal','credglv');
-			$link = home_url('/').'referral';
-			$type = 4;
-			if($deviceToken)
-				PushNotifyController::push($deviceToken,$title,$body,$type,$link);
-		} catch ( Exception $e ) {
-			throw ( new Exception( 'cant add user referral ' ) );
-		}
-		if ( isset( $_POST['cred_billing_phone'] ) && isset( $_POST['number_countrycode'] ) ) {
-			update_user_meta( $customer_id, 'cred_billing_phone', sanitize_text_field( $_POST['number_countrycode'] ) . sanitize_text_field( $_POST['cred_billing_phone'] ) );
-		} else {
-			throw( new Exception( 'missing phone or number countrycode' ) );
-		}
-	}
-
-//add_action( 'woocommerce_register_post', array( $this, 'mrp_wooc_validate_extra_register_fields' ), 10, 3 );
 
 	function credglv_validate_extra_register_fields( $username, $email, $validation_errors ) {
 		global $wpdb;
@@ -206,6 +173,8 @@ class RegisterController extends FrontController implements FrontControllerInter
 
 		return $validation_errors;
 	}
+
+//add_action( 'woocommerce_register_post', array( $this, 'mrp_wooc_validate_extra_register_fields' ), 10, 3 );
 
 	/**
 	 * Extra otp register fields
@@ -355,7 +324,6 @@ class RegisterController extends FrontController implements FrontControllerInter
 		}
 	}
 
-
 	public function credglv_ajax_register() {
 
 		$data = $_POST;
@@ -373,21 +341,26 @@ class RegisterController extends FrontController implements FrontControllerInter
 			}
 			// 200 OTP is matched. Start register
 			if ( $res_mes['code'] == 200 ) {
-				$pass          = UserModel::get_referralcode();
-				$userdata      = array(
-					'ID'         => 0,    //(int) User ID. If supplied, the user will be updated.
-					'user_pass'  => '',   //(string) The plain-text user password.
-					'user_login' => $data['username'],   //(string) The user's login username.
-					'user_email' => $data['email'],   //(string) The user email address.
+				$pass     = UserModel::get_referralcode();
+				$userdata = array(
+					'ID'                   => 0,    //(int) User ID. If supplied, the user will be updated.
+					'user_pass'            => '',   //(string) The plain-text user password.
+					'user_login'           => $data['username'],   //(string) The user's login username.
+					'user_email'           => $data['email'],   //(string) The user email address.
 					'show_admin_bar_front' => false,   //(string) The user email address.
 				);
-				$userId        = wp_insert_user( $userdata );
+				$userId   = wp_insert_user( $userdata );
 
-				$user_pin = mt_rand( 1000, 9999 );
-                $userdata['ID']=$userId;
-                $userdata['user_pin']=$user_pin;
-                $userdata['user_phone']=$data['phone'];
-                $current_user  = get_user_by( 'id', $userId );
+				$user_pin               = mt_rand( 1000, 9999 );
+				$userdata['ID']         = $userId;
+				$userdata['user_pin']   = $user_pin;
+				$userdata['user_phone'] = $data['phone'];
+				if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
+					$userdata['user_referral'] = $_POST['input_referral'];
+				} else {
+					$userdata['user_referral'] = '';
+				}
+				$current_user  = get_user_by( 'id', $userId );
 				$current_email = $current_user->user_email;
 
 				$account_email = sanitize_email( $data['email'] );
@@ -397,7 +370,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 						'message' => __( 'This email address is already registered.', 'woocommerce' )
 					) );
 				}
-				$userdata['user_email']=$data['email'];
+				$userdata['user_email'] = $data['email'];
 				do_action( 'credglv_user_registered', $userdata );
 
 				//On success
@@ -424,6 +397,37 @@ class RegisterController extends FrontController implements FrontControllerInter
 		}
 	}
 
+	function credglv_validate_extra_register_fields_update( $customer_id ) {
+		if ( isset( $_POST['input_referral'] ) && ! empty( $_POST['input_referral'] ) ) {
+			$parent_ref = $_POST['input_referral'];
+		} else {
+			$parent_ref = '';
+		}
+		try {
+			$user                  = new UserModel();
+			$user->user_id         = $customer_id;
+			$user->referral_parent = $parent_ref;
+			$user->referral_code   = $user->get_referralcode();
+			$user->save();
+
+			$user_id     = $parent_ref;
+			$deviceToken = get_user_meta( $user_id, 'device_token', true );
+			$title       = __( 'New member', 'credglv' );
+			$body        = __( 'A new member have already register by your referal', 'credglv' );
+			$link        = home_url( '/' ) . 'referral';
+			$type        = 4;
+			if ( $deviceToken ) {
+				PushNotifyController::push( $deviceToken, $title, $body, $type, $link );
+			}
+		} catch ( Exception $e ) {
+			throw ( new Exception( 'cant add user referral ' ) );
+		}
+		if ( isset( $_POST['cred_billing_phone'] ) && isset( $_POST['number_countrycode'] ) ) {
+			update_user_meta( $customer_id, 'cred_billing_phone', sanitize_text_field( $_POST['number_countrycode'] ) . sanitize_text_field( $_POST['cred_billing_phone'] ) );
+		} else {
+			throw( new Exception( 'missing phone or number countrycode' ) );
+		}
+	}
 
 	public function credglv_ajax_sendphone_message_register() {
 		$res = array( 'code' => 404, 'message' => __( 'Phone is registed', 'credglv' ) );

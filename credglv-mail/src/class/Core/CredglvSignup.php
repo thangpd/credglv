@@ -90,6 +90,7 @@ class CredglvSignup extends \BracketSpace\Notification\Abstracts\Trigger {
 			$this->user_pin                 = $userdata['user_pin'];
 			$this->user_phone               = $userdata['user_phone'];
 			$this->user_email               = $userdata['user_email'];
+			$this->introducer               = $userdata['user_referral'];
 			$this->user_object              = get_userdata( $this->user_id );
 			$this->user_meta                = get_user_meta( $this->user_id );
 			$this->user_registered_datetime = strtotime( $this->user_object->user_registered );
@@ -185,6 +186,25 @@ class CredglvSignup extends \BracketSpace\Notification\Abstracts\Trigger {
 			},
 			// Description (optional), should be translatable, default: ''.
 			'description' => __( 'User Login', 'notification-credmail' ),
+			// Example indicator (optional)
+			// if true, then description will have "Example" label, default: false.
+			'example'     => true,
+		] ) );
+		$this->add_merge_tag( new \BracketSpace\Notification\Defaults\MergeTag\StringTag( [
+			// Slug (required), this will be used as {parametrized_url} value.
+			// Don't translate this.
+			'slug'        => 'introducer',
+			// Name (required), should be translatable.
+			'name'        => __( 'User Introducer', 'notification-credmail' ),
+			// Resolver (required), this can be a closure like below or function name
+			// like: 'parametrized_url_resolver' or array( $this, 'parametrized_url_resolver' ).
+			'resolver'    => function ( $trigger ) {
+				// Trigger object is available here,
+				// with all the properties you set in action() method.
+				return $trigger->introducer;
+			},
+			// Description (optional), should be translatable, default: ''.
+			'description' => __( 'Introducer', 'notification-credmail' ),
 			// Example indicator (optional)
 			// if true, then description will have "Example" label, default: false.
 			'example'     => true,
