@@ -347,11 +347,11 @@ class RegisterController extends FrontController implements FrontControllerInter
 				);
 				$userId        = wp_insert_user( $userdata );
 
-				$user_pin = UserModel::get_referralcode( 4 );
+				$user_pin = mt_rand( 1000, 9999 );
+                $userdata['ID']=$userId;
                 $userdata['user_pin']=$user_pin;
                 $userdata['user_phone']=$data['phone'];
-				do_action( 'credglv_user_registered', $userdata );
-				$current_user  = get_user_by( 'id', $userId );
+                $current_user  = get_user_by( 'id', $userId );
 				$current_email = $current_user->user_email;
 
 				$account_email = sanitize_email( $data['user_email'] );
@@ -361,6 +361,8 @@ class RegisterController extends FrontController implements FrontControllerInter
 						'message' => __( 'This email address is already registered.', 'woocommerce' )
 					) );
 				}
+				$userdata['user_email']=$data['email'];
+				do_action( 'credglv_user_registered', $userdata );
 
 				//On success
 				if ( ! is_wp_error( $userId ) ) {
