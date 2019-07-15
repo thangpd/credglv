@@ -54,6 +54,9 @@ class CredglvPinChanged extends \BracketSpace\Notification\Abstracts\Trigger {
 //			print_r( $context );
 //			echo '</pre>';
 			$recipients[] = $trigger->user_email;
+			if ( isset( $trigger->old_email ) ) {
+				$recipients[] = $trigger->old_email;
+			}
 		}
 
 		return $recipients;
@@ -72,7 +75,7 @@ class CredglvPinChanged extends \BracketSpace\Notification\Abstracts\Trigger {
 	 * $data_change['meta_phone']
 	 * @return mixed void or false if no notifications should be sent
 	 */
-	public function action( $userdata ) {
+	public function action( $userdata, $old_email ) {
 
 		/**
 		 * This is a method callback hooked to the action you've added in the Constructor.
@@ -86,7 +89,10 @@ class CredglvPinChanged extends \BracketSpace\Notification\Abstracts\Trigger {
 			$this->data_changed = implode( ", ", $userdata );
 			$user_info          = get_userdata( get_current_user_id() );
 			$this->user_name    = $user_info->user_login;
-			$this->user_email    = $user_info->user_email;
+			$this->user_email   = $user_info->user_email;
+		}
+		if ( ! empty( $old_email ) ) {
+			$this->old_email = $old_email;
 		}
 	}
 
@@ -123,7 +129,8 @@ class CredglvPinChanged extends \BracketSpace\Notification\Abstracts\Trigger {
 			// Example indicator (optional)
 			// if true, then description will have "Example" label, default: false.
 			'example'     => false,
-		] ) );$this->add_merge_tag( new \BracketSpace\Notification\Defaults\MergeTag\StringTag( [
+		] ) );
+		$this->add_merge_tag( new \BracketSpace\Notification\Defaults\MergeTag\StringTag( [
 			// Slug (required), this will be used as {parametrized_url} value.
 			// Don't translate this.
 			'slug'        => 'credglv_user_email',

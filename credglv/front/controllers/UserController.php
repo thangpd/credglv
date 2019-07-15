@@ -138,7 +138,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 		} else {
 			$current_pin = get_user_meta( $user_id, self::METAKEY_PIN, true );
-			if ( $_POST[ self::METAKEY_PIN ] != $current_pin &&$_POST[ self::METAKEY_PIN ]!='****' ) {
+			if ( $_POST[ self::METAKEY_PIN ] != $current_pin && $_POST[ self::METAKEY_PIN ] != '****' ) {
 				$data_change['meta_pin'] = 'Pin';
 			}
 			update_user_meta( $user_id, self::METAKEY_PIN, md5( $_POST[ self::METAKEY_PIN ] ) );
@@ -149,6 +149,7 @@ class UserController extends FrontController implements FrontControllerInterface
 		$pass2         = ! empty( $_POST['password_2'] ) ? wp_unslash( $_POST['password_2'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$save_pass     = true;
 		$save_email    = true;
+		$old_email     = '';
 
 		$current_user = get_user_by( 'id', $user_id );
 
@@ -163,6 +164,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			}
 			if ( $save_email ) {
 				$data_change['email'] = 'Email';
+				$old_email            = $current_user->user_email;
 			}
 		}
 		if ( ! empty( $pass_cur ) && empty( $pass1 ) && empty( $pass2 ) ) {
@@ -181,7 +183,7 @@ class UserController extends FrontController implements FrontControllerInterface
 			$data_change['password'] = 'Password';
 		}
 		if ( ! empty( $data_change ) ) {
-			do_action( 'credglv_security_info_changed', $data_change );
+			do_action( 'credglv_security_info_changed', $data_change ,$old_email);
 		}
 	}
 
