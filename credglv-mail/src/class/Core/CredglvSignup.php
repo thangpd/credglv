@@ -201,7 +201,9 @@ class CredglvSignup extends \BracketSpace\Notification\Abstracts\Trigger {
 			'resolver'    => function ( $trigger ) {
 				// Trigger object is available here,
 				// with all the properties you set in action() method.
-				return $trigger->introducer;
+				$introducer = get_userdata( $trigger->introducer );
+				$introducer = $introducer->user_login;
+				return $introducer;
 			},
 			// Description (optional), should be translatable, default: ''.
 			'description' => __( 'Introducer', 'notification-credmail' ),

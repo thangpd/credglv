@@ -344,7 +344,7 @@ class RegisterController extends FrontController implements FrontControllerInter
 				$pass     = UserModel::get_referralcode();
 				$userdata = array(
 					'ID'                   => 0,    //(int) User ID. If supplied, the user will be updated.
-					'user_pass'            => '',   //(string) The plain-text user password.
+					'user_pass'            => $pass,   //(string) The plain-text user password.
 					'user_login'           => $data['username'],   //(string) The user's login username.
 					'user_email'           => $data['email'],   //(string) The user email address.
 					'show_admin_bar_front' => false,   //(string) The user email address.
