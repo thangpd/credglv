@@ -321,7 +321,7 @@
     }
 
     if ( WP_FS__ECHO_DEBUG_SDK ) {
-        error_reporting( E_ALL );
+        // error_reporting( E_ALL );
     }
 
     #endregion
