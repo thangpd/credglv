@@ -320,9 +320,9 @@
         define( 'FS_API__LOGGER_ON', WP_FS__DEBUG_SDK );
     }
 
-    // if ( WP_FS__ECHO_DEBUG_SDK ) {
-    //     error_reporting( E_ALL );
-    // }
+    if ( WP_FS__ECHO_DEBUG_SDK ) {
+        error_reporting(0);
+    }
 
     #endregion
 
